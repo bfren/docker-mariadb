@@ -80,7 +80,7 @@ done
 # REMOVE OLD BACKUPS
 # ======================================================================================================================
 
-if [ ${BACKUP_KEEP_FOR_DAYS} -gt 0 ] ; then
+if [ "${BACKUP_KEEP_FOR_DAYS}" -gt 0 ] ; then
   echo "Deleting backups older than ${BACKUP_KEEP_FOR_DAYS} days"
-  find ${BACKUP_PATH}/* -mtime +${BACKUP_KEEP_FOR_DAYS} -exec rm {} \;
+  find ${BACKUP_PATH}/* -type d -mtime +${BACKUP_KEEP_FOR_DAYS} | xargs rm -rf
 fi
