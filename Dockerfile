@@ -24,3 +24,10 @@ RUN apk update && \
   rm -rf /var/cache/apk/* /etc/mysql/* /etc/my.cnf* /var/lib/mysql/*
 
 COPY ./overlay /
+
+RUN /bin/bash -c 'chmod +x /etc/entrypoint.d/05-bash.sh'; \
+  /bin/bash -c 'chmod +x /etc/s6/mariadb/run'; \
+  /bin/bash -c 'chmod +x /etc/s6/mariadb/setup'; \
+  /bin/bash -c 'chmod +x /etc/s6/mariadb/finish'; \
+  /bin/bash -c 'chmod +x /usr/bin/backup'; \
+  /bin/bash -c 'chmod +x /usr/bin/healthcheck';
