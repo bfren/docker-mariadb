@@ -2,7 +2,18 @@
 
 I've been using [webhippie](https://github.com/dockhippie/mariadb)'s MariaDB image for a while, but I wanted to manage backups in a different way.
 
-So this is a fork of that, with a different backup script to store backups by date rather than index.
+So this is a fork of that, with a different backup script to store backups by date rather than index.  Backups are stored:
+
+* in the `/var/lib/backup` volume
+* in subfolders by date and time (yyMMddhhmm)
+* every eight hours
+
+The following environment variables are available for the backups:
+
+```bash
+BACKUP_COMPRESS_FILES = 0 # Set to '1' to gzip the SQL backup files
+BACKUP_KEEP_FOR_DAYS = 14 # Backups will be kept for this many days
+```
 
 ## Volumes
 
