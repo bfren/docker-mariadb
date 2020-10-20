@@ -1,0 +1,23 @@
+name: Build Image
+
+on:
+  push:
+    branches: master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Install buildx
+        id: buildx
+        uses: crazy-max/ghaction-docker-buildx@v1
+        with:
+          version: latest
+      - name: Build image
+      run: |
+        docker buildx build \
+          --tag bcgdesign/mariadb:latest \
+          --platform linux/amd64,linux/arm/v7,linux/arm64 .
+
