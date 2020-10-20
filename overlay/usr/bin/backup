@@ -8,49 +8,42 @@ then
   exit
 fi
 
-if [ ! -d /var/lib/backup ]
+BACKUP_PATH=/var/lib/backup
+
+if [ ! -d ${BACKUP_PATH} ]
 then
-  mkdir -p /var/lib/backup
-  chmod 740 /var/lib/backup
+  mkdir -p ${BACKUP_PATH}
+  chmod 740 ${BACKUP_PATH}
 fi
 
 cd /tmp
 
 for DATABASE in ${DATABASES}
 do
-  if [ -f /tmp/mysql-${DATABASE}.sql ]
+  if [ -f /tmp/${DATABASE}.sql ]
   then
-    rm -f /tmp/mysql-${DATABASE}.sql
+    rm -f /tmp/${DATABASE}.sql
   fi
 
-  mysqldump --add-locks --password=${MARIADB_ROOT_PASSWORD} --user=root ${DATABASE} > /tmp/mysql-${DATABASE}.sql
+  mysqldump --add-locks --password=${MARIADB_ROOT_PASSWORD} --user=root ${DATABASE} > /tmp/${DATABASE}.sql
 done
 
-for (( COUNTER=$MAXIMUM; COUNTER>=1; COUNTER-- ))
-do
-  if [ -d /var/lib/backup/backup.${COUNTER} ]
-  then
-    DEST=`expr $COUNTER + 1`
-
-    if [ $DEST -le $MAXIMUM ]
-    then
-      rm -rf /var/lib/backup/backup.${DEST}
-      mv /var/lib/backup/backup.${COUNTER} /var/lib/backup/backup.${DEST}
-    fi
-  fi
-done
-
-mkdir -p /var/lib/backup/backup.1
-chmod 740 /var/lib/backup/backup.1
-
-cd /var/lib/backup/backup.1
+DATE=$(date '+%Y%m%d%H%M')
+mkdir -p ${BACKUP_PATH}/${DATE}
+chmod 740 ${BACKUP_PATH}/${DATE}
+cd ${BACKUP_PATH}/${DATE}
 
 for DATABASE in ${DATABASES}
 do
-  if [ -f /tmp/mysql-${DATABASE}.sql ]
+  if [ -f /tmp/${DATABASE}.sql ]
   then
-    mv /tmp/mysql-${DATABASE}.sql ${DATABASE}.sql
+    mv /tmp/${DATABASE}.sql ${DATABASE}.sql
     gzip ${DATABASE}.sql
     chmod 640 ${DATABASE}.sql.gz
   fi
 done
+
+if [ ${BACKUP_KEEP_FOR_DAYS} -gt 0 ] ; then
+  echo "Deleting backups older than ${BACKUP_KEEP_FOR_DAYS} days"
+  find ${BACKUP_PATH}/* -mtime +${BACKUP_KEEP_FOR_DAYS} -exec rm {} \;
+fi
