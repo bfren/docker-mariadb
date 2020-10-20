@@ -63,5 +63,5 @@ MIT
 
 ```
 Copyright (c) 2015 Thomas Boerger <http://www.webhippie.de>
-Backup script Copyright (c) 2020 Ben Green <https://bcgdesign.com>
+Backup Script Copyright (c) 2020 Ben Green <https://bcgdesign.com>
 ```
