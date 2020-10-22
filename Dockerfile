@@ -25,9 +25,5 @@ RUN apk update && \
 
 COPY ./overlay /
 
-RUN /bin/bash -c 'chmod +x /etc/entrypoint.d/05-bash.sh'; \
-  /bin/bash -c 'chmod +x /etc/s6/mariadb/run'; \
-  /bin/bash -c 'chmod +x /etc/s6/mariadb/setup'; \
-  /bin/bash -c 'chmod +x /etc/s6/mariadb/finish'; \
-  /bin/bash -c 'chmod +x /usr/bin/backup'; \
-  /bin/bash -c 'chmod +x /usr/bin/healthcheck';
+RUN /bin/bash -c 'chmod +x /usr/bin/fixpermissions' && \
+  /usr/bin/fixpermissions
