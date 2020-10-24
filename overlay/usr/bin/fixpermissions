@@ -7,3 +7,5 @@ chmod +x \
     /etc/s6/mariadb/finish \
     /usr/bin/backup \
     /usr/bin/healthcheck
+
+chmod 0444 /etc/mysql/my.cnf
