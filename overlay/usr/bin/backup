@@ -33,15 +33,14 @@ THIS_BACKUP_PATH=$BACKUP_PATH/$DATE
 # GET DATABASES
 # ======================================================================================================================
 
-DATABASES=$(mysql --password=$MARIADB_ROOT_PASSWORD --user=root -e 'show databases;' | sed 1d | grep -v -E "(mysql|information_schema|performance_schema)")
-
+DATABASES=$(mysql --password=$MARIADB_ROOT_PASSWORD --user=root -e 'SHOW DATABASES;' | sed 1d | grep -v -E "(mysql|information_schema|performance_schema)")
 if [ "$DATABASES" == "" ] ; then
   exit
 fi
 
 
 # ======================================================================================================================
-# GET BACKUP PATH
+# ENSURE BACKUP PATH EXISTS
 # ======================================================================================================================
 
 if [ ! -d $BACKUP_PATH ] ; then
@@ -49,20 +48,23 @@ if [ ! -d $BACKUP_PATH ] ; then
   chmod 740 $BACKUP_PATH
 fi
 
+mkdir $THIS_BACKUP_PATH
+chown mysql:mysql $THIS_BACKUP_PATH
+chmod 740 $THIS_BACKUP_PATH
+
 
 # ======================================================================================================================
 # PERFORM BACKUPS TO TEMP DIR
 # ======================================================================================================================
 
-cd /tmp
+ cd /tmp
 
-for DATABASE in $DATABASES
-do
-  if [ -f /tmp/$DATABASE.sql ] ; then
-    rm -f /tmp/$DATABASE.sql
+for DATABASE in $DATABASES ; do
+  if [ -f $DATABASE.sql ] ; then
+    rm -f $DATABASE.sql
   fi
 
-  mysqldump --add-locks --password=$MARIADB_ROOT_PASSWORD --user=root $DATABASE > /tmp/$DATABASE.sql
+  mysqldump --add-locks --password=$MARIADB_ROOT_PASSWORD --user=root $DATABASE > $DATABASE.sql
 done
 
 
@@ -70,18 +72,16 @@ done
 # MOVE BACKUPS TO BACKUP FOLDER AND GZIP
 # ======================================================================================================================
 
-mkdir -p $THIS_BACKUP_PATH
-chmod 740 $THIS_BACKUP_PATH
 cd $THIS_BACKUP_PATH
 
-for DATABASE in $DATABASES
-do
+for DATABASE in $DATABASES ; do
   if [ -f /tmp/$DATABASE.sql ] ; then
     mv /tmp/$DATABASE.sql $DATABASE.sql
+    chown mysql:mysql $DATABASE.sql
+    chmod 640 $DATABASE.sql
 
     if [ "$BACKUP_COMPRESS_FILES" -eq "1" ] ; then
       gzip $DATABASE.sql
-      chmod 640 $DATABASE.sql.gz
     fi
   fi
 done

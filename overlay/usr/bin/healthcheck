@@ -6,8 +6,7 @@ MARIADB_PASSWORD=${MARIADB_PASSWORD:-${MARIADB_ROOT_PASSWORD}}
 
 CHECK="$(echo 'SELECT 1;' | mysql -h127.0.0.1 -u${MARIADB_USERNAME} -p${MARIADB_PASSWORD} 2>/dev/null | head -n1)"
 
-if [[ "${CHECK}" == "1" ]]
-then
+if [[ "${CHECK}" == "1" ]] ; then
   exit 0
 fi
 
