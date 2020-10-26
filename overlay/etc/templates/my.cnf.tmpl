@@ -31,6 +31,10 @@ log-bin = {{ getenv "MARIADB_LOG_BIN" }}
 binlog_format = {{ getenv "MARIADB_BINLOG_FORMAT" }}
 {{ end }}
 
+{{ if ne (getenv "MARIADB_EXPIRE_LOGS_DAYS") "0" }}
+expire_logs_days = {{ getenv "MARIADB_EXPIRE_LOGS_DAYS" }}
+{{ end }}
+
 server-id = {{ getenv "MARIADB_SERVER_ID" }}
 
 innodb_data_home_dir = /var/lib/mysql
