@@ -1,0 +1,11 @@
+#!/usr/bin/with-contenv bash
+
+#======================================================================================================================
+# Copyright (c) 2015 Thomas Boerger <https://webhippie.de>
+# Originally from https://github.com/dockhippie/mariadb/blob/master/latest/overlay/etc/s6/mariadb/run
+#
+# Modifications copyright (c) 2020 Ben Green <https://bcgdesign.com>
+#======================================================================================================================
+
+echo " - starting cron service"
+/usr/sbin/crond -f -l 2

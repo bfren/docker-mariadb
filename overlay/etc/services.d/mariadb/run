@@ -51,6 +51,5 @@ if [ ! -d "/var/lib/mysql/mysql" ] ; then
 
 fi
 
-echo " - starting MariaDB service..."
+echo " - starting MariaDB service"
 exec $STARTCMD
-echo " - done."
