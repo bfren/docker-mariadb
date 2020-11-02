@@ -4,5 +4,3 @@ echo " - writing MariaDB config"
 gomplate -V \
     -o /etc/mysql/my.cnf \
     -f /etc/templates/my.cnf.tmpl
-
-chmod 0444 /etc/mysql/my.cnf

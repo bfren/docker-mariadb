@@ -4,6 +4,12 @@ if [[ $? -ne 0 ]] ; then
     /bin/s6-svscanctl -t /etc/s6
 fi
 
+chmod 0444 /etc/mysql/my.cnf
+
+chmod +x \
+    /usr/bin/backup \
+    /usr/bin/healthcheck
+
 if [[ "$MARIADB_SKIP_CHOWN" != "true" ]] ; then
     echo " - chown data directory"
     find /var/lib/mysql \( \! -user mysql -o \! -group mysql \) -print0 | xargs -0 -r chown mysql:mysql

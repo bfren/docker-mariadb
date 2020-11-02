@@ -1,5 +1,0 @@
-#!/bin/bash
-
-chmod +x \
-    /usr/bin/backup \
-    /usr/bin/healthcheck
