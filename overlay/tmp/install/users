@@ -4,5 +4,4 @@ echo "Adding mysql group"
 addgroup --gid 1000 mysql
 
 echo "Adding mysql user"
-mkdir -p /var/lib/mysql
-adduser --uid 1000 --home /var/lib/mysql --ingroup mysql --disabled-password mysql
+adduser --uid 1000 --no-create-home --disabled-password --ingroup mysql mysql

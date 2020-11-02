@@ -8,6 +8,9 @@ LABEL maintainer="Ben Green <ben@bcgdesign.com>" \
 
 EXPOSE 3306
 
+RUN \
+  mkdir -p /var/lib/mysql && \
+  mkdir -p /var/lib/backup
 VOLUME [ "/var/lib/mysql", "/var/lib/backup" ]
 
 COPY ./overlay /
