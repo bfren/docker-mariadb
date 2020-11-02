@@ -1,8 +1,8 @@
 #!/bin/bash
 
 echo "Adding mysql group"
-groupadd -g 1000 mysql
+addgroup --gid 1000 mysql
 
 echo "Adding mysql user"
 mkdir -p /var/lib/mysql
-useradd -u 1000 -d /var/lib/mysql -g mysql -s /bin/bash -m mysql
+adduser --uid 1000 --home /var/lib/mysql --ingroup mysql --shell /bin/bash mysql

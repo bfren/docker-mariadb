@@ -14,7 +14,7 @@ COPY ./overlay /
 
 RUN /bin/bash -c 'chmod +x /tmp/install/fixpermissions' && \
   /tmp/install/fixpermissions && \
-  apk add --no-cache --virtual .install gomplate shadow && \
+  apk add --no-cache --virtual .install gomplate && \
   /tmp/install/users && \
   /tmp/install/config && \
   rm -rf /tmp/install && \
