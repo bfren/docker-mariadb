@@ -1,0 +1,6 @@
+#!/bin/bash
+
+groupadd -g 1000 mysql
+
+mkdir -p /var/lib/mysql
+useradd -u 1000 -d /var/lib/mysql -g mysql -s /bin/bash -m mysql
