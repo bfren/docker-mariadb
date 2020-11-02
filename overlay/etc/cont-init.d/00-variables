@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/usr/bin/with-contenv bash
 
 declare -x MARIADB_DEFAULT_CHARACTER_SET
 [[ -z "$MARIADB_DEFAULT_CHARACTER_SET" ]] && MARIADB_DEFAULT_CHARACTER_SET="utf8"

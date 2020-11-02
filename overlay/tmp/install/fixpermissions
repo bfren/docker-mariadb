@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+chmod +x \
+    /etc/services.d/mariadb/run \
+    /etc/services.d/mariadb/finish \
+    /usr/bin/backup \
+    /usr/bin/healthcheck \
+    /tmp/install/config
+
+chmod 0444 /etc/mysql/my.cnf

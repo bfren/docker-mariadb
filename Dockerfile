@@ -1,4 +1,4 @@
-FROM webhippie/alpine:latest
+FROM bcgdesign/alpine-s6:latest
 
 LABEL maintainer="Ben Green <ben@bcgdesign.com>" \
   org.label-schema.name="MariaDB" \
@@ -9,21 +9,21 @@ LABEL maintainer="Ben Green <ben@bcgdesign.com>" \
 EXPOSE 3306
 
 VOLUME [ "/var/lib/mysql", "/var/lib/backup" ]
-WORKDIR /root
-ENTRYPOINT [ "/usr/bin/entrypoint" ]
-CMD [ "/bin/s6-svscan", "/etc/s6" ]
-
-ENV CRON_ENABLED true
-
-RUN apk update && \
-  apk upgrade && \
-  mkdir -p /var/lib/mysql && \
-  groupadd -g 1000 mysql && \
-  useradd -u 1000 -d /var/lib/mysql -g mysql -s /bin/bash -m mysql && \
-  apk add mariadb mariadb-client mariadb-server-utils tzdata && \
-  rm -rf /var/cache/apk/* /etc/mysql/* /etc/my.cnf* /var/lib/mysql/*
 
 COPY ./overlay /
 
-RUN /bin/bash -c 'chmod +x /usr/bin/fixpermissions' && \
-  /usr/bin/fixpermissions
+RUN /bin/bash -c 'chmod +x /tmp/install/fixpermissions' && \
+  /tmp/install/fixpermissions && \
+  apk add --no-cache --virtual .install gomplate && \
+  /tmp/install/config && \
+  rm -rf /tmp/install && \
+  apk del --no-cache .install
+
+RUN \
+  mkdir -p /var/lib/mysql && \
+  groupadd -g 1000 mysql && \
+  useradd -u 1000 -d /var/lib/mysql -g mysql -s /bin/bash -m mysql && \
+  apk update && \
+  apk upgrade && \
+  apk add mariadb mariadb-client mariadb-server-utils && \
+  rm -rf /var/cache/apk/* /etc/mysql/* /etc/my.cnf* /var/lib/mysql/*

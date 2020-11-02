@@ -1,18 +1,4 @@
-#!/bin/bash
-
-if [ -f ./setup ] ; then
-  source ./setup
-fi
-
-if [ -f ./custom ] ; then
-  source ./custom
-fi
-
-if [ -d ./custom.d ] ; then
-  for FILE in $(find ./custom.d -type f -iname \*.sh | sort) ; do
-    source $FILE
-  done
-fi
+#!/usr/bin/with-contenv bash
 
 STARTCMD="mysqld_safe"
 
@@ -23,9 +9,9 @@ if [ ! -d "/var/lib/mysql/mysql" ] ; then
     exit 1
   fi
 
-  echo "> running mysql_install_db..."
+  echo "Running mysql_install_db..."
   mysql_install_db --user=mysql --datadir="/var/lib/mysql"
-  echo "> finished mysql_install_db"
+  echo "Finished mysql_install_db"
 
   INIT_FILE="/tmp/mariadb-boot.sql"
 
@@ -56,5 +42,5 @@ if [ ! -d "/var/lib/mysql/mysql" ] ; then
   STARTCMD="$STARTCMD --init-file=$INIT_FILE"
 fi
 
-echo "> starting mariadb service"
+echo "Starting mariadb service"
 exec $STARTCMD

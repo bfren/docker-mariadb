@@ -1,0 +1,6 @@
+#!/bin/bash
+
+echo "Writing MariaDB config"
+gomplate -V \
+  -o /etc/mysql/my.cnf \
+  -f /tmp/install/my.cnf.tmpl
