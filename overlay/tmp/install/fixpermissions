@@ -5,7 +5,7 @@ chmod +x \
     /etc/services.d/mariadb/finish \
     /usr/bin/backup \
     /usr/bin/healthcheck \
-    /tmp/install/config
+    /tmp/install/config \
     /tmp/install/users
 
 chmod 0444 /etc/mysql/my.cnf
