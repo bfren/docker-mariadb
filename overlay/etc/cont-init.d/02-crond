@@ -1,5 +1,0 @@
-#!/usr/bin/with-contenv bash
-
-echo " - starting cron service..."
-/usr/sbin/crond -f -l 2
-echo " - done."
