@@ -1,7 +1,0 @@
-#!/usr/bin/with-contenv bash
-
-echo "Adding mysql group"
-addgroup --gid $MYSQL_USER_GID mysql
-
-echo "Adding mysql user"
-adduser --uid $MYSQL_USER_UID --no-create-home --disabled-password --ingroup mysql mysql

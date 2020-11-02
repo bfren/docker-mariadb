@@ -14,14 +14,13 @@ VOLUME [ "/var/lib/mysql", "/var/lib/backup" ]
 
 COPY ./overlay /
 
-ENV MYSQL_USER_GID=1000
-ENV MYSQL_USER_UID=1000
-
 RUN /bin/bash -c 'chmod +x /tmp/install/fixpermissions' && \
     /tmp/install/fixpermissions && \
     rm -rf /tmp/install
 
 RUN apk update && \
     apk upgrade && \
+    addgroup --gid 1000 mysql && \
+    adduser --uid 1000 --no-create-home --disabled-password --ingroup mysql mysql && \
     apk add mariadb mariadb-client mariadb-server-utils gomplate && \
     rm -rf /var/cache/apk/* /etc/mysql/* /etc/my.cnf* /var/lib/mysql/*

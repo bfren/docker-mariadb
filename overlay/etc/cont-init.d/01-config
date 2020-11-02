@@ -1,8 +1,8 @@
 #!/bin/bash
 
-echo "Writing MariaDB config"
+echo " - writing MariaDB config"
 gomplate -V \
     -o /etc/mysql/my.cnf \
-    -f /etc/my.cnf.tmpl
+    -f /etc/templates/my.cnf.tmpl
 
 chmod 0444 /etc/mysql/my.cnf

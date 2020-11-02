@@ -5,8 +5,8 @@ if [[ $? -ne 0 ]] ; then
 fi
 
 if [[ "$MARIADB_SKIP_CHOWN" != "true" ]] ; then
-    echo "Chown data directory"
+    echo " - chown data directory"
     find /var/lib/mysql \( \! -user mysql -o \! -group mysql \) -print0 | xargs -0 -r chown mysql:mysql
-    echo "Chown backup directory"
+    echo " - chown backup directory"
     find /var/lib/backup \( \! -user mysql -o \! -group mysql \) -print0 | xargs -0 -r chown mysql:mysql
 fi

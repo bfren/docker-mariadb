@@ -7,12 +7,6 @@
 # Modifications copyright (c) 2020 Ben Green <https://bcgdesign.com>
 #======================================================================================================================
 
-declare -x MYSQL_USER_GID
-[[ -z "$MYSQL_USER_GID" ]] && MYSQL_USER_GID=1000
-
-declare -x MYSQL_USER_UID
-[[ -z "$MYSQL_USER_UID" ]] && MYSQL_USER_UID=1000
-
 declare -x MARIADB_DEFAULT_CHARACTER_SET
 [[ -z "$MARIADB_DEFAULT_CHARACTER_SET" ]] && MARIADB_DEFAULT_CHARACTER_SET="utf8"
 
