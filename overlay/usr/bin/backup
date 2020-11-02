@@ -35,7 +35,7 @@ THIS_BACKUP_PATH=$BACKUP_PATH/$DATE
 
 DATABASES=$(mysql --password=$MARIADB_ROOT_PASSWORD --user=root -e 'SHOW DATABASES;' | sed 1d | grep -v -E "(mysql|information_schema|performance_schema)")
 if [ "$DATABASES" == "" ] ; then
-  exit
+    exit
 fi
 
 
@@ -44,8 +44,8 @@ fi
 # ======================================================================================================================
 
 if [ ! -d $BACKUP_PATH ] ; then
-  mkdir -p $BACKUP_PATH
-  chmod 740 $BACKUP_PATH
+    mkdir -p $BACKUP_PATH
+    chmod 740 $BACKUP_PATH
 fi
 
 mkdir $THIS_BACKUP_PATH
@@ -60,11 +60,11 @@ chmod 740 $THIS_BACKUP_PATH
  cd /tmp
 
 for DATABASE in $DATABASES ; do
-  if [ -f $DATABASE.sql ] ; then
-    rm -f $DATABASE.sql
-  fi
+    if [ -f $DATABASE.sql ] ; then
+        rm -f $DATABASE.sql
+    fi
 
-  mysqldump --add-locks --password=$MARIADB_ROOT_PASSWORD --user=root $DATABASE > $DATABASE.sql
+    mysqldump --add-locks --password=$MARIADB_ROOT_PASSWORD --user=root $DATABASE > $DATABASE.sql
 done
 
 
@@ -75,14 +75,14 @@ done
 cd $THIS_BACKUP_PATH
 
 for DATABASE in $DATABASES ; do
-  if [ -f /tmp/$DATABASE.sql ] ; then
-    mv /tmp/$DATABASE.sql $DATABASE.sql
-    chmod 640 $DATABASE.sql
+    if [ -f /tmp/$DATABASE.sql ] ; then
+        mv /tmp/$DATABASE.sql $DATABASE.sql
+        chmod 640 $DATABASE.sql
 
-    if [ "$BACKUP_COMPRESS_FILES" -eq "1" ] ; then
-      gzip $DATABASE.sql
+        if [ "$BACKUP_COMPRESS_FILES" -eq "1" ] ; then
+            gzip $DATABASE.sql
+        fi
     fi
-  fi
 done
 
 
@@ -91,7 +91,7 @@ done
 # ======================================================================================================================
 
 if [ "$BACKUP_KEEP_FOR_DAYS" -gt 0 ] ; then
-  echo "Deleting backups older than $BACKUP_KEEP_FOR_DAYS days"
-  MMIN=$((60*24*$BACKUP_KEEP_FOR_DAYS))
-  find $BACKUP_PATH/* -type d -mmin +$MMIN | xargs rm -rf
+    echo "Deleting backups older than $BACKUP_KEEP_FOR_DAYS days"
+    MMIN=$((60*24*$BACKUP_KEEP_FOR_DAYS))
+    find $BACKUP_PATH/* -type d -mmin +$MMIN | xargs rm -rf
 fi

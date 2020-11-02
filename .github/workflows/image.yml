@@ -15,7 +15,7 @@ jobs:
         name: Read version
         uses: bencgreen/read-file-action@v1
         with:
-          path: ./Version
+          path: ./VERSION
         id: version
       -
         name: Set up QEMU

@@ -1,12 +1,12 @@
 #!/usr/bin/with-contenv bash
 
 if [[ $? -ne 0 ]] ; then
-  /bin/s6-svscanctl -t /etc/s6
+    /bin/s6-svscanctl -t /etc/s6
 fi
 
 if [[ "$MARIADB_SKIP_CHOWN" != "true" ]] ; then
-  echo "Chown data directory"
-  find /var/lib/mysql \( \! -user mysql -o \! -group mysql \) -print0 | xargs -0 -r chown mysql:mysql
-  echo "Chown backup directory"
-  find /var/lib/backup \( \! -user mysql -o \! -group mysql \) -print0 | xargs -0 -r chown mysql:mysql
+    echo "Chown data directory"
+    find /var/lib/mysql \( \! -user mysql -o \! -group mysql \) -print0 | xargs -0 -r chown mysql:mysql
+    echo "Chown backup directory"
+    find /var/lib/backup \( \! -user mysql -o \! -group mysql \) -print0 | xargs -0 -r chown mysql:mysql
 fi
