@@ -1,4 +1,4 @@
-FROM bcgdesign/alpine-s6:0.5.3
+FROM bcgdesign/alpine-s6:0.5.4
 
 LABEL maintainer="Ben Green <ben@bcgdesign.com>" \
     org.label-schema.name="MariaDB" \
@@ -22,5 +22,5 @@ RUN apk update && \
     apk upgrade && \
     addgroup --gid 1000 mysql && \
     adduser --uid 1000 --no-create-home --disabled-password --ingroup mysql mysql && \
-    apk add mariadb mariadb-client mariadb-server-utils gomplate && \
+    apk add mariadb mariadb-client gomplate && \
     rm -rf /var/cache/apk/* /etc/mysql/* /etc/my.cnf* /var/lib/mysql/*
