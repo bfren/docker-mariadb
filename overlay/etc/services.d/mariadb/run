@@ -12,14 +12,14 @@ STARTCMD="mysqld_safe"
 if [ ! -d "/var/lib/mysql/mysql" ] ; then
 
     if [ -z "$MARIADB_ROOT_PASSWORD" ] ; then
-        echo >&2 "Error: Database is uninitialized and MARIADB_ROOT_PASSWORD not set"
+        echo >&2 " - error: Database is uninitialized and MARIADB_ROOT_PASSWORD not set"
         /bin/s6-svscanctl -t /etc/s6
         exit 1
     fi
 
-    echo "Running mysql_install_db..."
+    echo " - running mysql_install_db..."
     mysql_install_db --user=mysql --datadir="/var/lib/mysql"
-    echo "Finished mysql_install_db"
+    echo " - finished mysql_install_db"
 
     INIT_FILE="/tmp/mariadb-boot.sql"
 
@@ -51,5 +51,5 @@ if [ ! -d "/var/lib/mysql/mysql" ] ; then
 
 fi
 
-echo "Starting mariadb service"
+echo " - starting MariaDB service"
 exec $STARTCMD
