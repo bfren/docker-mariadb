@@ -1,8 +1,16 @@
 #!/usr/bin/with-contenv bash
 
+#======================================================================================================================
+# Copyright (c) 2015 Thomas Boerger <https://webhippie.de>
+# Originally from https://github.com/dockhippie/mariadb/blob/master/latest/overlay/etc/s6/mariadb/run
+#
+# Modifications copyright (c) 2020 Ben Green <https://bcgdesign.com>
+#======================================================================================================================
+
 STARTCMD="mysqld_safe"
 
 if [ ! -d "/var/lib/mysql/mysql" ] ; then
+
     if [ -z "$MARIADB_ROOT_PASSWORD" ] ; then
         echo >&2 "Error: Database is uninitialized and MARIADB_ROOT_PASSWORD not set"
         /bin/s6-svscanctl -t /etc/s6
@@ -40,6 +48,7 @@ if [ ! -d "/var/lib/mysql/mysql" ] ; then
     fi
 
     STARTCMD="$STARTCMD --init-file=$INIT_FILE"
+
 fi
 
 echo "Starting mariadb service"

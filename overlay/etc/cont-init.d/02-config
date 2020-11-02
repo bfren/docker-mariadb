@@ -3,6 +3,6 @@
 echo "Writing MariaDB config"
 gomplate -V \
     -o /etc/mysql/my.cnf \
-    -f /tmp/install/my.cnf.tmpl
+    -f /tmp/my.cnf.tmpl
 
 chmod 0444 /etc/mysql/my.cnf

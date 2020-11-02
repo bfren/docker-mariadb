@@ -1,5 +1,18 @@
 #!/usr/bin/with-contenv bash
 
+#======================================================================================================================
+# Copyright (c) 2015 Thomas Boerger <https://webhippie.de>
+# Originally from https://github.com/dockhippie/mariadb/blob/master/latest/overlay/etc/entrypoint.d/05-base.sh
+#
+# Modifications copyright (c) 2020 Ben Green <https://bcgdesign.com>
+#======================================================================================================================
+
+declare -x MYSQL_USER_GID
+[[ -z "$MYSQL_USER_GID" ]] && MYSQL_USER_GID=1000
+
+declare -x MYSQL_USER_UID
+[[ -z "$MYSQL_USER_UID" ]] && MYSQL_USER_UID=1000
+
 declare -x MARIADB_DEFAULT_CHARACTER_SET
 [[ -z "$MARIADB_DEFAULT_CHARACTER_SET" ]] && MARIADB_DEFAULT_CHARACTER_SET="utf8"
 
@@ -38,6 +51,9 @@ declare -x MARIADB_LOG_BIN
 
 declare -x MARIADB_BINLOG_FORMAT
 [[ -z "$MARIADB_BINLOG_FORMAT" ]] && MARIADB_BINLOG_FORMAT="mixed"
+
+declare -x MARIADB_EXPIRE_LOGS_DAYS
+[[ -z "$MARIADB_EXPIRE_LOGS_DAYS" ]] && MARIADB_EXPIRE_LOGS_DAYS=28
 
 declare -x MARIADB_SERVER_ID
 [[ -z "$MARIADB_SERVER_ID" ]] && MARIADB_SERVER_ID="1"

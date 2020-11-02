@@ -1,3 +1,10 @@
+#======================================================================================================================
+# Copyright (c) 2015 Thomas Boerger <https://webhippie.de>
+# Originally from https://github.com/dockhippie/mariadb/blob/master/latest/overlay/etc/templates/my.cnf.tmpl
+#
+# Modifications copyright (c) 2020 Ben Green <https://bcgdesign.com>
+#======================================================================================================================
+
 [client]
 port = 3306
 socket = /run/mysqld/mysqld.sock
@@ -30,10 +37,7 @@ skip-log-bin
 log-bin = {{ getenv "MARIADB_LOG_BIN" }}
 binlog_format = {{ getenv "MARIADB_BINLOG_FORMAT" }}
 {{ end }}
-
-{{ if ne (getenv "MARIADB_EXPIRE_LOGS_DAYS") "0" }}
 expire_logs_days = {{ getenv "MARIADB_EXPIRE_LOGS_DAYS" }}
-{{ end }}
 
 server-id = {{ getenv "MARIADB_SERVER_ID" }}
 

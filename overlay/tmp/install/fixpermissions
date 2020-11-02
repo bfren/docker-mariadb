@@ -1,9 +1,7 @@
 #!/bin/bash
 
 chmod +x \
-    /etc/services.d/mariadb/run \
-    /etc/services.d/mariadb/finish \
+    #/etc/services.d/mariadb/run \
+    #/etc/services.d/mariadb/finish \
     /usr/bin/backup \
-    /usr/bin/healthcheck \
-    /tmp/install/config \
-    /tmp/install/users
+    /usr/bin/healthcheck

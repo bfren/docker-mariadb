@@ -14,15 +14,14 @@ VOLUME [ "/var/lib/mysql", "/var/lib/backup" ]
 
 COPY ./overlay /
 
-RUN apk add --no-cache --virtual .install gomplate && \
-    /bin/bash -c 'chmod +x /tmp/install/fixpermissions' && \
+ENV MYSQL_USER_GID=1000
+ENV MYSQL_USER_UID=1000
+
+RUN /bin/bash -c 'chmod +x /tmp/install/fixpermissions' && \
     /tmp/install/fixpermissions && \
-    /tmp/install/users && \
-    /tmp/install/config && \
-    rm -rf /tmp/install && \
-    apk del --no-cache .install
+    rm -rf /tmp/install
 
 RUN apk update && \
     apk upgrade && \
-    apk add mariadb mariadb-client mariadb-server-utils && \
+    apk add mariadb mariadb-client mariadb-server-utils gomplate && \
     rm -rf /var/cache/apk/* /etc/mysql/* /etc/my.cnf* /var/lib/mysql/*

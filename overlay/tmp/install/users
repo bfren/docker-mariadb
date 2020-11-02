@@ -1,7 +1,0 @@
-#!/bin/bash
-
-echo "Adding mysql group"
-addgroup --gid 1000 mysql
-
-echo "Adding mysql user"
-adduser --uid 1000 --no-create-home --disabled-password --ingroup mysql mysql
