@@ -56,7 +56,7 @@ chmod 740 $THIS_BACKUP_PATH
 # PERFORM BACKUPS TO TEMP DIR
 # ======================================================================================================================
 
- cd /tmp
+cd /tmp
 
 for DATABASE in $DATABASES ; do
     if [ -f $DATABASE.sql ] ; then
