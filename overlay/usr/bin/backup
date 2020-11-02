@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/usr/bin/with-contenv bash
 
 # THE MIT LICENSE (MIT)
 #
@@ -25,8 +25,7 @@
 BACKUP_PATH=/var/lib/backup
 DATE=$(date '+%Y%m%d%H%M')
 THIS_BACKUP_PATH=$BACKUP_PATH/$DATE
-[[ -z "$BACKUP_COMPRESS_FILES" ]] && BACKUP_COMPRESS_FILES="0"
-[[ -z "$BACKUP_KEEP_FOR_DAYS" ]] && BACKUP_KEEP_FOR_DAYS="14"
+echo "Backing up databases to $THIS_BACKUP_PATH..."
 
 
 # ======================================================================================================================
@@ -64,6 +63,7 @@ for DATABASE in $DATABASES ; do
         rm -f $DATABASE.sql
     fi
 
+    echo " - $DATABASE"
     mysqldump --add-locks --password=$MARIADB_ROOT_PASSWORD --user=root $DATABASE > $DATABASE.sql
 done
 
@@ -85,13 +85,16 @@ for DATABASE in $DATABASES ; do
     fi
 done
 
+echo "done."
+
 
 # ======================================================================================================================
 # REMOVE OLD BACKUPS
 # ======================================================================================================================
 
 if [ "$BACKUP_KEEP_FOR_DAYS" -gt 0 ] ; then
-    echo "Deleting backups older than $BACKUP_KEEP_FOR_DAYS days"
+    echo "Deleting backups older than $BACKUP_KEEP_FOR_DAYS days..."
     MMIN=$((60*24*$BACKUP_KEEP_FOR_DAYS))
     find $BACKUP_PATH/* -type d -mmin +$MMIN | xargs rm -rf
+    echo "done."
 fi
