@@ -1,3 +1,5 @@
 #!/usr/bin/with-contenv bash
 
+echo " - registering cron service..."
 rc-service crond start && rc-update add crond
+echo " - done."

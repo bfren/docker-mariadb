@@ -6,22 +6,22 @@ fi
 
 echo " - make MySQL config read-only..."
 chmod 0444 /etc/mysql/my.cnf
-echo "done."
+echo " - done."
 
 echo " - make backup and healthcheck executable..."
 chmod +x \
     /usr/bin/backup \
     /usr/bin/healthcheck
-echo "done."
+echo " - done."
 
 if [[ "$MARIADB_SKIP_CHOWN" != "true" ]] ; then
 
     echo " - chown data directory..."
     find /var/lib/mysql \( \! -user mysql -o \! -group mysql \) -print0 | xargs -0 -r chown mysql:mysql
-    echo "done."
+    echo " - done."
 
     echo " - chown backup directory..."
     find /var/lib/backup \( \! -user mysql -o \! -group mysql \) -print0 | xargs -0 -r chown mysql:mysql
-    echo "done."
+    echo " - done."
 
 fi

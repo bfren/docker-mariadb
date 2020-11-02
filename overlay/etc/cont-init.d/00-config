@@ -4,4 +4,4 @@ echo " - writing MariaDB config..."
 gomplate \
     -o /etc/mysql/my.cnf \
     -f /etc/templates/my.cnf.tmpl
-echo "done."
+echo " - done."
