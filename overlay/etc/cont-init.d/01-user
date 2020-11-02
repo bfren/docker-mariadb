@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/with-contenv bash
 
 echo "Adding mysql group"
 addgroup --gid $MYSQL_USER_GID mysql

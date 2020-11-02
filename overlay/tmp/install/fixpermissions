@@ -3,5 +3,3 @@
 chmod +x \
     /usr/bin/backup \
     /usr/bin/healthcheck
-    #/etc/services.d/mariadb/run \
-    #/etc/services.d/mariadb/finish \
