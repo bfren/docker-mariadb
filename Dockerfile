@@ -48,6 +48,7 @@ RUN addgroup --gid 1000 mysql && \
     apk update && \
     apk upgrade && \
     apk add mariadb mariadb-client gomplate && \
+    rc-service crond start && rc-update add crond && \
     rm -rf /var/cache/apk/* /etc/mysql/* /etc/my.cnf* /var/lib/mysql/*
 
 COPY ./overlay /

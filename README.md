@@ -33,7 +33,7 @@ BACKUP_KEEP_FOR_DAYS = 14 # Backups will be kept for this many days
 
 * 3306
 
-## Available environment variables
+## MariaDB Environment Variables
 
 ```bash
 # Required
