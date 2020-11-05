@@ -53,3 +53,5 @@ RUN addgroup --gid 1000 mysql && \
     rm -rf /var/cache/apk/* /etc/mysql/* /etc/my.cnf* /var/lib/mysql/*
 
 COPY ./overlay /
+
+HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=5 CMD [ "/usr/bin/healthcheck" ]
