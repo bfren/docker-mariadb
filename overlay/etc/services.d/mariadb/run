@@ -47,9 +47,12 @@ if [ ! -d "/var/lib/mysql/mysql" ] ; then
         echo "FLUSH PRIVILEGES;" >> $INIT_FILE
     fi
 
-    STARTCMD="$STARTCMD --init-file=$INIT_FILE"
+    echo " - starting MariaDB service with default setup"
+    mysqld_safe --init-file=$INIT_FILE
+
+else
+
+    echo " - starting MariaDB service"
+    mysqld_safe
 
 fi
-
-echo " - starting MariaDB service"
-exec $STARTCMD
