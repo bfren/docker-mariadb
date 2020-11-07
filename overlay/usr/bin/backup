@@ -78,7 +78,7 @@ for DATABASE in $DATABASES ; do
     if [ -f /tmp/$DATABASE.sql ] ; then
         mv /tmp/$DATABASE.sql $DATABASE.sql
         
-        chown mysql:mysql: $DATABASE.sql
+        chown mysql:mysql $DATABASE.sql
         chmod 640 $DATABASE.sql
 
         if [ "$BACKUP_COMPRESS_FILES" -eq "1" ] ; then
