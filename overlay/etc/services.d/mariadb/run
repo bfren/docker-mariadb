@@ -13,7 +13,7 @@ if [ ! -d "/var/lib/mysql/mysql" ] ; then
 
     if [ -z "$MARIADB_ROOT_PASSWORD" ] ; then
         echo >&2 " - error: Database is uninitialized and MARIADB_ROOT_PASSWORD not set"
-        /bin/s6-svscanctl -t /etc/s6
+        source "/etc/services.d/mariadb/finish"
         exit 1
     fi
 
