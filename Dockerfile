@@ -54,4 +54,7 @@ RUN addgroup --gid 1000 mysql && \
 
 COPY ./overlay /
 
+RUN chmod +x /usr/bin/healthcheck
 HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=5 CMD [ "/usr/bin/healthcheck" ]
+
+RUN chmod +x /usr/bin/backup
