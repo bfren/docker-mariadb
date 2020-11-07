@@ -1,4 +1,4 @@
-FROM bcgdesign/alpine-s6:1.0.2
+FROM bcgdesign/alpine-s6:1.0.3
 
 LABEL maintainer="Ben Green <ben@bcgdesign.com>" \
     org.label-schema.name="MariaDB" \
