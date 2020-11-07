@@ -81,7 +81,7 @@ MARIADB_WRITE_BUFFER = 2M
 
 ## Authors
 
-* [Ben Green](https://github.com/bencgdreen)
+* [Ben Green](https://github.com/bencgreen)
 * [Thomas Boerger](https://github.com/tboerger)
 
 ## License
