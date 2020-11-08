@@ -45,9 +45,10 @@ RUN mkdir -p /var/lib/mysql \
     && mkdir -p /var/lib/backup
 VOLUME [ "/var/lib/mysql", "/var/lib/backup" ]
 
-ARG MARIADB_VERSION="10.5.6-r0"
-
-RUN addgroup --gid 1000 mysql \
+COPY ./VERSION /tmp/VERSION
+RUN export MARIADB_VERSION=$(cat /tmp/VERSION) \
+    && echo "MariaDB v${PHP_VERSION}" \
+    && addgroup --gid 1000 mysql \
     && adduser --uid 1000 --no-create-home --disabled-password --ingroup mysql mysql \
     && apk update \
     && apk upgrade \
@@ -55,7 +56,7 @@ RUN addgroup --gid 1000 mysql \
         mariadb=${MARIADB_VERSION} \
         mariadb-client=${MARIADB_VERSION} \
         gomplate \
-    && rm -rf /var/cache/apk/* /etc/mysql/* /etc/my.cnf* /var/lib/mysql/*
+    && rm -rf /var/cache/apk/* /etc/mysql/* /etc/my.cnf* /var/lib/mysql/* /tmp/*
 
 COPY ./overlay /
 
