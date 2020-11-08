@@ -25,9 +25,9 @@ BACKUP_KEEP_FOR_DAYS = 14 # Backups will be kept for this many days
 
 ## Volumes
 
-* /etc/mysql/conf.d
-* /var/lib/mysql
-* /var/lib/backup
+* `/etc/mysql/conf.d` - optional additional configuration
+* `/var/lib/mysql` - data files
+* `/var/lib/backup` - backup files
 
 ## Ports
 

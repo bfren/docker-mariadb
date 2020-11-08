@@ -24,16 +24,16 @@
 
 BACKUP_PATH=/var/lib/backup
 DATE=$(date '+%Y%m%d%H%M')
-THIS_BACKUP_PATH=$BACKUP_PATH/$DATE
-echo "Backing up databases to $THIS_BACKUP_PATH..."
+THIS_BACKUP_PATH="${BACKUP_PATH}/${DATE}"
+echo "Backing up databases to ${THIS_BACKUP_PATH}..."
 
 
 # ======================================================================================================================
 # GET DATABASES
 # ======================================================================================================================
 
-DATABASES=$(mysql --password=$MARIADB_ROOT_PASSWORD --user=root -e 'SHOW DATABASES;' | sed 1d | grep -v -E "(mysql|information_schema|performance_schema)")
-if [ "$DATABASES" == "" ] ; then
+DATABASES=$(mysql --password=${MARIADB_ROOT_PASSWORD} --user=root -e 'SHOW DATABASES;' | sed 1d | grep -v -E "(mysql|information_schema|performance_schema)")
+if [ "${DATABASES}" == "" ] ; then
     exit
 fi
 
@@ -42,14 +42,14 @@ fi
 # ENSURE BACKUP PATH EXISTS
 # ======================================================================================================================
 
-if [ ! -d $BACKUP_PATH ] ; then
-    mkdir -p $BACKUP_PATH
-    chmod 740 $BACKUP_PATH
+if [ ! -d ${BACKUP_PATH} ] ; then
+    mkdir -p ${BACKUP_PATH}
+    chmod 740 ${BACKUP_PATH}
 fi
 
-mkdir $THIS_BACKUP_PATH
-chown mysql:mysql $THIS_BACKUP_PATH
-chmod 740 $THIS_BACKUP_PATH
+mkdir ${THIS_BACKUP_PATH}
+chown mysql:mysql ${THIS_BACKUP_PATH}
+chmod 740 ${THIS_BACKUP_PATH}
 
 
 # ======================================================================================================================
@@ -58,13 +58,13 @@ chmod 740 $THIS_BACKUP_PATH
 
 cd /tmp
 
-for DATABASE in $DATABASES ; do
-    if [ -f $DATABASE.sql ] ; then
-        rm -f $DATABASE.sql
+for DATABASE in ${DATABASES} ; do
+    if [ -f ${DATABASE}.sql ] ; then
+        rm -f ${DATABASE}.sql
     fi
 
-    echo " - $DATABASE"
-    mysqldump --add-locks --password=$MARIADB_ROOT_PASSWORD --user=root $DATABASE > $DATABASE.sql
+    echo " - ${DATABASE}"
+    mysqldump --add-locks --password=${MARIADB_ROOT_PASSWORD} --user=root ${DATABASE} > ${DATABASE}.sql
 done
 
 
@@ -72,17 +72,17 @@ done
 # MOVE BACKUPS TO BACKUP FOLDER AND GZIP
 # ======================================================================================================================
 
-cd $THIS_BACKUP_PATH
+cd ${THIS_BACKUP_PATH}
 
-for DATABASE in $DATABASES ; do
-    if [ -f /tmp/$DATABASE.sql ] ; then
-        mv /tmp/$DATABASE.sql $DATABASE.sql
+for DATABASE in ${DATABASE}S ; do
+    if [ -f /tmp/${DATABASE}.sql ] ; then
+        mv /tmp/${DATABASE}.sql ${DATABASE}.sql
         
-        chown mysql:mysql $DATABASE.sql
-        chmod 640 $DATABASE.sql
+        chown mysql:mysql ${DATABASE}.sql
+        chmod 640 ${DATABASE}.sql
 
-        if [ "$BACKUP_COMPRESS_FILES" -eq "1" ] ; then
-            gzip $DATABASE.sql
+        if [ "${BACKUP_COMPRESS_FILES}" -eq "1" ] ; then
+            gzip ${DATABASE}.sql
         fi
     fi
 done
@@ -94,9 +94,9 @@ echo "done."
 # REMOVE OLD BACKUPS
 # ======================================================================================================================
 
-if [ "$BACKUP_KEEP_FOR_DAYS" -gt 0 ] ; then
-    echo "Deleting backups older than $BACKUP_KEEP_FOR_DAYS days..."
-    MMIN=$((60*24*$BACKUP_KEEP_FOR_DAYS))
-    find $BACKUP_PATH/* -type d -mmin +$MMIN | xargs rm -rf
+if [ "${BACKUP_KEEP_FOR_DAYS}" -gt 0 ] ; then
+    echo "Deleting backups older than ${BACKUP_KEEP_FOR_DAYS} days..."
+    MMIN=$((60*24*${BACKUP_KEEP_FOR_DAYS}))
+    find ${BACKUP_PATH}/* -type d -mmin +${MMIN} | xargs rm -rf
     echo "done."
 fi

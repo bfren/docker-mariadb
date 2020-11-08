@@ -11,7 +11,7 @@ STARTCMD="mysqld_safe"
 
 if [ ! -d "/var/lib/mysql/mysql" ] ; then
 
-    if [ -z "$MARIADB_ROOT_PASSWORD" ] ; then
+    if [ -z "${MARIADB_ROOT_PASSWORD}" ] ; then
         echo >&2 " - error: Database is uninitialized and MARIADB_ROOT_PASSWORD not set"
         source "/etc/services.d/mariadb/finish"
         exit 1
@@ -23,32 +23,32 @@ if [ ! -d "/var/lib/mysql/mysql" ] ; then
 
     INIT_FILE="/tmp/mariadb-boot.sql"
 
-    echo "" >| $INIT_FILE
-    echo "DELETE FROM mysql.user;" >> $INIT_FILE
-    echo "CREATE USER 'root'@'%' IDENTIFIED BY '$MARIADB_ROOT_PASSWORD';" >> $INIT_FILE
-    echo "GRANT ALL ON *.* TO 'root'@'%' WITH GRANT OPTION;" >> $INIT_FILE
-    echo "DROP DATABASE IF EXISTS test;" >> $INIT_FILE
-    echo "FLUSH PRIVILEGES;" >> $INIT_FILE
+    echo "" >| ${INIT_FILE}
+    echo "DELETE FROM mysql.user;" >> ${INIT_FILE}
+    echo "CREATE USER 'root'@'%' IDENTIFIED BY '$MARIADB_ROOT_PASSWORD';" >> ${INIT_FILE}
+    echo "GRANT ALL ON *.* TO 'root'@'%' WITH GRANT OPTION;" >> ${INIT_FILE}
+    echo "DROP DATABASE IF EXISTS test;" >> ${INIT_FILE}
+    echo "FLUSH PRIVILEGES;" >> ${INIT_FILE}
 
-    if [[ -n "$MARIADB_USERNAME" && -n "$MARIADB_DATABASE" ]] ; then
+    if [[ -n "${MARIADB_USERNAME}" && -n "$MARIADB_DATABASE" ]] ; then
         DATABASES=$(echo $MARIADB_DATABASE | tr "," "\n")
 
         for DATABASE in $DATABASES ; do
-            echo "CREATE DATABASE IF NOT EXISTS \`$DATABASE\`;" >> $INIT_FILE
-            echo "GRANT ALL PRIVILEGES ON \`$DATABASE\`.* TO '$MARIADB_USERNAME'@'%' IDENTIFIED BY '$MARIADB_PASSWORD';" >> $INIT_FILE
+            echo "CREATE DATABASE IF NOT EXISTS \`${DATABASE}\`;" >> ${INIT_FILE}
+            echo "GRANT ALL PRIVILEGES ON \`${DATABASE}\`.* TO '${MARIADB_USERNAME}'@'%' IDENTIFIED BY '${MARIADB_PASSWORD}';" >> ${INIT_FILE}
         done
 
-        echo "FLUSH PRIVILEGES;" >> $INIT_FILE
+        echo "FLUSH PRIVILEGES;" >> ${INIT_FILE}
     fi
 
-    if [[ -n "$MARIADB_USERNAME" && -z "$MARIADB_DATABASE" ]] ; then
-        echo "CREATE DATABASE IF NOT EXISTS \`$MARIADB_USERNAME\`;" >> $INIT_FILE
-        echo "GRANT ALL PRIVILEGES ON \`$MARIADB_USERNAME\`.* TO '$MARIADB_USERNAME'@'%' IDENTIFIED BY '$MARIADB_PASSWORD';" >> $INIT_FILE
-        echo "FLUSH PRIVILEGES;" >> $INIT_FILE
+    if [[ -n "${MARIADB_USERNAME}" && -z "${MARIADB_DATABASE}" ]] ; then
+        echo "CREATE DATABASE IF NOT EXISTS \`${MARIADB_USERNAME}\`;" >> ${INIT_FILE}
+        echo "GRANT ALL PRIVILEGES ON \`${MARIADB_USERNAME}\`.* TO '${MARIADB_USERNAME}'@'%' IDENTIFIED BY '${MARIADB_PASSWORD}';" >> ${INIT_FILE}
+        echo "FLUSH PRIVILEGES;" >> ${INIT_FILE}
     fi
 
     echo " - starting MariaDB service with default setup"
-    mysqld_safe --init-file=$INIT_FILE
+    mysqld_safe --init-file=${INIT_FILE}
 
 else
 
