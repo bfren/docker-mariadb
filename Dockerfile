@@ -54,7 +54,7 @@ RUN addgroup --gid 1000 mysql \
     && apk add \
         mariadb=${VERSION} \
         mariadb-client=${VERSION} \
-        confd \
+        gomplate \
     && rm -rf /var/cache/apk/* /etc/mysql/* /etc/my.cnf* /var/lib/mysql/*
 
 COPY ./overlay /

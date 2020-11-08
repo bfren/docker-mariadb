@@ -1,8 +1,7 @@
 #!/usr/bin/with-contenv bash
 
 echo " - writing MariaDB config..."
-#gomplate \
-#    -o /etc/mysql/my.cnf \
-#    -f /etc/templates/my.cnf.tmpl
-confd -onetime -backend env
+gomplate \
+    -o /etc/mysql/my.cnf \
+    -f /etc/templates/my.cnf.tmpl
 echo " - done."
