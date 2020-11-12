@@ -50,8 +50,7 @@ RUN export MARIADB_VERSION=$(cat /tmp/VERSION) \
     && echo "MariaDB v${MARIADB_VERSION}" \
     && addgroup --gid 1000 mysql \
     && adduser --uid 1000 --no-create-home --disabled-password --ingroup mysql mysql \
-    && apk update \
-    && apk upgrade \
+    && apk -U upgrade \
     && apk add \
         mariadb=${MARIADB_VERSION} \
         mariadb-client=${MARIADB_VERSION} \
