@@ -1,6 +1,6 @@
 # Docker MariaDB
 
-![build](https://github.com/bencgreen/docker-mariadb/workflows/build/badge.svg)
+![Docker Image Version (tag latest semver)](https://img.shields.io/docker/v/bcgdesign/mariadb/latest?label=latest) ![GitHub Workflow Status](https://img.shields.io/github/workflow/status/bencgreen/docker-mariadb/build?label=github) ![Docker Cloud Build Status](https://img.shields.io/docker/cloud/build/bcgdesign/mariadb?label=docker) ![Docker Pulls](https://img.shields.io/docker/pulls/bcgdesign/mariadb?label=pulls) ![Docker Image Size (tag)](https://img.shields.io/docker/image-size/bcgdesign/mariadb/latest?label=size)
 
 [Docker Repository](https://hub.docker.com/r/bcgdesign/mariadb)
 
