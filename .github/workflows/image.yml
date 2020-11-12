@@ -24,6 +24,12 @@ jobs:
           path: ./MARIADB_MINOR
         id: mariadb_minor
       -
+        name: Read MariaDB revision version
+        uses: bencgreen/read-file-action@v1
+        with:
+          path: ./MARIADB_REVISION
+        id: mariadb_revision
+      -
         name: Read version
         uses: bencgreen/read-file-action@v1
         with:
@@ -52,6 +58,7 @@ jobs:
             bcgdesign/mariadb:latest
             bcgdesign/mariadb:${{ steps.mariadb_major.outputs.content }}
             bcgdesign/mariadb:${{ steps.mariadb_minor.outputs.content }}
+            bcgdesign/mariadb:${{ steps.mariadb_revision.outputs.content }}
             bcgdesign/mariadb:${{ steps.version.outputs.content }}
       -
         name: Image digest
