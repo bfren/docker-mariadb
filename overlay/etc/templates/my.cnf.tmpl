@@ -59,6 +59,7 @@ max_allowed_packet = {{ getenv "MARIADB_MAX_ALLOWED_PACKET" }}
 
 [mysql]
 no-auto-rehash
+sql_mode = {{ getenv "MARIADB_SQL_MODE" }}
 
 [myisamchk]
 key_buffer_size = {{ getenv "MARIADB_KEY_BUFFER_SIZE" }}
