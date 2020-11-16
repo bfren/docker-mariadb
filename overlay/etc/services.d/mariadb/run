@@ -51,6 +51,8 @@ if [ ! -d "/var/lib/mysql/mysql" ] ; then
 else
 
     echo " - starting mariadbd-safe"
-    mariadbd-safe && db-upgrade
+    mariadbd-safe
+
+    exec db-upgrade
 
 fi
