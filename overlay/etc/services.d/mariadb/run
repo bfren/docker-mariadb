@@ -50,10 +50,6 @@ if [ ! -d "/var/lib/mysql/mysql" ] ; then
 
 else
 
-    echo " - running mariadb-upgrade..."
-    mariadb-upgrade -u root -p "${MARIADB_ROOT_PASSWORD}" --verbose --force
-    echo " - done."
-
     echo " - starting mariadbd-safe"
     mariadbd-safe
 
