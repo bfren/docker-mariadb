@@ -1,1 +1,1 @@
-0 */8 * * * /usr/bin/backup > /dev/null 2>&1
+0 */8 * * * db-backup > /dev/null 2>&1
