@@ -45,12 +45,12 @@ if [ ! -d "/var/lib/mysql/mysql" ] ; then
         echo "FLUSH PRIVILEGES;" >> ${INIT_FILE}
     fi
 
-    echo " - starting mariadbd-safe with init script"
+    echo " - starting mariadbd-safe with init file"
     mariadbd-safe --init-file=${INIT_FILE}
 
 else
 
     echo " - starting mariadbd-safe"
-    mariadbd-safe
+    mariadbd-safe && db-upgrade
 
 fi

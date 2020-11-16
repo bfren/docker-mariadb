@@ -1,7 +1,0 @@
-#!/usr/bin/with-contenv bash
-
-s6-svwait /var/run/s6/services/mariadb
-
-echo " - running mariadb-upgrade..."
-mariadb-upgrade --user="root" --password="${MARIADB_ROOT_PASSWORD}"
-echo " - done."
