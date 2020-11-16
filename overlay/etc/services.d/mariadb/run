@@ -15,7 +15,7 @@ if [ ! -d "/var/lib/mysql/mysql" ] ; then
         exit 1
     fi
 
-    echo " - running mysql_install_db..."
+    echo " - running mariadb-install-db..."
     mariadb-install-db --user=mysql --datadir="/var/lib/mysql"
     echo " - done."
 
@@ -45,16 +45,16 @@ if [ ! -d "/var/lib/mysql/mysql" ] ; then
         echo "FLUSH PRIVILEGES;" >> ${INIT_FILE}
     fi
 
-    echo " - starting MariaDB service with default setup"
+    echo " - starting mariadbd-safe with init script"
     mariadbd-safe --init-file=${INIT_FILE}
 
 else
 
-    echo " - running MariaDB upgrade..."
+    echo " - running mariadb-upgrade..."
     mariadb-upgrade -u root -p "${MARIADB_ROOT_PASSWORD}"
     echo " - done."
 
-    echo " - starting MariaDB service"
+    echo " - starting mariadbd-safe"
     mariadbd-safe
 
 fi

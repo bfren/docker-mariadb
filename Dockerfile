@@ -55,6 +55,7 @@ RUN export MARIADB_VERSION=$(cat /tmp/VERSION) \
         bash \
         mariadb=${MARIADB_VERSION} \
         mariadb-client=${MARIADB_VERSION} \
+        mariadb-server-utils=${MARIADB_VERSION} \
         gomplate \
     && rm -rf /var/cache/apk/* /etc/mysql/* /etc/my.cnf* /var/lib/mysql/* /tmp/*
 
