@@ -1,0 +1,13 @@
+#!/bin/bash
+
+MARIADBD=$(pidof mariadbd)
+if [ -z "${MARIADBD}" ] ; then 
+    echo " - waiting for MariaDB to come online..."
+    sleep 10s
+else
+    echo " - running MariaDB upgrade..."
+    db-upgrade
+    echo " - done."
+
+    s6-svc -d /var/run/s6/services/mariadb-upgrade
+fi

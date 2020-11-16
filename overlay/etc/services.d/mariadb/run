@@ -53,6 +53,4 @@ else
     echo " - starting mariadbd-safe"
     mariadbd-safe
 
-    exec db-upgrade
-
 fi
