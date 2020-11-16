@@ -1,0 +1,8 @@
+#!/usr/bin/with-contenv bash
+
+echo " - waiting for MariaDB to start..."
+s6-svwait "mariadb"
+
+echo " - running mariadb-upgrade..."
+mariadb-upgrade --user="root" --password="${MARIADB_ROOT_PASSWORD}" --verbose
+echo " - done."
