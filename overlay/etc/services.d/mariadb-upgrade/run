@@ -5,9 +5,6 @@ if [ -z "${MARIADBD}" ] ; then
     echo " - waiting for MariaDB to come online..."
     sleep 2s
 else
-    echo " - running MariaDB upgrade..."
     /usr/local/bin/db-upgrade
-    echo " - done."
-
     s6-svc -d /var/run/s6/services/mariadb-upgrade
 fi
