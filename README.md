@@ -23,17 +23,17 @@ BACKUP_COMPRESS_FILES = 0 # Set to '1' to gzip the SQL backup files
 BACKUP_KEEP_FOR_DAYS = 14 # Backups will be kept for this many days
 ```
 
+## Ports
+
+* 3306
+
 ## Volumes
 
 * `/etc/mysql/conf.d` - optional additional configuration
 * `/var/lib/mysql` - data files
 * `/var/lib/backup` - backup files
 
-## Ports
-
-* 3306
-
-## MariaDB Environment Variables
+## Environment Variables
 
 ```bash
 # Required
