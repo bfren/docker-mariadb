@@ -1,4 +1,4 @@
-FROM bcgdesign/alpine-s6:1.0.4
+FROM bcgdesign/alpine-s6:1.0.5
 
 LABEL maintainer="Ben Green <ben@bcgdesign.com>" \
     org.label-schema.name="MariaDB" \
@@ -53,9 +53,9 @@ RUN export MARIADB_VERSION=$(cat /tmp/VERSION) \
     && apk -U upgrade \
     && apk add \
         bash \
-        mariadb=${MARIADB_VERSION} \
-        mariadb-client=${MARIADB_VERSION} \
-        mariadb-server-utils=${MARIADB_VERSION} \
+        mariadb@edgemain=${MARIADB_VERSION} \
+        mariadb-client@edgemain=${MARIADB_VERSION} \
+        mariadb-server-utils@edgemain=${MARIADB_VERSION} \
         gomplate \
     && rm -rf /var/cache/apk/* /etc/mysql/* /etc/my.cnf* /var/lib/mysql/* /tmp/*
 
