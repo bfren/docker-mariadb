@@ -4,7 +4,8 @@
 # Wait until MariaDB is running before attempting the upgrade
 #======================================================================================================================
 
-if [ "$(healthcheck)" = "1" ] ; then 
+MARIADBD=$(pidof mariadbd)
+if [ -z "${MARIADBD}" ] ; then 
     # wait 2s before exiting the service - S6 will keep restarting it until MariaDB comes online
     echo " - waiting for MariaDB to come online..."
     sleep 2s
