@@ -1,0 +1,3 @@
+#!/bin/bash
+
+s6-svc -d /var/run/s6/services/mariadb-upgrade
