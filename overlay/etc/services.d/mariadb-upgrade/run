@@ -9,4 +9,8 @@ else
     echo " - MariaDB online, waiting ${WAIT} before attempting upgrade..."
     sleep ${WAIT}
     /usr/local/bin/db-upgrade
+    
+    echo " - de-registering MariaDB Upgrade service..."
+    s6-svc -d /var/run/s6/services/mariadb-upgrade
+    echo " - done."
 fi

@@ -1,5 +1,5 @@
 # do database backup three times a day
-0 */8 * * * db-backup > /dev/null 2>&1
+0 */8 * * * db-backup
 
 # do daily/weekly/monthly maintenance
 # min   hour    day     month   weekday command
