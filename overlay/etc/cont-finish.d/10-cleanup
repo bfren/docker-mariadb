@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/with-contenv bash
 
 _echo "cleaning up old process IDs from /var/lib/mysql..."
 rm /var/lib/mysql/*.pid
