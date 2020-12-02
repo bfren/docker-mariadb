@@ -12,7 +12,7 @@ if [ -z "${MARIADBD}" ] ; then
 else
     # run upgrade executable
     _echo "MariaDB online"
-    db-upgrade
+    /usr/local/bin/db-upgrade
 
     # de-register the upgrade service
     s6-svc -d /var/run/s6/services/mariadb-upgrade
