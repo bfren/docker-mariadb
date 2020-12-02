@@ -1,5 +1,5 @@
 #!/usr/bin/with-contenv bash
 
-echo " - running mariadb-upgrade..."
+_echo "running mariadb-upgrade..."
 mariadb-upgrade --user="root" --password="${MARIADB_ROOT_PASSWORD}"
-echo " - done."
+_done

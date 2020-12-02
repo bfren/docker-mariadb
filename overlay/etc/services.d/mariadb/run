@@ -10,14 +10,14 @@
 if [ ! -d "/var/lib/mysql/mysql" ] ; then
 
     if [ -z "${MARIADB_ROOT_PASSWORD}" ] ; then
-        echo >&2 " - error: Database is uninitialized and MARIADB_ROOT_PASSWORD not set"
+        _error "Database is uninitialized and MARIADB_ROOT_PASSWORD not set."
         source "/etc/services.d/mariadb/finish"
         exit 1
     fi
 
-    echo " - running mariadb-install-db..."
+    _echo "running mariadb-install-db..."
     mariadb-install-db --user=mysql --datadir="/var/lib/mysql"
-    echo " - done."
+    _done
 
     INIT_FILE="/tmp/mariadb-boot.sql"
 
@@ -45,12 +45,12 @@ if [ ! -d "/var/lib/mysql/mysql" ] ; then
         echo "FLUSH PRIVILEGES;" >> ${INIT_FILE}
     fi
 
-    echo " - starting mariadbd-safe with init file"
+    _echo "starting mariadbd-safe with init file"
     mariadbd-safe --init-file=${INIT_FILE}
 
 else
 
-    echo " - starting mariadbd-safe"
+    _echo "starting mariadbd-safe"
     mariadbd-safe
 
 fi

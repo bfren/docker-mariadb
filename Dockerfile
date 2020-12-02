@@ -1,4 +1,4 @@
-FROM bcgdesign/alpine-s6:1.0.5
+FROM bcgdesign/alpine-s6:1.0.6
 
 LABEL maintainer="Ben Green <ben@bcgdesign.com>" \
     org.label-schema.name="MariaDB" \
@@ -45,6 +45,8 @@ RUN mkdir -p /var/lib/mysql \
     && mkdir -p /var/lib/backup
 VOLUME [ "/var/lib/mysql", "/var/lib/backup" ]
 
+ENV WITH_BASH=1
+
 COPY ./VERSION /tmp/VERSION
 RUN export MARIADB_VERSION=$(cat /tmp/VERSION) \
     && echo "MariaDB v${MARIADB_VERSION}" \
@@ -52,10 +54,9 @@ RUN export MARIADB_VERSION=$(cat /tmp/VERSION) \
     && adduser --uid 1000 --no-create-home --disabled-password --ingroup mysql mysql \
     && apk -U upgrade \
     && apk add \
-        bash \
-        mariadb@edgemain=${MARIADB_VERSION} \
-        mariadb-client@edgemain=${MARIADB_VERSION} \
-        mariadb-server-utils@edgemain=${MARIADB_VERSION} \
+        mariadb@bcg=${MARIADB_VERSION} \
+        mariadb-client@bcg=${MARIADB_VERSION} \
+        mariadb-server-utils@bcg=${MARIADB_VERSION} \
         gomplate \
     && rm -rf /var/cache/apk/* /etc/mysql/* /etc/my.cnf* /var/lib/mysql/* /tmp/*
 

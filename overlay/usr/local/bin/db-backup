@@ -25,7 +25,6 @@
 BACKUP_PATH=/var/lib/backup
 DATE=$(date '+%Y%m%d%H%M')
 THIS_BACKUP_PATH="${BACKUP_PATH}/${DATE}"
-echo "Backing up databases to ${THIS_BACKUP_PATH}..."
 
 
 # ======================================================================================================================
@@ -34,8 +33,11 @@ echo "Backing up databases to ${THIS_BACKUP_PATH}..."
 
 DATABASES=$(mysql --password=${MARIADB_ROOT_PASSWORD} --user=root -e 'SHOW DATABASES;' | sed 1d | grep -v -E "(mysql|information_schema|performance_schema)")
 if [ "${DATABASES}" == "" ] ; then
-    exit
+    _error "No databases found to backup."
+    exit 1
 fi
+
+_echo "Backing up databases to ${THIS_BACKUP_PATH}"
 
 
 # ======================================================================================================================
@@ -63,7 +65,7 @@ for DATABASE in ${DATABASES} ; do
         rm -f ${DATABASE}.sql
     fi
 
-    echo " - ${DATABASE}"
+    _echo "${DATABASE}"
     mysqldump --add-locks --password=${MARIADB_ROOT_PASSWORD} --user=root ${DATABASE} > ${DATABASE}.sql
 done
 
@@ -74,20 +76,20 @@ done
 
 cd ${THIS_BACKUP_PATH}
 
-for DATABASE in ${DATABASE}S ; do
+for DATABASE in ${DATABASES} ; do
     if [ -f /tmp/${DATABASE}.sql ] ; then
         mv /tmp/${DATABASE}.sql ${DATABASE}.sql
         
         chown mysql:mysql ${DATABASE}.sql
         chmod 640 ${DATABASE}.sql
 
-        if [ "${BACKUP_COMPRESS_FILES}" -eq "1" ] ; then
+        if [ "${BACKUP_COMPRESS_FILES}" = "1" ] ; then
             gzip ${DATABASE}.sql
         fi
     fi
 done
 
-echo "done."
+_done
 
 
 # ======================================================================================================================
@@ -95,8 +97,8 @@ echo "done."
 # ======================================================================================================================
 
 if [ "${BACKUP_KEEP_FOR_DAYS}" -gt 0 ] ; then
-    echo "Deleting backups older than ${BACKUP_KEEP_FOR_DAYS} days..."
+    _echo "Deleting backups older than ${BACKUP_KEEP_FOR_DAYS} days..."
     MMIN=$((60*24*${BACKUP_KEEP_FOR_DAYS}))
     find ${BACKUP_PATH}/* -type d -mmin +${MMIN} | xargs rm -rf
-    echo "done."
+    _done
 fi

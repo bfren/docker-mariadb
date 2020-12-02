@@ -1,5 +1,5 @@
 #!/bin/bash
 
-echo " - cleaning up old process IDs from /var/lib/mysql..."
+_echo "cleaning up old process IDs from /var/lib/mysql..."
 rm /var/lib/mysql/*.pid
-echo " - done."
+_done
