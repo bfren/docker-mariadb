@@ -11,9 +11,8 @@ if [ -z "${MARIADBD}" ] ; then
     sleep 2s
 else
     # run upgrade executable
-    _echo "MariaDB online, attempting upgrade..."
-    /usr/local/bin/db-upgrade
-    _done
+    _echo "MariaDB online"
+    db-upgrade
 
     # de-register the upgrade service
     s6-svc -d /var/run/s6/services/mariadb-upgrade
