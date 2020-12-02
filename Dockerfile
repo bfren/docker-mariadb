@@ -45,7 +45,9 @@ RUN mkdir -p /var/lib/mysql \
     && mkdir -p /var/lib/backup
 VOLUME [ "/var/lib/mysql", "/var/lib/backup" ]
 
-ENV WITH_BASH=1
+ENV \
+    # bash is required for backup script
+    WITH_BASH=1
 
 COPY ./VERSION /tmp/VERSION
 RUN export MARIADB_VERSION=$(cat /tmp/VERSION) \
