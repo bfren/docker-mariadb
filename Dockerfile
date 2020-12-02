@@ -54,9 +54,9 @@ RUN export MARIADB_VERSION=$(cat /tmp/VERSION) \
     && adduser --uid 1000 --no-create-home --disabled-password --ingroup mysql mysql \
     && apk -U upgrade \
     && apk add \
-        mariadb@bcg=${MARIADB_VERSION} \
-        mariadb-client@bcg=${MARIADB_VERSION} \
-        mariadb-server-utils@bcg=${MARIADB_VERSION} \
+        mariadb@edgemain>=${MARIADB_VERSION} \
+        mariadb-client@edgemain>=${MARIADB_VERSION} \
+        mariadb-server-utils@edgemain>=${MARIADB_VERSION} \
         gomplate \
     && rm -rf /var/cache/apk/* /etc/mysql/* /etc/my.cnf* /var/lib/mysql/* /tmp/*
 
