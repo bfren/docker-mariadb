@@ -7,7 +7,7 @@
 MARIADBD=$(pidof mariadbd)
 if [ -z "${MARIADBD}" ] ; then 
     # wait 2s before exiting the service - S6 will keep restarting it until MariaDB comes online
-    _echo "waiting for MariaDB to come online..."
+    _echo "Waiting for MariaDB to come online..."
     sleep 2s
 else
     # run upgrade executable

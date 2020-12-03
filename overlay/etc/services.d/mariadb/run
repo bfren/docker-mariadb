@@ -15,7 +15,7 @@ if [ ! -d "/var/lib/mysql/mysql" ] ; then
         exit 1
     fi
 
-    _echo "running mariadb-install-db..."
+    _echo "Running mariadb-install-db..."
     mariadb-install-db --user=mysql --datadir="/var/lib/mysql"
     _done
 
@@ -45,12 +45,12 @@ if [ ! -d "/var/lib/mysql/mysql" ] ; then
         echo "FLUSH PRIVILEGES;" >> ${INIT_FILE}
     fi
 
-    _echo "starting mariadbd-safe with init file"
+    _echo "Starting mariadbd-safe with init file"
     mariadbd-safe --init-file=${INIT_FILE}
 
 else
 
-    _echo "starting mariadbd-safe"
+    _echo "Starting mariadbd-safe"
     mariadbd-safe
 
 fi

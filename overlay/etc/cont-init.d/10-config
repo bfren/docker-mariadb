@@ -1,6 +1,6 @@
 #!/usr/bin/with-contenv bash
 
-_echo "writing MariaDB config..."
+_echo "Writing MariaDB config..."
 gomplate \
     -o /etc/mysql/my.cnf \
     -f /etc/templates/my.cnf.tmpl
