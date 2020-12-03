@@ -65,7 +65,7 @@ for DATABASE in ${DATABASES} ; do
         rm -f ${DATABASE}.sql
     fi
 
-    _echo "${DATABASE}"
+    _echo " - ${DATABASE}"
     mysqldump --add-locks --password=${MARIADB_ROOT_PASSWORD} --user=root ${DATABASE} > ${DATABASE}.sql
 done
 
