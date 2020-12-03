@@ -12,6 +12,7 @@ if [ -z "${MARIADBD}" ] ; then
 else
     # run upgrade executable
     _echo "MariaDB online"
+    _echo $(mariadb --version)
     db-upgrade
 
     # de-register the upgrade service
