@@ -45,10 +45,6 @@ RUN mkdir -p /var/lib/mysql \
     && mkdir -p /var/lib/backup
 VOLUME [ "/var/lib/mysql", "/var/lib/backup" ]
 
-ENV \
-    # bash is required for backup script
-    WITH_BASH=1
-
 COPY ./VERSION /tmp/VERSION
 RUN export MARIADB_VERSION=$(cat /tmp/VERSION) \
     && echo "MariaDB v${MARIADB_VERSION}" \
@@ -56,10 +52,11 @@ RUN export MARIADB_VERSION=$(cat /tmp/VERSION) \
     && adduser --uid 1000 --no-create-home --disabled-password --ingroup mysql mysql \
     && apk -U upgrade \
     && apk add \
+        bash \
+        gomplate \
         mariadb@edgemain=${MARIADB_VERSION} \
         mariadb-client@edgemain=${MARIADB_VERSION} \
         mariadb-server-utils@edgemain=${MARIADB_VERSION} \
-        gomplate \
     && rm -rf /var/cache/apk/* /etc/mysql/* /etc/my.cnf* /var/lib/mysql/* /tmp/*
 
 COPY ./overlay /
