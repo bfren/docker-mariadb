@@ -17,7 +17,7 @@ PASS=${MARIADB_ROOT_PASSWORD}
 # Get databases
 #======================================================================================================================
 
-EXCLUDE="mysql|information_schema|performance_schema"
+EXCLUDE="mysql|information_schema|performance_schema|sys"
 DATABASES=$(mysql -uroot -p${PASS} -e 'SHOW DATABASES;' | sed 1d | grep -v -E "(${EXCLUDE})")
 [[ -z "${DATABASES}" ]] && _error "No databases found to backup."
 
@@ -34,10 +34,9 @@ for DATABASE in ${DATABASES} ; do
     # delete existing backup file if it is still there
     [[ -f ${DATABASE}.sql ]] && rm -f ${DATABASE}.sql
 
-    # dump database to temporary file
+    # dump database to temporary file - continue on failure though
     _echo " - ${DATABASE}"
-    RET=$(mysqldump --add-locks --uroot -p${PASS} ${DATABASE} > ${DATABASE}.sql)
-    [[ ! -z "${RET}" ]] && _echo "Warning: ${RET}"
+    mysqldump --add-locks -uroot -p${PASS} ${DATABASE} > ${DATABASE}.sql || true
 
 done
 _done
@@ -57,7 +56,7 @@ for DATABASE in ${DATABASES} ; do
         mv /tmp/${DATABASE}.sql ${DATABASE}.sql
         
         # set permissions
-        chmod 640 ${DATABASE}.sql
+        chmod 440 ${DATABASE}.sql
 
         # compress file
         [[ "${BACKUP_COMPRESS_FILES}" = "1" ]] && gzip ${DATABASE}.sql
