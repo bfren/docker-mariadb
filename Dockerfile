@@ -1,4 +1,4 @@
-FROM bcgdesign/alpine-s6:1.0.11
+FROM bcgdesign/alpine-s6:1.0.12
 
 LABEL maintainer="Ben Green <ben@bcgdesign.com>" \
     org.label-schema.name="MariaDB" \
@@ -57,7 +57,8 @@ RUN export MARIADB_VERSION=$(cat /tmp/VERSION) \
         mariadb@edgemain=${MARIADB_VERSION} \
         mariadb-client@edgemain=${MARIADB_VERSION} \
         mariadb-server-utils@edgemain=${MARIADB_VERSION} \
-    && rm -rf /var/cache/apk/* /etc/mysql/* /etc/my.cnf* /var/lib/mysql/* /tmp/*
+    && rm -rf /var/cache/apk/* /etc/mysql/* /etc/my.cnf* /var/lib/mysql/* /tmp/* \
+    && echo "0 */8 * * * /usr/local/bin/db-backup" >> /etc/crontabs/root
 
 COPY ./overlay /
 
