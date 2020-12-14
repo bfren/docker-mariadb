@@ -1,5 +1,10 @@
 #!/usr/bin/with-contenv bash
 
+#======================================================================================================================
+# Run mariadb-upgrade
+#   -f using -f (--force) to enforce upgrade checks, even if they have already been performed
+#======================================================================================================================
+
 _echo "Running mariadb-upgrade..."
 mariadb-upgrade -uroot -p${MARIADB_ROOT_PASSWORD}
 _done

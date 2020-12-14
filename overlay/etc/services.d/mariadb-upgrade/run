@@ -4,17 +4,19 @@
 # Wait until MariaDB is running before attempting the upgrade
 #======================================================================================================================
 
-MARIADBD=$(pidof mariadbd)
-if [ -z "${MARIADBD}" ] ; then 
+if [ -z "$(pidof mariadbd)" ] ; then 
+
     # wait 2s before exiting the service - S6 will keep restarting it until MariaDB comes online
     _echo "Waiting for MariaDB to come online..."
     sleep 2s
+
 else
+
     # run upgrade executable
-    _echo "MariaDB online"
     _echo "$(mariadb --version)"
     db-upgrade
 
     # de-register the upgrade service
     s6-svc -d /var/run/s6/services/mariadb-upgrade
+
 fi

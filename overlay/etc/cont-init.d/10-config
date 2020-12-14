@@ -1,5 +1,9 @@
 #!/usr/bin/with-contenv bash
 
+#======================================================================================================================
+# Config is re-written every time in case environment variables have been changed
+#======================================================================================================================
+
 _echo "Writing MariaDB config..."
 gomplate \
     -o /etc/mysql/my.cnf \
