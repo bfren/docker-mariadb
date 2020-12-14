@@ -46,7 +46,9 @@ _done
 # Move backups to backup path and gzip
 #======================================================================================================================
 
-mkdir -p ${THIS_BACKUP_PATH} && cd ${THIS_BACKUP_PATH}
+mkdir -p ${THIS_BACKUP_PATH}
+chmod 660 ${THIS_BACKUP_PATH}
+cd ${THIS_BACKUP_PATH}
 
 _echo "Moving backups to ${THIS_BACKUP_PATH}..."
 for DATABASE in ${DATABASES} ; do
