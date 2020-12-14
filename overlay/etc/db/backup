@@ -22,7 +22,7 @@ DATABASES=$(mysql -uroot -p${MARIADB_ROOT_PASSWORD} -e 'SHOW DATABASES;' | sed 1
 
 
 #======================================================================================================================
-# Perform backups to temporary folder
+# Dump databases to a temporary folder and compress
 #======================================================================================================================
 
 TEMP_BACKUP_PATH=$(mktemp -d)
@@ -33,10 +33,7 @@ for DATABASE in ${DATABASES} ; do
     # path to this database dump
     DUMP_FILE="${TEMP_BACKUP_PATH}/${DATABASE}.sql"
 
-    # delete existing backup file if it is still there
-    [[ -f ${DUMP_FILE} ]] && rm -f ${DUMP_FILE}
-
-    # dump database to temporary file - continue on failure though
+    # dump database and continue on failure
     _echo " - ${DATABASE}"
     mysqldump --add-locks -uroot -p${MARIADB_ROOT_PASSWORD} ${DATABASE} > ${DUMP_FILE} || true
 
@@ -55,9 +52,8 @@ _done
 #======================================================================================================================
 
 _echo "Moving backups to ${THIS_BACKUP_PATH}..."
-mkdir ${THIS_BACKUP_PATH}
-mv ${TEMP_BACKUP_PATH}/* ${THIS_BACKUP_PATH}/
-rm -rf ${TEMP_BACKUP_PATH}
+mv ${TEMP_BACKUP_PATH} ${THIS_BACKUP_PATH}
+chmod 750 ${THIS_BACKUP_PATH}
 _done
 
 
