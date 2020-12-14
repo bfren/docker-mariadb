@@ -1,0 +1,81 @@
+#!/usr/bin/with-contenv bash
+
+set -euo pipefail
+
+
+#======================================================================================================================
+# Set variables
+#======================================================================================================================
+
+BACKUP_PATH=/var/lib/backup
+DATE=$(date '+%Y%m%d%H%M')
+THIS_BACKUP_PATH="${BACKUP_PATH}/${DATE}"
+PASS=${MARIADB_ROOT_PASSWORD}
+
+
+#======================================================================================================================
+# Get databases
+#======================================================================================================================
+
+EXCLUDE="mysql|information_schema|performance_schema"
+DATABASES=$(mysql -uroot -p${PASS} -e 'SHOW DATABASES;' | sed 1d | grep -v -E "(${EXCLUDE})")
+[[ -z "${DATABASES}" ]] && _error "No databases found to backup."
+
+
+#======================================================================================================================
+# Perform backups to /tmp
+#======================================================================================================================
+
+cd /tmp
+
+_echo "Backing up databases..."
+for DATABASE in ${DATABASES} ; do
+
+    # delete existing backup file if it is still there
+    [[ -f ${DATABASE}.sql ]] && rm -f ${DATABASE}.sql
+
+    # dump database to temporary file
+    _echo " - ${DATABASE}"
+    RET=$(mysqldump --add-locks --uroot -p${PASS} ${DATABASE} > ${DATABASE}.sql)
+    [[ ! -z "${RET}" ]] && _echo "Warning: ${RET}"
+
+done
+_done
+
+
+#======================================================================================================================
+# Move backups to backup path and gzip
+#======================================================================================================================
+
+mkdir -p ${THIS_BACKUP_PATH} && cd ${THIS_BACKUP_PATH}
+
+_echo "Moving backups to ${THIS_BACKUP_PATH}..."
+for DATABASE in ${DATABASES} ; do
+    if [ -f /tmp/${DATABASE}.sql ] ; then
+
+        # move file to backup directory
+        mv /tmp/${DATABASE}.sql ${DATABASE}.sql
+        
+        # set permissions
+        chmod 640 ${DATABASE}.sql
+
+        # compress file
+        [[ "${BACKUP_COMPRESS_FILES}" = "1" ]] && gzip ${DATABASE}.sql
+
+    fi
+done
+_done
+
+
+#======================================================================================================================
+# Remove old backups
+#======================================================================================================================
+
+if [ "${BACKUP_KEEP_FOR_DAYS}" -gt 0 ] ; then
+
+    _echo "Deleting backups older than ${BACKUP_KEEP_FOR_DAYS} days..."
+    MMIN=$((60*24*${BACKUP_KEEP_FOR_DAYS}))
+    find ${BACKUP_PATH}/* -type d -mmin +${MMIN} | xargs rm -rf
+    _done
+    
+fi

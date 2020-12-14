@@ -1,5 +1,8 @@
 #!/usr/bin/with-contenv bash
 
+set -euo pipefail
+
+
 #======================================================================================================================
 # Copyright (c) 2015 Thomas Boerger <https://webhippie.de>
 # Originally from https://github.com/dockhippie/mariadb/blob/master/latest/overlay/etc/s6/mariadb/run
@@ -7,11 +10,10 @@
 # Modifications copyright (c) 2020 Ben Green <https://bcgdesign.com>
 #======================================================================================================================
 
-set -eo pipefail
+USERNAME=${MARIADB_USERNAME:-root}
+PASSWORD=${MARIADB_PASSWORD:-${MARIADB_ROOT_PASSWORD}}
 
-MARIADB_USERNAME=${MARIADB_USERNAME:-root}
-MARIADB_PASSWORD=${MARIADB_PASSWORD:-${MARIADB_ROOT_PASSWORD}}
+CHECK="$(echo 'SELECT 1;' | mysql -h127.0.0.1 -u${USERNAME} -p${PASSWORD} 2>/dev/null | head -n1)"
 
-CHECK="$(echo 'SELECT 1;' | mysql -h127.0.0.1 -u${MARIADB_USERNAME} -p${MARIADB_PASSWORD} 2>/dev/null | head -n1)"
-
-[[ "${CHECK}" == "1" ]] && exit 0 || exit 1
+[[ "${CHECK}" == "1" ]] && exit 0
+exit 1

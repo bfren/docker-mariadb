@@ -1,5 +1,5 @@
 #!/usr/bin/with-contenv bash
 
 _echo "Running mariadb-upgrade..."
-mariadb-upgrade --user="root" --password="${MARIADB_ROOT_PASSWORD}"
+mariadb-upgrade -uroot -p${MARIADB_ROOT_PASSWORD}
 _done
