@@ -10,7 +10,6 @@ set -euo pipefail
 BACKUP_PATH=/var/lib/backup
 DATE=$(date '+%Y%m%d%H%M')
 THIS_BACKUP_PATH="${BACKUP_PATH}/${DATE}"
-PASS=${MARIADB_ROOT_PASSWORD}
 
 
 #======================================================================================================================
@@ -18,53 +17,47 @@ PASS=${MARIADB_ROOT_PASSWORD}
 #======================================================================================================================
 
 EXCLUDE="mysql|information_schema|performance_schema|sys"
-DATABASES=$(mysql -uroot -p${PASS} -e 'SHOW DATABASES;' | sed 1d | grep -v -E "(${EXCLUDE})")
+DATABASES=$(mysql -uroot -p${MARIADB_ROOT_PASSWORD} -e 'SHOW DATABASES;' | sed 1d | grep -v -E "(${EXCLUDE})")
 [[ -z "${DATABASES}" ]] && _error "No databases found to backup."
 
 
 #======================================================================================================================
-# Perform backups to /tmp
+# Perform backups to temporary folder
 #======================================================================================================================
 
-cd /tmp
+TEMP_BACKUP_PATH=$(mktemp -d)
 
-_echo "Backing up databases..."
+_echo "Backing up databases to ${TEMP_BACKUP_PATH}..."
 for DATABASE in ${DATABASES} ; do
 
+    # path to this database dump
+    DUMP_FILE="${TEMP_BACKUP_PATH}/${DATABASE}.sql"
+
     # delete existing backup file if it is still there
-    [[ -f ${DATABASE}.sql ]] && rm -f ${DATABASE}.sql
+    [[ -f ${DUMP_FILE} ]] && rm -f ${DUMP_FILE}
 
     # dump database to temporary file - continue on failure though
     _echo " - ${DATABASE}"
-    mysqldump --add-locks -uroot -p${PASS} ${DATABASE} > ${DATABASE}.sql || true
+    mysqldump --add-locks -uroot -p${MARIADB_ROOT_PASSWORD} ${DATABASE} > ${DUMP_FILE} || true
+
+    # set read-only permissions
+    chmod 440 ${DUMP_FILE}
+
+    ## compress file
+    [[ "${BACKUP_COMPRESS_FILES}" = "1" ]] && gzip ${DUMP_FILE}
 
 done
 _done
 
 
 #======================================================================================================================
-# Move backups to backup path and gzip
+# Move backups to backup directory
 #======================================================================================================================
 
-mkdir -p ${THIS_BACKUP_PATH}
-chmod 660 ${THIS_BACKUP_PATH}
-cd ${THIS_BACKUP_PATH}
-
 _echo "Moving backups to ${THIS_BACKUP_PATH}..."
-for DATABASE in ${DATABASES} ; do
-    if [ -f /tmp/${DATABASE}.sql ] ; then
-
-        # move file to backup directory
-        mv /tmp/${DATABASE}.sql ${DATABASE}.sql
-        
-        # set permissions
-        chmod 440 ${DATABASE}.sql
-
-        # compress file
-        [[ "${BACKUP_COMPRESS_FILES}" = "1" ]] && gzip ${DATABASE}.sql
-
-    fi
-done
+mkdir ${THIS_BACKUP_PATH}
+mv ${TEMP_BACKUP_PATH}/* ${THIS_BACKUP_PATH}/
+rm -rf ${TEMP_BACKUP_PATH}
 _done
 
 
