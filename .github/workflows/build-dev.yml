@@ -2,10 +2,6 @@ name: build-dev
 
 on:
   push:
-    branches: dev
-    paths-ignore:
-      - '*.code-workspace'
-      - 'README.md'
 
 jobs:
   main:
