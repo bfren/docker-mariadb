@@ -34,6 +34,12 @@ jobs:
           path: ./MARIADB_REVISION
         id: mariadb_revision
       -
+        name: Read MariaDB revision version
+        uses: bencgreen/read-file-action@v1
+        with:
+          path: ./MARIADB_BUILD
+        id: mariadb_build
+      -
         name: Read version
         uses: bencgreen/read-file-action@v1
         with:
@@ -60,10 +66,11 @@ jobs:
           platforms: linux/amd64,linux/arm/v7,linux/arm64
           tags: |
             bcgdesign/mariadb:latest
-            bcgdesign/mariadb:${{ steps.mariadb_major.outputs.content }}
-            bcgdesign/mariadb:${{ steps.mariadb_minor.outputs.content }}
-            bcgdesign/mariadb:${{ steps.mariadb_revision.outputs.content }}
             bcgdesign/mariadb:${{ steps.version.outputs.content }}
+            bcgdesign/mariadb:mariadb-${{ steps.mariadb_major.outputs.content }}
+            bcgdesign/mariadb:mariadb-${{ steps.mariadb_minor.outputs.content }}
+            bcgdesign/mariadb:mariadb-${{ steps.mariadb_revision.outputs.content }}
+            bcgdesign/mariadb:mariadb-${{ steps.mariadb_build.outputs.content }}
       -
         name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
