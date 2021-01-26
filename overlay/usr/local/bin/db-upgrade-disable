@@ -1,0 +1,10 @@
+#!/usr/bin/with-contenv bash
+
+#======================================================================================================================
+# Run mariadb-upgrade
+#   -f using -f (--force) to enforce upgrade checks, even if they have already been performed
+#======================================================================================================================
+
+_echo "Disabling mariadb-upgrade..."
+s6-svc -d /var/run/s6/services/mariadb-upgrade
+_done

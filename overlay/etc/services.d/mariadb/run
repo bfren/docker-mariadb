@@ -9,18 +9,25 @@
 
 if [ ! -d "/var/lib/mysql/mysql" ] ; then
 
+    # disable database upgrade
+    db-upgrade-disable
+
+    # check for MARIADB_ROOT_PASSWORD
     if [ -z "${MARIADB_ROOT_PASSWORD}" ] ; then
         _error "Database is uninitialized and MARIADB_ROOT_PASSWORD not set."
         source "/etc/services.d/mariadb/finish"
         exit 1
     fi
 
+    # run base install
     _echo "Running mariadb-install-db..."
     mariadb-install-db --user=mysql --datadir="/var/lib/mysql"
     _done
 
+    # create temporary init file
     INIT_FILE="/tmp/mariadb-boot.sql"
 
+    # grant root access
     echo "" >| ${INIT_FILE}
     echo "DELETE FROM mysql.user;" >> ${INIT_FILE}
     echo "CREATE USER 'root'@'%' IDENTIFIED BY '${MARIADB_ROOT_PASSWORD}';" >> ${INIT_FILE}
@@ -28,6 +35,7 @@ if [ ! -d "/var/lib/mysql/mysql" ] ; then
     echo "DROP DATABASE IF EXISTS test;" >> ${INIT_FILE}
     echo "FLUSH PRIVILEGES;" >> ${INIT_FILE}
 
+    # if specified, add database and user
     if [[ -n "${MARIADB_USERNAME}" && -n "${MARIADB_DATABASE}" ]] ; then
         DATABASES=$(echo ${MARIADB_DATABASE} | tr "," "\n")
 
@@ -39,17 +47,20 @@ if [ ! -d "/var/lib/mysql/mysql" ] ; then
         echo "FLUSH PRIVILEGES;" >> ${INIT_FILE}
     fi
 
+    # if database is not specified, use username as the default
     if [[ -n "${MARIADB_USERNAME}" && -z "${MARIADB_DATABASE}" ]] ; then
         echo "CREATE DATABASE IF NOT EXISTS \`${MARIADB_USERNAME}\`;" >> ${INIT_FILE}
         echo "GRANT ALL PRIVILEGES ON \`${MARIADB_USERNAME}\`.* TO '${MARIADB_USERNAME}'@'%' IDENTIFIED BY '${MARIADB_PASSWORD}';" >> ${INIT_FILE}
         echo "FLUSH PRIVILEGES;" >> ${INIT_FILE}
     fi
 
+    # start database with temporary init file
     _echo "Starting mariadbd-safe with init file"
     mariadbd-safe --init-file=${INIT_FILE}
 
 else
 
+    # start database
     _echo "Starting mariadbd-safe"
     mariadbd-safe
 
