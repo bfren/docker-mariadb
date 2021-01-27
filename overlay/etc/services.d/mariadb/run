@@ -43,8 +43,9 @@ if [ ! -d "/var/lib/mysql/mysql" ] ; then
     # update root user with password and ensure full access
     _echo " .. alter root user"
     echo "" >| ${INIT_FILE}
-    echo "ALTER USER 'root'@'localhost' IDENTIFIED BY '${MARIADB_ROOT_PASSWORD}';" >> ${INIT_FILE}
-    echo "GRANT ALL ON *.* TO 'root'@'localhost WITH GRANT OPTION;" >> ${INIT_FILE}
+    echo "DELETE FROM \`mysql\`.\`user\`;" >> ${INIT_FILE}
+    echo "CREATE USER 'root'@'localhost' IDENTIFIED BY '${MARIADB_ROOT_PASSWORD}';" >> ${INIT_FILE}
+    echo "GRANT ALL ON *.* TO 'root'@'localhost' WITH GRANT OPTION;" >> ${INIT_FILE}
     echo "DROP DATABASE IF EXISTS \`test\`;" >> ${INIT_FILE}
     echo "FLUSH PRIVILEGES;" >> ${INIT_FILE}
 
@@ -77,12 +78,12 @@ if [ ! -d "/var/lib/mysql/mysql" ] ; then
         _echo "MARIADB_USERNAME and MARIADB_PASSWORD not set."
 
     fi
-    
+
     _done
 
     # start database with temporary init file
     _echo "Starting mariadbd-safe with init file"
-    mariadbd-safe --init-file=${INIT_FILE}
+    mariadbd-safe --init-file="${INIT_FILE}"
 
 else
 
