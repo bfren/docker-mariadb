@@ -90,16 +90,17 @@ else
 
     else
 
-        _echo "MARIADB_USERNAME and MARIADB_PASSWORD not set."
+        _echo "MARIADB_USERNAME and MARIADB_PASSWORD not set - no application database or user created."
 
     fi
 
-    chmod 444 ${INIT_FILE}
-
     _done
 
-    # start database with temporary init file
-    _echo "Starting mariadbd-safe with init file: ${INIT_FILE}"
+    # give permissions so mysql user can read the file
+    chmod 444 ${INIT_FILE}
+
+    # start server with temporary init file
+    _echo "Starting mariadbd-safe with initialisation file"
     mariadbd-safe --init-file=${INIT_FILE}
 
 fi
