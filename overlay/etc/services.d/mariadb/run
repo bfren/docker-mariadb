@@ -40,7 +40,7 @@ if [ ! -d "/var/lib/mysql/mysql" ] ; then
     _done
 
     # create temporary init file
-    INIT_FILE='mktemp -t sql-init.XXXXXX' || exit 1
+    INIT_FILE=`mktemp -t sql-init.XXXXXX` || exit 1
     _echo "Generating initialisation file ${INIT_FILE}..."
 
     # update root user with password and ensure full access
