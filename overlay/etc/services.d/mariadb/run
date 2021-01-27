@@ -18,7 +18,7 @@ create () {
 }
 
 # remove all temporary files
-_rmrf /tmp
+_rmrf /tmp/*
 
 # if the directory does not exist, the server needs to be initialised
 if [ ! -d "/var/lib/mysql/mysql" ] ; then
