@@ -10,7 +10,7 @@
 if [ ! -d "/var/lib/mysql/mysql" ] ; then
 
     # disable database upgrade
-    _echo "First run: disable upgrade service"
+    _echo "First run detected"
     db-upgrade-disable
 
     # check for MARIADB_ROOT_PASSWORD

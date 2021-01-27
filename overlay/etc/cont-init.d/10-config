@@ -13,5 +13,7 @@ gomplate \
     -f /etc/templates/my.cnf.tmpl
 _done
 
+_echo "Setting MariaDB config permissions..."
 chown mysql:mysql /etc/mysql/my.cnf
 chmod 0444 /etc/mysql/my.cnf
+_done
