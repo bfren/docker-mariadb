@@ -10,6 +10,7 @@
 if [ ! -d "/var/lib/mysql/mysql" ] ; then
 
     # disable database upgrade
+    _e "First run: disable upgrade service"
     db-upgrade-disable
 
     # check for MARIADB_ROOT_PASSWORD
@@ -29,9 +30,9 @@ if [ ! -d "/var/lib/mysql/mysql" ] ; then
 
     # grant root access
     echo "" >| ${INIT_FILE}
-    echo "DELETE FROM mysql.user;" >> ${INIT_FILE}
-    echo "CREATE USER 'root'@'%' IDENTIFIED BY '${MARIADB_ROOT_PASSWORD}';" >> ${INIT_FILE}
-    echo "GRANT ALL ON *.* TO 'root'@'%' WITH GRANT OPTION;" >> ${INIT_FILE}
+    #echo "DELETE FROM mysql.user;" >> ${INIT_FILE}
+    echo "ALTER USER 'root'@'localhost' IDENTIFIED BY '${MARIADB_ROOT_PASSWORD}';" >> ${INIT_FILE}
+    echo "GRANT ALL ON *.* TO 'root'@'localhost WITH GRANT OPTION;" >> ${INIT_FILE}
     echo "DROP DATABASE IF EXISTS test;" >> ${INIT_FILE}
     echo "FLUSH PRIVILEGES;" >> ${INIT_FILE}
 
