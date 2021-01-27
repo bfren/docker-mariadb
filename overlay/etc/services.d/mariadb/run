@@ -1,27 +1,38 @@
 #!/usr/bin/with-contenv bash
 
 #======================================================================================================================
-# Copyright (c) 2015 Thomas Boerger <https://webhippie.de>
-# Originally from https://github.com/dockhippie/mariadb/blob/master/latest/overlay/etc/s6/mariadb/run
-#
-# Modifications copyright (c) 2021 Ben Green <https://bcgdesign.com>
-#======================================================================================================================
-
 # Create database table and grant privilegs to user
 #   1: path to init file
 #   2: database name
 #   3: username
 #   4: password
+#======================================================================================================================
+
 create () {
     echo "CREATE DATABASE IF NOT EXISTS \`${2}\`;" >> ${1}
     echo "GRANT ALL PRIVILEGES ON \`${2}\`.* TO '${3}'@'%' IDENTIFIED BY '${4}';" >> ${1}
 }
 
-# remove all temporary files
-_rmrf /tmp/*
 
-# if the directory does not exist, the server needs to be initialised
-if [ ! -d "/var/lib/mysql/mysql" ] ; then
+#======================================================================================================================
+# If the mysql directory exists, the server has already been initialised
+#======================================================================================================================
+
+if [ -d "/var/lib/mysql/mysql" ] ; then
+
+    # start database
+    _echo "Starting mariadbd-safe"
+    mariadbd-safe
+
+
+#======================================================================================================================
+# Create initialisation script and start server using it:
+#   set root password
+#   remove test database
+#   create application database(s) and user
+#======================================================================================================================
+
+else
 
     # disable database upgrade
     _echo "First run detected"
@@ -40,16 +51,18 @@ if [ ! -d "/var/lib/mysql/mysql" ] ; then
     _done
 
     # create temporary init file
-    INIT_FILE=/tmp/sql-init.sql
+    INIT_FILE=/tmp/init.sql
     _echo "Generating initialisation file ${INIT_FILE}..."
 
     # update root user with password and ensure full access
     _echo " .. alter root user"
     echo "" >| ${INIT_FILE}
-    echo "DROP DATABASE IF EXISTS test;" >> ${INIT_FILE}
     echo "ALTER USER 'root'@'localhost' IDENTIFIED BY '${MARIADB_ROOT_PASSWORD}';" >> ${INIT_FILE}
     echo "GRANT ALL ON *.* TO 'root'@'localhost' WITH GRANT OPTION;" >> ${INIT_FILE}
     echo "FLUSH PRIVILEGES;" >> ${INIT_FILE}
+
+    _echo " .. delete test database"
+    echo "DROP DATABASE IF EXISTS test;" >> ${INIT_FILE}
 
     # if a user is specified, add application database
     if [[ -n "${MARIADB_USERNAME}" && -n "${MARIADB_PASSWORD}" ]] ; then
@@ -88,11 +101,5 @@ if [ ! -d "/var/lib/mysql/mysql" ] ; then
     # start database with temporary init file
     _echo "Starting mariadbd-safe with init file: ${INIT_FILE}"
     mariadbd-safe --init-file=${INIT_FILE}
-
-else
-
-    # start database
-    _echo "Starting mariadbd-safe"
-    mariadbd-safe
 
 fi
