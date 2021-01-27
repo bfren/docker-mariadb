@@ -28,14 +28,14 @@ if [ ! -d "/var/lib/mysql/mysql" ] ; then
     # create temporary init file
     INIT_FILE="/tmp/mariadb-boot.sql"
 
-    # grant root access
+    # update root user with password and ensure full access
     echo "" >| ${INIT_FILE}
     echo "ALTER USER 'root'@'localhost' IDENTIFIED BY '${MARIADB_ROOT_PASSWORD}';" >> ${INIT_FILE}
     echo "GRANT ALL ON *.* TO 'root'@'localhost WITH GRANT OPTION;" >> ${INIT_FILE}
     echo "DROP DATABASE IF EXISTS test;" >> ${INIT_FILE}
     echo "FLUSH PRIVILEGES;" >> ${INIT_FILE}
 
-    # if specified, add database and user
+    # if specified, add database(s) and grant all privileges to specified user
     if [[ -n "${MARIADB_USERNAME}" && -n "${MARIADB_DATABASE}" ]] ; then
         DATABASES=$(echo ${MARIADB_DATABASE} | tr "," "\n")
 
@@ -47,7 +47,7 @@ if [ ! -d "/var/lib/mysql/mysql" ] ; then
         echo "FLUSH PRIVILEGES;" >> ${INIT_FILE}
     fi
 
-    # if database is not specified, use username as the default
+    # if database is not specified, use username 
     if [[ -n "${MARIADB_USERNAME}" && -z "${MARIADB_DATABASE}" ]] ; then
         echo "CREATE DATABASE IF NOT EXISTS \`${MARIADB_USERNAME}\`;" >> ${INIT_FILE}
         echo "GRANT ALL PRIVILEGES ON \`${MARIADB_USERNAME}\`.* TO '${MARIADB_USERNAME}'@'%' IDENTIFIED BY '${MARIADB_PASSWORD}';" >> ${INIT_FILE}

@@ -12,3 +12,6 @@ gomplate \
     -o /etc/mysql/my.cnf \
     -f /etc/templates/my.cnf.tmpl
 _done
+
+chown mysql:mysql /etc/mysql/my.cnf
+chmod 0444 /etc/mysql/my.cnf
