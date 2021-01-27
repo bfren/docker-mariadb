@@ -41,15 +41,13 @@ if [ ! -d "/var/lib/mysql/mysql" ] ; then
 
     # create temporary init file
     INIT_FILE=/tmp/sql-init.sql
-    touch ${INIT_FILE} && chmod 777 ${INIT_FILE}
     _echo "Generating initialisation file ${INIT_FILE}..."
 
     # update root user with password and ensure full access
     _echo " .. alter root user"
     echo "" >| ${INIT_FILE}
     echo "DROP DATABASE IF EXISTS test;" >> ${INIT_FILE}
-    echo "DELETE FROM mysql.user;" >> ${INIT_FILE}
-    echo "CREATE USER 'root'@'localhost' IDENTIFIED BY '${MARIADB_ROOT_PASSWORD}';" >> ${INIT_FILE}
+    echo "ALTER USER 'root'@'localhost' IDENTIFIED BY '${MARIADB_ROOT_PASSWORD}';" >> ${INIT_FILE}
     echo "GRANT ALL ON *.* TO 'root'@'localhost' WITH GRANT OPTION;" >> ${INIT_FILE}
     echo "FLUSH PRIVILEGES;" >> ${INIT_FILE}
 
@@ -82,6 +80,8 @@ if [ ! -d "/var/lib/mysql/mysql" ] ; then
         _echo "MARIADB_USERNAME and MARIADB_PASSWORD not set."
 
     fi
+
+    chmod 444 ${INIT_FILE}
 
     _done
 
