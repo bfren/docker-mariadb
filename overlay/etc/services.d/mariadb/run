@@ -44,10 +44,10 @@ if [ ! -d "/var/lib/mysql/mysql" ] ; then
     # update root user with password and ensure full access
     _echo " .. alter root user"
     echo "" >| ${INIT_FILE}
-    echo "DELETE FROM \`mysql\`.\`user\`;" >> ${INIT_FILE}
+    echo "DROP DATABASE IF EXISTS test;" >> ${INIT_FILE}
+    echo "DELETE FROM mysql.user;" >> ${INIT_FILE}
     echo "CREATE USER 'root'@'localhost' IDENTIFIED BY '${MARIADB_ROOT_PASSWORD}';" >> ${INIT_FILE}
     echo "GRANT ALL ON *.* TO 'root'@'localhost' WITH GRANT OPTION;" >> ${INIT_FILE}
-    echo "DROP DATABASE IF EXISTS \`test\`;" >> ${INIT_FILE}
     echo "FLUSH PRIVILEGES;" >> ${INIT_FILE}
 
     # if a user is specified, add application database

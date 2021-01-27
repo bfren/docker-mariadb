@@ -1,2 +1,2 @@
-#!/bin/bash
+#!/usr/bin/with-contenv bash
 _terminate
