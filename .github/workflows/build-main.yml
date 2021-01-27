@@ -16,25 +16,31 @@ jobs:
         name: Checkout code
         uses: actions/checkout@v2
       -
-        name: Read MariaDB major version
+        name: Read MariaDB version - major
         uses: bencgreen/read-file-action@v1
         with:
           path: ./MARIADB_MAJOR
         id: mariadb_major
       -
-        name: Read MariaDB minor version
+        name: Read MariaDB version - minor
         uses: bencgreen/read-file-action@v1
         with:
           path: ./MARIADB_MINOR
         id: mariadb_minor
       -
-        name: Read MariaDB revision version
+        name: Read MariaDB version - revision
         uses: bencgreen/read-file-action@v1
         with:
           path: ./MARIADB_REVISION
         id: mariadb_revision
       -
-        name: Read version
+        name: Read MariaDB version - build
+        uses: bencgreen/read-file-action@v1
+        with:
+          path: ./MARIADB_BUILD
+        id: mariadb_build
+      -
+        name: Read image version
         uses: bencgreen/read-file-action@v1
         with:
           path: ./VERSION
@@ -60,10 +66,11 @@ jobs:
           platforms: linux/amd64,linux/arm/v7,linux/arm64
           tags: |
             bcgdesign/mariadb:latest
-            bcgdesign/mariadb:${{ steps.mariadb_major.outputs.content }}
-            bcgdesign/mariadb:${{ steps.mariadb_minor.outputs.content }}
-            bcgdesign/mariadb:${{ steps.mariadb_revision.outputs.content }}
             bcgdesign/mariadb:${{ steps.version.outputs.content }}
+            bcgdesign/mariadb:mariadb-${{ steps.mariadb_major.outputs.content }}
+            bcgdesign/mariadb:mariadb-${{ steps.mariadb_minor.outputs.content }}
+            bcgdesign/mariadb:mariadb-${{ steps.mariadb_revision.outputs.content }}
+            bcgdesign/mariadb:mariadb-${{ steps.mariadb_build.outputs.content }}
       -
         name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}

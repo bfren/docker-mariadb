@@ -1,2 +1,1 @@
 /etc/mysql/conf.d true mysql:mysql 0444 0550
-/etc/mysql/my.cnf false mysql:mysql 0444 0550
