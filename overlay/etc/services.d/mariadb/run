@@ -4,13 +4,13 @@
 # Copyright (c) 2015 Thomas Boerger <https://webhippie.de>
 # Originally from https://github.com/dockhippie/mariadb/blob/master/latest/overlay/etc/s6/mariadb/run
 #
-# Modifications copyright (c) 2020 Ben Green <https://bcgdesign.com>
+# Modifications copyright (c) 2021 Ben Green <https://bcgdesign.com>
 #======================================================================================================================
 
 if [ ! -d "/var/lib/mysql/mysql" ] ; then
 
     # disable database upgrade
-    _e "First run: disable upgrade service"
+    _echo "First run: disable upgrade service"
     db-upgrade-disable
 
     # check for MARIADB_ROOT_PASSWORD
@@ -30,7 +30,6 @@ if [ ! -d "/var/lib/mysql/mysql" ] ; then
 
     # grant root access
     echo "" >| ${INIT_FILE}
-    #echo "DELETE FROM mysql.user;" >> ${INIT_FILE}
     echo "ALTER USER 'root'@'localhost' IDENTIFIED BY '${MARIADB_ROOT_PASSWORD}';" >> ${INIT_FILE}
     echo "GRANT ALL ON *.* TO 'root'@'localhost WITH GRANT OPTION;" >> ${INIT_FILE}
     echo "DROP DATABASE IF EXISTS test;" >> ${INIT_FILE}
