@@ -1,5 +1,6 @@
 #!/usr/bin/with-contenv bash
 
+
 #======================================================================================================================
 # Copyright (c) 2015 Thomas Boerger <https://webhippie.de>
 # Originally from https://github.com/dockhippie/mariadb/blob/master/latest/overlay/etc/s6/mariadb/run
@@ -37,7 +38,7 @@ if [ ! -d "/var/lib/mysql/mysql" ] ; then
     _done
 
     # create temporary init file
-    INIT_FILE="/tmp/mariadb-boot.sql"
+    INIT_FILE=$(mktemp 2>/dev/null || mktemp -t init.XXXXXX)
     _echo "Generating initialisation file ${INIT_FILE}..."
 
     # update root user with password and ensure full access
