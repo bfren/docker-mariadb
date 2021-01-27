@@ -8,7 +8,7 @@ I've been using [webhippie](https://github.com/dockhippie/mariadb)'s MariaDB ima
 
 So this was originally a fork of that, with a different backup script to store backups by date rather than index.  However it is now substantially different, using my own [Alpine](https://hub.docker.com/r/bcgdesign/alpine-s6) base image, with a clean install of the [S6 Overlay](https://github.com/just-containers/s6-overlay).
 
-## Backups
+## Automatic Backups
 
 Backups are stored:
 
@@ -37,7 +37,7 @@ The following environment variables are available for the backups `BACKUP_COMPRE
 | `BACKUP_COMPRESS_FILES` | 0: false<br>1: true          | Whether or not to compress backup files (using gzip)    | 0       |
 | `BACKUP_KEEP_FOR_DAYS`  | 0: keep forever<br>Num: days | How many days to keep backups before auto-deleting them | 14      |
 
-## For Database
+### For Database
 
 | Variable                                    | Values                                | Description                                                                           | Default                                     |
 | ------------------------------------------- | ------------------------------------- | ------------------------------------------------------------------------------------- | ------------------------------------------- |
