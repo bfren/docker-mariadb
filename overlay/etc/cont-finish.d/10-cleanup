@@ -8,5 +8,5 @@ set -euo pipefail
 #======================================================================================================================
 
 _echo "Cleaning up old process IDs from /var/lib/mysql..."
-rm /var/lib/mysql/*.pid
+rm /var/lib/mysql/*.pid || true
 _done
