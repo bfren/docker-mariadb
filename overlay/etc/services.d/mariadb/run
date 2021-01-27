@@ -1,6 +1,5 @@
 #!/usr/bin/with-contenv bash
 
-
 #======================================================================================================================
 # Copyright (c) 2015 Thomas Boerger <https://webhippie.de>
 # Originally from https://github.com/dockhippie/mariadb/blob/master/latest/overlay/etc/s6/mariadb/run
@@ -17,6 +16,9 @@ create () {
     echo "CREATE DATABASE IF NOT EXISTS \`${2}\`;" >> ${1}
     echo "GRANT ALL PRIVILEGES ON \`${2}\`.* TO '${3}'@'%' IDENTIFIED BY '${4}';" >> ${1}
 }
+
+# remove all temporary files
+_rmrf /tmp
 
 # if the directory does not exist, the server needs to be initialised
 if [ ! -d "/var/lib/mysql/mysql" ] ; then
@@ -83,8 +85,8 @@ if [ ! -d "/var/lib/mysql/mysql" ] ; then
     _done
 
     # start database with temporary init file
-    _echo "Starting mariadbd-safe with init file"
-    mariadbd-safe --init-file="${INIT_FILE}"
+    _echo "Starting mariadbd-safe with init file: ${INIT_FILE}"
+    mariadbd-safe --init-file=${INIT_FILE}
 
 else
 
