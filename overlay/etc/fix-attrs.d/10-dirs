@@ -1,2 +1,2 @@
-/var/lib/mysql true mysql:mysql 0644 0755
-/var/lib/backup true mysql:mysql 0644 0755
+/var/lib/mysql true mysql:mysql 0770 0750
+/var/lib/backup true mysql:mysql 0440 0750
