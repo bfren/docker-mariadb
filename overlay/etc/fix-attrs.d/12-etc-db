@@ -1,1 +1,3 @@
 /etc/db/backup false mysql:mysql 0500 0500
+/etc/db/export false mysql:mysql 0500 0500
+/etc/db/import false mysql:mysql 0500 0500
