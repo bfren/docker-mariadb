@@ -2,3 +2,21 @@
 
 set -euo pipefail
 
+
+#======================================================================================================================
+# Get import files (from backup directory)
+#======================================================================================================================
+
+_echo "Importing batch files from /var/lib/backup..."
+for FILE in /var/lib/backup/*.sql ; do
+
+    # split out database name from file
+    NAME=$(basename -- "${FILE}")
+    DATABASE="${NAME%.*}"
+
+    # execute file
+    _echo " .. importing '${DATABASE}'"
+    mariadb "${DATABASE}" < ${FILE} || _error " .. error"
+
+done
+_done
