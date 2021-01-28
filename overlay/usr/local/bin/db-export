@@ -7,7 +7,7 @@ set -euo pipefail
 # Run /etc/db/export executable
 #======================================================================================================================
 
-if [ $# -eq 2 ] && [ -n "${1}" ] ; then
+if [ $# -eq 1 ] && [ -n "${1}" ] ; then
     s6-setuidgid mysql /etc/db/export "${1}"
 else
     _error "You must specify a database name."
