@@ -18,6 +18,21 @@ Backups are stored:
 
 The following environment variables are available for the backups `BACKUP_COMPRESS_FILES` (0 or 1) and `BACKUP_KEEP_FOR_DAYS`.
 
+## Functions
+
+| Function    | Purpose                                                                                 | Usage               |
+| ----------- | --------------------------------------------------------------------------------------- | ------------------- |
+| `db-backup` | Run backup manually.                                                                    | `db-backup`         |
+| `db-export` | Dumps the specified database as a SQL file to the root of the `/var/lib/backup` volume. | `db-export DB_NAME` |
+| `db-import` | Executes all files in the root of the `/var/lib/backup` volume.                         | `db-import`         |
+
+The functions can be executed as follows:
+
+```bash
+$ docker exec -it mariadb db-backup # all databases dumped to backup directory
+$ docker exec -it mariadb db-export "foo" # 'foo' database dumped to /var/lib/backup/foo.sql
+```
+
 ## Ports
 
 * 3306
