@@ -7,7 +7,7 @@ set -euo pipefail
 # Check for database name
 #======================================================================================================================
 
-if [[ -z "${1}" || true ]] ; then
+if [ $# -ne 2 ] || [ -z "${1}" ] ; then
     _error "You must specify a database name."
 fi
 
