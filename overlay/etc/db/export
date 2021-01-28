@@ -8,7 +8,7 @@ set -euo pipefail
 #======================================================================================================================
 
 BACKUP_PATH=/var/lib/backup
-EXPORT_FILE=${BACKUP_PATH}/${1}.sql
+EXPORT_FILE="${BACKUP_PATH}/${1}.sql"
 
 
 #======================================================================================================================
@@ -16,5 +16,5 @@ EXPORT_FILE=${BACKUP_PATH}/${1}.sql
 #======================================================================================================================
 
 _echo "Exporting ${1} to ${EXPORT_FILE}..."
-mysqldump --add-locks -uroot -p${MARIADB_ROOT_PASSWORD} ${1} > ${EXPORT_FILE} || _error "Unable to export database ${1}."
+mysqldump --add-locks -uroot -p${MARIADB_ROOT_PASSWORD} "${1}" > "${EXPORT_FILE}" || _error "Unable to export database ${1}."
 _done
