@@ -17,7 +17,7 @@ THIS_BACKUP_PATH="${BACKUP_PATH}/${DATE}"
 #======================================================================================================================
 
 EXCLUDE="mysql|information_schema|performance_schema|sys"
-DATABASES=$(mysql -uroot -p${MARIADB_ROOT_PASSWORD} -e 'SHOW DATABASES;' | sed 1d | grep -v -E "(${EXCLUDE})")
+DATABASES=$(mariadb -uroot -p${MARIADB_ROOT_PASSWORD} -e 'SHOW DATABASES;' | sed 1d | grep -v -E "(${EXCLUDE})")
 [[ -z "${DATABASES}" ]] && _error "No databases found to backup."
 
 
@@ -35,7 +35,7 @@ for DATABASE in ${DATABASES} ; do
 
     # dump database and continue on failure
     _echo " - ${DATABASE}"
-    mysqldump --add-locks -uroot -p${MARIADB_ROOT_PASSWORD} ${DATABASE} > ${DUMP_FILE} || true
+    mariadb-dump --add-locks -uroot -p${MARIADB_ROOT_PASSWORD} ${DATABASE} > ${DUMP_FILE} || true
 
     # set read-only permissions
     chmod 440 ${DUMP_FILE}

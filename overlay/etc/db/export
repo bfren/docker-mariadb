@@ -16,5 +16,5 @@ EXPORT_FILE="${BACKUP_PATH}/${1}.sql"
 #======================================================================================================================
 
 _echo "Exporting database '${1}' to ${EXPORT_FILE}..."
-mysqldump --add-locks -uroot -p${MARIADB_ROOT_PASSWORD} "${1}" > "${EXPORT_FILE}" || _error "Unable to export database '${1}'."
+mariadb-dump --add-locks -uroot -p${MARIADB_ROOT_PASSWORD} "${1}" > "${EXPORT_FILE}" || _error "Unable to export database '${1}'."
 _done
