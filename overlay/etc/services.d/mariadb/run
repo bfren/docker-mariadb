@@ -1,7 +1,7 @@
 #!/usr/bin/with-contenv bash
 
 #======================================================================================================================
-# Create database table and grant privilegs to user
+# Create database table and grant privileges to user
 #   1: path to init file
 #   2: database name
 #   3: username
