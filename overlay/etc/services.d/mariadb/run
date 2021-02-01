@@ -1,18 +1,6 @@
 #!/usr/bin/with-contenv bash
 
-#======================================================================================================================
-# Create database table and grant privilegs to user
-#   1: path to init file
-#   2: database name
-#   3: username
-#   4: password
-#======================================================================================================================
-
-create () {
-    echo "CREATE DATABASE IF NOT EXISTS \`${2}\`;" >> ${1}
-    echo "GRANT ALL PRIVILEGES ON \`${2}\`.* TO '${3}'@'localhost' IDENTIFIED BY '${4}';" >> ${1}
-    echo "GRANT ALL PRIVILEGES ON \`${2}\`.* TO '${3}'@'%' IDENTIFIED BY '${4}';" >> ${1}
-}
+set -eo pipefail
 
 
 #======================================================================================================================
@@ -27,78 +15,36 @@ if [ -d "/var/lib/mysql/mysql" ] ; then
 
 
 #======================================================================================================================
-# Create initialisation script and start server using it:
-#   set root password
-#   remove test database
-#   create application database(s) and user
+# Otherwise:
+#   - check for root password
+#   - check for application username and password
+#   - run server installation
+#   - generate initialisation file
+#   - run server using initialisation file
 #======================================================================================================================
 
 else
 
-    # disable database upgrade
-    _echo "First run detected"
+    # disable upgrade service
+    _echo "Database server not yet installed"
     db-upgrade-disable
 
     # check for root password
-    if [ -z "${MARIADB_ROOT_PASSWORD}" ] ; then
-        _error "Database is uninitialized and MARIADB_ROOT_PASSWORD is not set."
-        _terminate
-        exit 1
-    fi
+    [[ -z "${MARIADB_ROOT_PASSWORD}" ]] && _error "MARIADB_ROOT_PASSWORD must be set."
 
-    # run base install
+    # check for application user and password
+    [[ -z "${MARIADB_USERNAME}" || -z "${MARIADB_PASSWORD}" ]] && _error "MARIADB_USERNAME and MARIADB_PASSWORD must be set."
+
+    # run server installation
     _echo "Running mariadb-install-db..."
     mariadb-install-db --user=mysql --datadir="/var/lib/mysql"
     _done
 
-    # create temporary init file
+    # generate init file
     INIT_FILE=/tmp/init.sql
     _echo "Generating initialisation file ${INIT_FILE}..."
-
-    # update root user with password and ensure full access
-    _echo " .. alter root user"
-    echo "" >| ${INIT_FILE}
-    echo "ALTER USER 'root'@'localhost' IDENTIFIED BY '${MARIADB_ROOT_PASSWORD}';" >> ${INIT_FILE}
-    echo "GRANT ALL ON *.* TO 'root'@'localhost' WITH GRANT OPTION;" >> ${INIT_FILE}
-    echo "FLUSH PRIVILEGES;" >> ${INIT_FILE}
-
-    _echo " .. delete test database"
-    echo "DROP DATABASE IF EXISTS test;" >> ${INIT_FILE}
-
-    # if a user is specified, add application database
-    if [[ -n "${MARIADB_USERNAME}" && -n "${MARIADB_PASSWORD}" ]] ; then
-
-        # if database(s) specified, create (each) database and grant user permissions
-        if [ -n "${MARIADB_DATABASE}" ] ; then
-
-            _echo " .. add application databases: ${MARIADB_DATABASE}"            
-            DATABASES=$(echo ${MARIADB_DATABASE} | tr "," "\n")
-
-            for DATABASE in ${DATABASES} ; do
-                create "${INIT_FILE}" "${DATABASE}" "${MARIADB_USERNAME}" "${MARIADB_PASSWORD}"
-            done
-
-        # no database specified so use username as database name
-        else
-
-            _echo " .. add application database: ${MARIADB_USERNAME}"
-            create "${INIT_FILE}" "${MARIADB_USERNAME}" "${MARIADB_USERNAME}" "${MARIADB_PASSWORD}"
-
-        fi
-
-        # flush privileges to load new user permissions
-        echo "FLUSH PRIVILEGES;" >> ${INIT_FILE}
-
-    else
-
-        _echo "MARIADB_USERNAME and MARIADB_PASSWORD not set - no application database or user created."
-
-    fi
-
+    s6-setuidgid mysql /etc/db/generate-init-file "${INIT_FILE}"
     _done
-
-    # give permissions so mysql user can read the file
-    chmod 444 ${INIT_FILE}
 
     # start server with temporary init file
     _echo "Starting mariadbd-safe with initialisation file"

@@ -1,4 +1,4 @@
-FROM bcgdesign/alpine-s6:1.1.0
+FROM bcgdesign/alpine-s6:1.2.0
 
 LABEL maintainer="Ben Green <ben@bcgdesign.com>" \
     org.label-schema.name="MariaDB" \
@@ -31,7 +31,6 @@ ENV BACKUP_COMPRESS_FILES="0" \
     MARIADB_READ_BUFFER="2M" \
     MARIADB_READ_RND_BUFFER_SIZE="512K" \
     MARIADB_SERVER_ID="1" \
-    MARIADB_SKIP_CHOWN="false" \
     MARIADB_SORT_BUFFER_SIZE="512K" \
     MARIADB_TABLE_OPEN_CACHE="64" \
     MARIADB_WRITE_BUFFER="2M"
@@ -43,6 +42,7 @@ RUN mkdir -p /var/lib/mysql \
 VOLUME [ "/var/lib/mysql", "/var/lib/backup" ]
 
 COPY ./MARIADB_BUILD /tmp/MARIADB_BUILD
+ARG GOMPLATE_VERSION=3.8.0-r0
 RUN export MARIADB_VERSION=$(cat /tmp/MARIADB_BUILD) \
     && echo "MariaDB v${MARIADB_VERSION}" \
     && addgroup --gid 1000 mysql \
@@ -50,10 +50,10 @@ RUN export MARIADB_VERSION=$(cat /tmp/MARIADB_BUILD) \
     && apk -U upgrade \
     && apk add \
         bash \
-        gomplate \
-        mariadb@edgemain=${MARIADB_VERSION} \
-        mariadb-client@edgemain=${MARIADB_VERSION} \
-        mariadb-server-utils@edgemain=${MARIADB_VERSION} \
+        gomplate=${GOMPLATE_VERSION} \
+        mariadb=${MARIADB_VERSION} \
+        mariadb-client=${MARIADB_VERSION} \
+        mariadb-server-utils=${MARIADB_VERSION} \
     && rm -rf /var/cache/apk/* /etc/mysql/* /etc/my.cnf* /var/lib/mysql/* /tmp/* \
     && echo "0 */8 * * * /usr/local/bin/db-backup" >> /etc/crontabs/root
 

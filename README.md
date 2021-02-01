@@ -8,30 +8,24 @@ I've been using [webhippie](https://github.com/dockhippie/mariadb)'s MariaDB ima
 
 So this was originally a fork of that, with a different backup script to store backups by date rather than index.  However it is now substantially different, using my own [Alpine](https://hub.docker.com/r/bcgdesign/alpine-s6) base image, with a clean install of the [S6 Overlay](https://github.com/just-containers/s6-overlay).
 
+## Contents
+
+* [Automatic Backups](#automatic-backups)
+* [Ports](#ports)
+* [Volumes](#volumes)
+* [Environment Variables](#environment-variables)
+* [Helper Functions](#helper-functions)
+* [Authors / Licence / Copyright](#authors)
+
 ## Automatic Backups
 
-Backups are stored:
+Backups for every database (except `mysql`, `information_schema`, `performance_schema`, and `sys`) are stored:
 
 * in the `/var/lib/backup` volume
 * in subfolders by date and time (yyMMddhhmm)
 * every eight hours
 
-The following environment variables are available for the backups `BACKUP_COMPRESS_FILES` (0 or 1) and `BACKUP_KEEP_FOR_DAYS`.
-
-## Functions
-
-| Function    | Purpose                                                                                 | Usage               |
-| ----------- | --------------------------------------------------------------------------------------- | ------------------- |
-| `db-backup` | Run backup manually.                                                                    | `db-backup`         |
-| `db-export` | Dumps the specified database as a SQL file to the root of the `/var/lib/backup` volume. | `db-export DB_NAME` |
-| `db-import` | Executes all files in the root of the `/var/lib/backup` volume.                         | `db-import`         |
-
-The functions can be executed as follows:
-
-```bash
-$ docker exec -it mariadb db-backup # all databases dumped to backup directory
-$ docker exec -it mariadb db-export "foo" # 'foo' database dumped to /var/lib/backup/foo.sql
-```
+See [For Backups](#for-backups) for configuration variables.
 
 ## Ports
 
@@ -39,9 +33,11 @@ $ docker exec -it mariadb db-export "foo" # 'foo' database dumped to /var/lib/ba
 
 ## Volumes
 
-* `/etc/mysql/conf.d` - optional additional configuration
-* `/var/lib/mysql` - data files
-* `/var/lib/backup` - backup files
+| Volume              | Purpose                                                                                           |
+| ------------------- | ------------------------------------------------------------------------------------------------- |
+| `/etc/mysql/conf.d` | Optional additional mariadb configuration.                                                        |
+| `/var/lib/mysql`    | Data files.                                                                                       |
+| `/var/lib/backup`   | Backup files (also used for export / import scripts - see [helper functions](#helper-functions)). |
 
 ## Environment Variables
 
@@ -85,6 +81,21 @@ $ docker exec -it mariadb db-export "foo" # 'foo' database dumped to /var/lib/ba
 | `MARIADB_SORT_BUFFER_SIZE`                  |                                       |                                                                                       | 512K                                        |
 | `MARIADB_TABLE_OPEN_CACHE`                  |                                       |                                                                                       | 64                                          |
 | `MARIADB_WRITE_BUFFER`                      |                                       |                                                                                       | 2M                                          |
+
+## Helper Functions
+
+| Function    | Purpose                                                                                 | Usage               |
+| ----------- | --------------------------------------------------------------------------------------- | ------------------- |
+| `db-backup` | Run backup manually.                                                                    | `db-backup`         |
+| `db-export` | Dumps the specified database as a SQL file to the root of the `/var/lib/backup` volume. | `db-export DB_NAME` |
+| `db-import` | Executes all files in the root of the `/var/lib/backup` volume.                         | `db-import`         |
+
+The functions can be executed as follows:
+
+```bash
+$ docker exec -it mariadb db-backup # all databases dumped to backup directory
+$ docker exec -it mariadb db-export "foo" # 'foo' database dumped to /var/lib/backup/foo.sql
+```
 
 ## Authors
 

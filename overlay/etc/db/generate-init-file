@@ -1,0 +1,73 @@
+#!/usr/bin/with-contenv bash
+
+set -eo pipefail
+
+
+#======================================================================================================================
+# Check init file has been set
+#======================================================================================================================
+
+[[ $# -ne 1 || -z "${1}" ]] && _error "You must define the path to the initialisation file."
+INIT_FILE="${1}"
+echo "# Database initialisation script" > ${INIT_FILE}
+
+
+#======================================================================================================================
+# Create a database table and grant privileges to user
+#   2: database name
+#   3: username
+#   4: password
+#======================================================================================================================
+
+create_database () {
+
+    # create database
+    echo "CREATE DATABASE IF NOT EXISTS \`${1}\`;" >> ${INIT_FILE}
+
+    # giving localhost privileges enables the healthcheck to work
+    echo "GRANT ALL PRIVILEGES ON \`${1}\`.* TO '${2}'@'localhost' IDENTIFIED BY '${3}';" >> ${INIT_FILE}
+
+    # giving global host privileges allows the application container to access the database
+    echo "GRANT ALL PRIVILEGES ON \`${1}\`.* TO '${2}'@'%' IDENTIFIED BY '${3}';" >> ${INIT_FILE}
+
+}
+
+
+#======================================================================================================================
+# Create initialisation file:
+#   set root password
+#   remove test database
+#   create application database(s) and user
+#======================================================================================================================
+
+# update root user with password and ensure full access
+_echo " .. alter root user"
+echo "ALTER USER 'root'@'localhost' IDENTIFIED BY '${MARIADB_ROOT_PASSWORD}';" >> ${INIT_FILE}
+echo "GRANT ALL ON *.* TO 'root'@'localhost' WITH GRANT OPTION;" >> ${INIT_FILE}
+echo "FLUSH PRIVILEGES;" >> ${INIT_FILE}
+
+# delete the test database (no need to use up the space)
+_echo " .. delete test database"
+echo "DROP DATABASE IF EXISTS test;" >> ${INIT_FILE}
+
+# if database(s) specified, create (each) database and grant user permissions
+if [ -n "${MARIADB_DATABASE}" ] ; then
+
+    _echo " .. add application databases:"
+    DATABASES=$(echo ${MARIADB_DATABASE} | tr "," "\n")
+
+    for DATABASE in ${DATABASES} ; do
+        _echo " .. ${DATABASE}"
+        create_database "${DATABASE}" "${MARIADB_USERNAME}" "${MARIADB_PASSWORD}"
+    done
+
+# no database specified so use username as database name
+else
+
+    _echo " .. add application database: ${MARIADB_USERNAME}"
+    create_database "${MARIADB_USERNAME}" "${MARIADB_USERNAME}" "${MARIADB_PASSWORD}"
+
+fi
+
+# flush privileges to load new user permissions
+echo "FLUSH PRIVILEGES;" >> ${INIT_FILE}
