@@ -108,5 +108,5 @@ $ docker exec -it mariadb db-export "foo" # 'foo' database dumped to /var/lib/ba
 
 ## Copyright
 
-> Copyright (c) 2021 Ben Green <https://bcgdesign.com>  
+> Copyright (c) 2021 Ben Green <https://bcgdesign.com>
 > Unless otherwise stated
