@@ -1,8 +1,10 @@
 #!/usr/bin/with-contenv bash
 
+set -euo pipefail
+
+
 #======================================================================================================================
-# Run mariadb-upgrade
-#   -f using -f (--force) to enforce upgrade checks, even if they have already been performed
+# Run mariadb-upgrade as root user
 #======================================================================================================================
 
 _echo "Running mariadb-upgrade..."

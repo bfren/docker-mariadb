@@ -1,5 +1,8 @@
 #!/usr/bin/with-contenv bash
 
+set -euo pipefail
+
+
 #======================================================================================================================
 # Wait until MariaDB is running before attempting the upgrade
 #======================================================================================================================
@@ -17,7 +20,8 @@ else
 
     # wait 2s before exiting the service - S6 will keep restarting it until MariaDB comes online
     # on first run, the mariadb service will disable this upgrade service itself
-    _echo "Waiting for MariaDB to come online..."
-    sleep 2s
+    SLEEP=2
+    _echo "Waiting ${SLEEP}s for MariaDB to come online..."
+    sleep ${SLEEP}
 
 fi
