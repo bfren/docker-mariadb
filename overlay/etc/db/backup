@@ -67,5 +67,5 @@ if [ "${BACKUP_KEEP_FOR_DAYS}" -gt 0 ] ; then
     MMIN=$((60*24*${BACKUP_KEEP_FOR_DAYS}))
     find ${BACKUP_PATH}/* -type d -mmin +${MMIN} | xargs rm -rf
     _done
-    
+
 fi

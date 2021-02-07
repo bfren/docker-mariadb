@@ -16,7 +16,7 @@ for FILE in /var/lib/backup/*.sql ; do
 
     # execute file
     _echo " .. importing '${DATABASE}'"
-    mariadb "${DATABASE}" < ${FILE} || _error " .. error"
+    mariadb "${DATABASE}" < ${FILE} || _notok " .. something went wrong"
 
 done
 _done

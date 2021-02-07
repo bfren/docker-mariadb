@@ -1,9 +1,10 @@
 #!/usr/bin/with-contenv bash
 
+set -euo pipefail
+
+
 #======================================================================================================================
-# Disable mariadb-upgrade service
+# Use base executable to disable upgrade service
 #======================================================================================================================
 
-_echo "Disabling mariadb-upgrade service..."
-s6-svc -d /var/run/s6/services/mariadb-upgrade
-_done
+_disable "mariadb-upgrade"
