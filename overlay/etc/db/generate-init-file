@@ -51,7 +51,7 @@ _echo " .. delete test database"
 echo "DROP DATABASE IF EXISTS test;" >> ${INIT_FILE}
 
 # if database(s) specified, create (each) database and grant user permissions
-if [ -v ${MARIADB_DATABASE} ] ; then
+if [ -z "${MARIADB_DATABASE-}" ] ; then
 
     _echo " .. add application databases:"
     DATABASES=$(echo ${MARIADB_DATABASE} | tr "," "\n")

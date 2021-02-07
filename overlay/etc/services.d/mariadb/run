@@ -30,10 +30,10 @@ else
     db-upgrade-disable
 
     # check for root password
-    [[ ! -v ${MARIADB_ROOT_PASSWORD} ]] && _error "MARIADB_ROOT_PASSWORD must be set."
+    [[ -z "${MARIADB_ROOT_PASSWORD-}" ]] && _error "MARIADB_ROOT_PASSWORD must be set."
 
     # check for application user and password
-    [[ ! -v ${MARIADB_USERNAME} || ! -v ${MARIADB_PASSWORD} ]] && _error "MARIADB_USERNAME and MARIADB_PASSWORD must be set."
+    [[ -z "${MARIADB_USERNAME-}" || -z "${MARIADB_PASSWORD-}" ]] && _error "MARIADB_USERNAME and MARIADB_PASSWORD must be set."
 
     # run server installation
     _echo "Running mariadb-install-db..."
