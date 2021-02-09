@@ -1,4 +1,4 @@
-#FROM bcgdesign/alpine-s6:alpine-3.13-1.2.1
+#FROM bcgdesign/alpine-s6:alpine-3.13-1.3.1
 FROM bcgdesign/alpine-s6:dev
 
 LABEL maintainer="Ben Green <ben@bcgdesign.com>" \
