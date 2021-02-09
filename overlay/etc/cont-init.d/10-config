@@ -8,11 +8,11 @@ set -euo pipefail
 #======================================================================================================================
 
 _echo "Writing MariaDB config..."
-esh -o /etc/mysql/my.cnf \
+esh -o /etc/my.cnf \
     /etc/templates/my.cnf.tmpl
 _done
 
 _echo "Setting MariaDB config permissions..."
-chown mysql:mysql /etc/mysql/my.cnf
-chmod 0444 /etc/mysql/my.cnf
+chown mysql:mysql /etc/my.cnf
+chmod 0444 /etc/my.cnf
 _done
