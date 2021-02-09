@@ -48,7 +48,7 @@ echo "FLUSH PRIVILEGES;" >> ${INIT_FILE}
 
 # delete the mysql user (no need to use up the space)
 _echo " .. delete mysql user"
-echo "DROP USER IF EXISTS mysql;" >> ${INIT_FILE}
+echo "DROP USER IF EXISTS mysql@localhost;" >> ${INIT_FILE}
 
 # delete the test database (no need to use up the space)
 _echo " .. delete test database"
