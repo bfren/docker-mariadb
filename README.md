@@ -43,64 +43,34 @@ See [For Backups](#for-backups) for configuration variables.
 
 ### For Backups
 
-| Variable                | Values                       | Description                                             | Default |
-| ----------------------- | ---------------------------- | ------------------------------------------------------- | ------- |
-| `BACKUP_COMPRESS_FILES` | 0: false<br>1: true          | Whether or not to compress backup files (using gzip)    | 0       |
-| `BACKUP_KEEP_FOR_DAYS`  | 0: keep forever<br>Num: days | How many days to keep backups before auto-deleting them | 14      |
+| Variable                | Values                       | Description                                              | Default |
+| ----------------------- | ---------------------------- | -------------------------------------------------------- | ------- |
+| `BACKUP_COMPRESS_FILES` | 0: false<br>1: true          | Whether or not to compress backup files (using gzip).    | 0       |
+| `BACKUP_KEEP_FOR_DAYS`  | 0: keep forever<br>Num: days | How many days to keep backups before auto-deleting them. | 14      |
 
 ### For Database
 
-| Variable                                    | Values                                | Description                                                                           | Default                                     |
-| ------------------------------------------- | ------------------------------------- | ------------------------------------------------------------------------------------- | ------------------------------------------- |
-| `MARIADB_ROOT_PASSWORD`                     | string                                | Password for root user                                                                | *None* - **required**                       |
-| `MARIADB_USERNAME`                          | string                                | Application username - will be used as database name if `MARIADB_DATABASE` is not set | *None* - recommended                        |
-| `MARIADB_PASSWORD`                          | string                                | Application password                                                                  | *None* - required if username is defined    |
-| `MARIADB_DATABASE`                          | string                                | Database name(s) - multiple databases can be separated by a comma                     | *None*                                      |
-| `MARIADB_BINLOG_FORMAT`                     |                                       |                                                                                       | mixed                                       |
-| `MARIADB_CHARACTER_SET_SERVER`              |                                       |                                                                                       | utf8                                        |
-| `MARIADB_COLLATION_SERVER`                  |                                       |                                                                                       | utf8_general_ci                             |
-| `MARIADB_DEFAULT_CHARACTER_SET`             |                                       |                                                                                       | utf8                                        |
-| `MARIADB_EXPIRE_LOGS_DAYS`                  |                                       | Set to 0 so logs never expire                                                         | 28                                          |
-| `MARIADB_INNODB_BUFFER_POOL_SIZE`           |                                       |                                                                                       | 16M                                         |
-| `MARIADB_INNODB_DATA_FILE_PATH`             |                                       |                                                                                       | ibdata1:10M:autoextend                      |
-| `MARIADB_INNODB_FLUSH_LOG_AT_TRX_COMMIT`    |                                       |                                                                                       | 1                                           |
-| `MARIADB_INNODB_LOCK_WAIT_TIMEOUT`          |                                       |                                                                                       | 50                                          |
-| `MARIADB_INNODB_LOG_BUFFER_SIZE`            |                                       |                                                                                       | 8M                                          |
-| `MARIADB_INNODB_LOG_FILE_SIZE`              |                                       |                                                                                       | 5M                                          |
-| `MARIADB_INNODB_USE_NATIVE_AIO`             |                                       |                                                                                       | 1                                           |
-| `MARIADB_KEY_BUFFER_SIZE`                   |                                       |                                                                                       | 16M                                         |
-| `MARIADB_LOG_BIN`                           |                                       | Set to mysql-bin to enable binary logging                                             | 0                                           |
-| `MARIADB_MAX_ALLOWED_PACKET`                |                                       |                                                                                       | 16M                                         |
-| `MARIADB_MAX_CONNECTIONS`                   |                                       |                                                                                       | 151                                         |
-| `MARIADB_MYISAM_SORT_BUFFER_SIZE`           |                                       |                                                                                       | 8M                                          |
-| `MARIADB_NET_BUFFER_SIZE`                   |                                       |                                                                                       | 8K                                          |
-| `MARIADB_READ_BUFFER`                       |                                       |                                                                                       | 2M                                          |
-| `MARIADB_READ_BUFFER_SIZE`                  |                                       |                                                                                       | 256K                                        |
-| `MARIADB_READ_RND_BUFFER_SIZE`              |                                       |                                                                                       | 512K                                        |
-| `MARIADB_SERVER_ID`                         |                                       |                                                                                       | 1                                           |
-| `MARIADB_SORT_BUFFER_SIZE`                  |                                       |                                                                                       | 512K                                        |
-| `MARIADB_TABLE_OPEN_CACHE`                  |                                       |                                                                                       | 64                                          |
-| `MARIADB_WRITE_BUFFER`                      |                                       |                                                                                       | 2M                                          |
+| Variable                | Values | Description                                                                                           | Default                                  |
+| ----------------------- | ------ | ----------------------------------------------------------------------------------------------------- | ---------------------------------------- |
+| `MARIADB_ROOT_PASSWORD` | string | Password for root user.                                                                               | *None* - **required**                    |
+| `MARIADB_USERNAME`      | string | Application username - will be used as database name if `MARIADB_DATABASE` is not set.                | *None* - recommended                     |
+| `MARIADB_PASSWORD`      | string | Application password.                                                                                 | *None* - required if username is defined |
+| `MARIADB_DATABASE`      | string | Database name(s) - multiple databases can be separated by a comma.                                    | *None*                                   |
+| `MARIADB_CHARACTER_SET` | string | Sets [character_set_server](https://mariadb.com/kb/en/server-system-variables/#character_set_server). | utf8                                     |
+| `MARIADB_COLLATION`     | string | Sets [collation_server](https://mariadb.com/kb/en/server-system-variables/#collation_server).         | utf8_general_ci                          |
+| `MARIADB_LOG_WARNINGS`  | string | Sets [log_warnings](https://mariadb.com/kb/en/server-system-variables/#log_warnings).                 | 2                                        |
 
 ## Helper Functions
 
-| Function    | Purpose                                                                                 | Usage               |
-| ----------- | --------------------------------------------------------------------------------------- | ------------------- |
-| `db-backup` | Run backup manually.                                                                    | `db-backup`         |
-| `db-export` | Dumps the specified database as a SQL file to the root of the `/var/lib/backup` volume. | `db-export DB_NAME` |
-| `db-import` | Executes all files in the root of the `/var/lib/backup` volume.                         | `db-import`         |
-
-The functions can be executed as follows:
-
-```bash
-$ docker exec -it mariadb db-backup # all databases dumped to backup directory
-$ docker exec -it mariadb db-export "foo" # 'foo' database dumped to /var/lib/backup/foo.sql
-```
+| Function    | Purpose                                                                                 | Usage                                             |
+| ----------- | --------------------------------------------------------------------------------------- | ------------------------------------------------- |
+| `db-backup` | Run backup manually.                                                                    | `docker exec <<CONTAINER>> db-backup`             |
+| `db-export` | Dumps the specified database as a SQL file to the root of the `/var/lib/backup` volume. | `docker exec <<CONTAINER>> db-export <<DB_NAME>>` |
+| `db-import` | Executes all files in the root of the `/var/lib/backup` volume.                         | `docker exec <<CONTAINER>> db-import`             |
 
 ## Authors
 
 * [Ben Green](https://github.com/bencgreen)
-* [Thomas Boerger](https://github.com/tboerger)
 
 ## License
 
@@ -109,4 +79,3 @@ $ docker exec -it mariadb db-export "foo" # 'foo' database dumped to /var/lib/ba
 ## Copyright
 
 > Copyright (c) 2021 Ben Green <https://bcgdesign.com>
-> Unless otherwise stated

@@ -4,15 +4,7 @@ set -euo pipefail
 
 
 #======================================================================================================================
-# Config is re-written every time in case environment variables have been changed
+# Forward MariaDB log to Docker
 #======================================================================================================================
 
-_echo "Writing MariaDB config..."
-esh -o /etc/my.cnf \
-    /etc/templates/my.cnf.tmpl
-_done
-
-_echo "Setting MariaDB config permissions..."
-chown mysql:mysql /etc/my.cnf
-chmod 0444 /etc/my.cnf
-_done
+_forward "mariadb-log" /var/log/mariadb/error.log

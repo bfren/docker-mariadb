@@ -1,72 +1,18 @@
-#======================================================================================================================
-# Copyright (c) 2015 Thomas Boerger <https://webhippie.de>
-# Originally from https://github.com/dockhippie/mariadb/blob/master/latest/overlay/etc/templates/my.cnf.tmpl
-#
-# Modifications copyright (c) 2020 Ben Green <https://bcgdesign.com>
-#======================================================================================================================
+# This group is read both both by the client and the server
+# use it for options that affect everything
+[client-mariadb]
 
-[client]
-port = 3306
-socket = /run/mysqld/mysqld.sock
+# This group is read by the server
+[mariadb]
 
-default-character-set = {{ getenv "MARIADB_DEFAULT_CHARACTER_SET" }}
+log_error=/var/log/mariadb/error.log
+log_warnings=<%= ${MARIADB_LOG_WARNINGS} %>
 
-[mysqld]
-port = 3306
-socket = /run/mysqld/mysqld.sock
+character_set_server=<%= ${MARIADB_CHARACTER_SET} %>
+collation_server=<%= ${MARIADB_COLLATION} %>
 
-character-set-server = {{ getenv "MARIADB_CHARACTER_SET_SERVER" }}
-collation-server = {{ getenv "MARIADB_COLLATION_SERVER" }}
+# Disabling symbolic-links is recommended to prevent assorted security risks
+symbolic-links=0
 
-skip-external-locking
-key_buffer_size = {{ getenv "MARIADB_KEY_BUFFER_SIZE" }}
-max_allowed_packet = {{ getenv "MARIADB_MAX_ALLOWED_PACKET" }}
-table_open_cache = {{ getenv "MARIADB_TABLE_OPEN_CACHE" }}
-sort_buffer_size = {{ getenv "MARIADB_SORT_BUFFER_SIZE" }}
-net_buffer_length = {{ getenv "MARIADB_NET_BUFFER_SIZE" }}
-read_buffer_size = {{ getenv "MARIADB_READ_BUFFER_SIZE" }}
-read_rnd_buffer_size = {{ getenv "MARIADB_READ_RND_BUFFER_SIZE" }}
-myisam_sort_buffer_size = {{ getenv "MARIADB_MYISAM_SORT_BUFFER_SIZE" }}
-max_connections = {{ getenv "MARIADB_MAX_CONNECTIONS" }}
-
-tmpdir = /tmp
-
-{{ if eq (getenv "MARIADB_LOG_BIN") "0" }}
-skip-log-bin
-{{ else }}
-log-bin = {{ getenv "MARIADB_LOG_BIN" }}
-binlog_format = {{ getenv "MARIADB_BINLOG_FORMAT" }}
-{{ end }}
-expire_logs_days = {{ getenv "MARIADB_EXPIRE_LOGS_DAYS" }}
-
-server-id = {{ getenv "MARIADB_SERVER_ID" }}
-
-innodb_data_home_dir = /var/lib/mysql
-innodb_data_file_path = {{ getenv "MARIADB_INNODB_DATA_FILE_PATH" }}
-innodb_log_group_home_dir = /var/lib/mysql
-innodb_buffer_pool_size = {{ getenv "MARIADB_INNODB_BUFFER_POOL_SIZE" }}
-innodb_log_file_size = {{ getenv "MARIADB_INNODB_LOG_FILE_SIZE" }}
-innodb_log_buffer_size = {{ getenv "MARIADB_INNODB_LOG_BUFFER_SIZE" }}
-innodb_flush_log_at_trx_commit = {{ getenv "MARIADB_INNODB_FLUSH_LOG_AT_TRX_COMMIT" }}
-innodb_lock_wait_timeout = {{ getenv "MARIADB_INNODB_LOCK_WAIT_TIMEOUT" }}
-innodb_use_native_aio = {{ getenv "MARIADB_INNODB_USE_NATIVE_AIO" }}
-innodb_file_per_table = {{ getenv "MARIADB_INNODB_FILE_PER_TABLE" }}
-
-[mysqldump]
-quick
-quote-names
-max_allowed_packet = {{ getenv "MARIADB_MAX_ALLOWED_PACKET" }}
-
-[mysql]
-no-auto-rehash
-
-[myisamchk]
-key_buffer_size = {{ getenv "MARIADB_KEY_BUFFER_SIZE" }}
-sort_buffer_size = {{ getenv "MARIADB_SORT_BUFFER_SIZE" }}
-read_buffer = {{ getenv "MARIADB_READ_BUFFER" }}
-write_buffer = {{ getenv "MARIADB_WRITE_BUFFER" }}
-
-[mysqlhotcopy]
-interactive-timeout
-
-!includedir /etc/mysql/conf.d/
+# include all files from the config directory
+!includedir /etc/my.cnf.d
