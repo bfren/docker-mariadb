@@ -43,7 +43,6 @@ RUN mkdir -p /var/lib/mysql \
 VOLUME [ "/var/lib/mysql", "/var/lib/backup" ]
 
 COPY ./MARIADB_BUILD /tmp/MARIADB_BUILD
-ARG GOMPLATE_VERSION=3.8.0-r0
 RUN export MARIADB_VERSION=$(cat /tmp/MARIADB_BUILD) \
     && echo "MariaDB v${MARIADB_VERSION}" \
     && addgroup --gid 1000 mysql \
@@ -51,7 +50,6 @@ RUN export MARIADB_VERSION=$(cat /tmp/MARIADB_BUILD) \
     && apk -U upgrade \
     && apk add \
         bash \
-        gomplate=${GOMPLATE_VERSION} \
         mariadb=${MARIADB_VERSION} \
         mariadb-client=${MARIADB_VERSION} \
         mariadb-server-utils=${MARIADB_VERSION} \
