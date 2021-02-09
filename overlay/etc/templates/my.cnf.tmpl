@@ -31,12 +31,12 @@ max_connections = <%= ${MARIADB_MAX_CONNECTIONS} %>
 
 tmpdir = /tmp
 
-<% if [ "${MARIADB_LOG_BIN}" = "0" ] ; then %>
+<% if [ "${MARIADB_LOG_BIN}" = "0" ] ; then -%>
 skip-log-bin
-<% else %>
+<% else -%>
 log-bin = <%= ${MARIADB_LOG_BIN} %>
 binlog_format = <%= ${MARIADB_BINLOG_FORMAT} %>
-<% fi %>
+<% fi -%>
 expire_logs_days = <%= ${MARIADB_EXPIRE_LOGS_DAYS} %>
 
 server-id = <%= ${MARIADB_SERVER_ID} %>
