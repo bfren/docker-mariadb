@@ -7,4 +7,4 @@ set -euo pipefail
 # Forward MariaDB log to Docker
 #======================================================================================================================
 
-_forward "mariadb-log" /var/log/mariadb.log
+_forward "mariadb-log" /var/log/mariadb/error.log
