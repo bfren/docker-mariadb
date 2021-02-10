@@ -7,7 +7,7 @@ set -euo pipefail
 # Old PIDs clog up the mysql directory
 #======================================================================================================================
 
-_echo "Cleaning up temporary files and old process IDs..."
+bcg-echo "Cleaning up temporary files and old process IDs..."
 rm -rf /tmp/*
 rm /var/lib/mysql/*.pid > /dev/null 2>&1
-_done
+bcg-done

@@ -7,7 +7,7 @@ set -euo pipefail
 # Check init file has been set
 #======================================================================================================================
 
-[[ $# -ne 1 || -z "${1}" ]] && _error "You must define the path to the initialisation file."
+[[ $# -ne 1 || -z "${1}" ]] && bcg-error "You must define the path to the initialisation file."
 INIT_FILE="${1}"
 echo "# Database initialisation script" > ${INIT_FILE}
 
@@ -41,34 +41,34 @@ create_database () {
 #======================================================================================================================
 
 # update root user with password and ensure full access
-_echo " .. alter root user"
+bcg-echo " .. alter root user"
 echo "ALTER USER 'root'@'localhost' IDENTIFIED BY '${MARIADB_ROOT_PASSWORD}';" >> ${INIT_FILE}
 echo "GRANT ALL ON *.* TO 'root'@'localhost' WITH GRANT OPTION;" >> ${INIT_FILE}
 echo "FLUSH PRIVILEGES;" >> ${INIT_FILE}
 
 # delete the mysql user (no need to use up the space)
-_echo " .. delete mysql user"
+bcg-echo " .. delete mysql user"
 echo "DROP USER IF EXISTS mysql@localhost;" >> ${INIT_FILE}
 
 # delete the test database (no need to use up the space)
-_echo " .. delete test database"
+bcg-echo " .. delete test database"
 echo "DROP DATABASE IF EXISTS test;" >> ${INIT_FILE}
 
 # if database(s) specified, create (each) database and grant user permissions
 if [ ! -z "${MARIADB_DATABASE-}" ] ; then
 
-    _echo " .. add application databases:"
+    bcg-echo " .. add application databases:"
     DATABASES=$(echo ${MARIADB_DATABASE} | tr "," "\n")
 
     for DATABASE in ${DATABASES} ; do
-        _echo " .. ${DATABASE}"
+        bcg-echo " .. ${DATABASE}"
         create_database "${DATABASE}" "${MARIADB_USERNAME}" "${MARIADB_PASSWORD}"
     done
 
 # no database specified so use username as database name
 else
 
-    _echo " .. add application database: ${MARIADB_USERNAME}"
+    bcg-echo " .. add application database: ${MARIADB_USERNAME}"
     create_database "${MARIADB_USERNAME}" "${MARIADB_USERNAME}" "${MARIADB_PASSWORD}"
 
 fi

@@ -7,7 +7,7 @@ set -euo pipefail
 # Get import files (from backup directory)
 #======================================================================================================================
 
-_echo "Importing batch files from /var/lib/backup..."
+bcg-echo "Importing batch files from /var/lib/backup..."
 for FILE in /var/lib/backup/*.sql ; do
 
     # split out database name from file
@@ -15,8 +15,8 @@ for FILE in /var/lib/backup/*.sql ; do
     DATABASE="${NAME%.*}"
 
     # execute file
-    _echo " .. importing '${DATABASE}'"
-    mariadb "${DATABASE}" < ${FILE} || _notok " .. something went wrong"
+    bcg-echo " .. importing '${DATABASE}'"
+    mariadb "${DATABASE}" < ${FILE} || bcg-notok " .. something went wrong"
 
 done
-_done
+bcg-done

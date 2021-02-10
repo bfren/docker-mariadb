@@ -7,12 +7,12 @@ set -euo pipefail
 # Config is re-written every time in case environment variables have been changed
 #======================================================================================================================
 
-_echo "Writing MariaDB config..."
+bcg-echo "Writing MariaDB config..."
 esh -o /etc/my.cnf \
     /etc/templates/my.cnf.tmpl
-_done
+bcg-done
 
-_echo "Setting MariaDB config permissions..."
+bcg-echo "Setting MariaDB config permissions..."
 chown mysql:mysql /etc/my.cnf
 chmod 0444 /etc/my.cnf
-_done
+bcg-done
