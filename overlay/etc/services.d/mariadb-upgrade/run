@@ -10,7 +10,7 @@ set -euo pipefail
 if [ -d "/var/lib/mysql/mysql" ] && [ ! -z "$(pidof mariadbd)" ]; then
 
     # run upgrade executable
-    _echo "$(mariadb --version)"
+    bcg-echo "$(mariadb --version)"
     db-upgrade
 
     # disable the upgrade service
@@ -21,7 +21,7 @@ else
     # wait 2s before exiting the service - S6 will keep restarting it until MariaDB comes online
     # on first run, the mariadb service will disable this upgrade service itself
     SLEEP=2
-    _echo "Waiting ${SLEEP}s for MariaDB to come online..."
+    bcg-echo "Waiting ${SLEEP}s for MariaDB to come online..."
     sleep ${SLEEP}
 
 fi

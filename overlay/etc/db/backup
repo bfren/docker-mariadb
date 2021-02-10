@@ -18,7 +18,7 @@ THIS_BACKUP_PATH="${BACKUP_PATH}/${DATE}"
 
 EXCLUDE="mysql|information_schema|performance_schema|sys"
 DATABASES=$(mariadb -uroot -p${MARIADB_ROOT_PASSWORD} -e 'SHOW DATABASES;' | sed 1d | grep -v -E "(${EXCLUDE})")
-[[ -z "${DATABASES}" ]] && _error "No databases found to backup."
+[[ -z "${DATABASES}" ]] && bcg-error "No databases found to backup."
 
 
 #======================================================================================================================
@@ -27,14 +27,14 @@ DATABASES=$(mariadb -uroot -p${MARIADB_ROOT_PASSWORD} -e 'SHOW DATABASES;' | sed
 
 TEMP_BACKUP_PATH=$(mktemp -d)
 
-_echo "Backing up databases to ${TEMP_BACKUP_PATH}..."
+bcg-echo "Backing up databases to ${TEMP_BACKUP_PATH}..."
 for DATABASE in ${DATABASES} ; do
 
     # path to this database dump
     DUMP_FILE="${TEMP_BACKUP_PATH}/${DATABASE}.sql"
 
     # dump database and continue on failure
-    _echo " - ${DATABASE}"
+    bcg-echo " - ${DATABASE}"
     mariadb-dump --add-locks -uroot -p${MARIADB_ROOT_PASSWORD} ${DATABASE} > ${DUMP_FILE} || true
 
     # set read-only permissions
@@ -44,17 +44,17 @@ for DATABASE in ${DATABASES} ; do
     [[ "${BACKUP_COMPRESS_FILES}" = "1" ]] && gzip ${DUMP_FILE}
 
 done
-_done
+bcg-done
 
 
 #======================================================================================================================
 # Move backups to backup directory
 #======================================================================================================================
 
-_echo "Moving backups to ${THIS_BACKUP_PATH}..."
+bcg-echo "Moving backups to ${THIS_BACKUP_PATH}..."
 mv ${TEMP_BACKUP_PATH} ${THIS_BACKUP_PATH}
 chmod 750 ${THIS_BACKUP_PATH}
-_done
+bcg-done
 
 
 #======================================================================================================================
@@ -63,9 +63,9 @@ _done
 
 if [ "${BACKUP_KEEP_FOR_DAYS}" -gt 0 ] ; then
 
-    _echo "Deleting backups older than ${BACKUP_KEEP_FOR_DAYS} days..."
+    bcg-echo "Deleting backups older than ${BACKUP_KEEP_FOR_DAYS} days..."
     MMIN=$((60*24*${BACKUP_KEEP_FOR_DAYS}))
     find ${BACKUP_PATH}/* -type d -mmin +${MMIN} | xargs rm -rf
-    _done
+    bcg-done
 
 fi

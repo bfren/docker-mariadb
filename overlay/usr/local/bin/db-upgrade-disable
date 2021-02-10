@@ -7,4 +7,4 @@ set -euo pipefail
 # Use base executable to disable upgrade service
 #======================================================================================================================
 
-_disable "mariadb-upgrade"
+bcg-disable "mariadb-upgrade"

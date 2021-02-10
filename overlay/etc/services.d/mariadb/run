@@ -10,7 +10,7 @@ set -euo pipefail
 if [ -d "/var/lib/mysql/mysql" ] ; then
 
     # start database
-    _echo "Starting mariadbd-safe"
+    bcg-echo "Starting mariadbd-safe"
     mariadbd-safe
 
 
@@ -26,28 +26,28 @@ if [ -d "/var/lib/mysql/mysql" ] ; then
 else
 
     # disable upgrade service
-    _echo "Database server not yet installed"
+    bcg-echo "Database server not yet installed"
     db-upgrade-disable
 
     # check for root password
-    [[ -z "${MARIADB_ROOT_PASSWORD-}" ]] && _error "MARIADB_ROOT_PASSWORD must be set."
+    [[ -z "${MARIADB_ROOT_PASSWORD-}" ]] && bcg-error "MARIADB_ROOT_PASSWORD must be set."
 
     # check for application user and password
-    [[ -z "${MARIADB_USERNAME-}" || -z "${MARIADB_PASSWORD-}" ]] && _error "MARIADB_USERNAME and MARIADB_PASSWORD must be set."
+    [[ -z "${MARIADB_USERNAME-}" || -z "${MARIADB_PASSWORD-}" ]] && bcg-error "MARIADB_USERNAME and MARIADB_PASSWORD must be set."
 
     # run server installation
-    _echo "Running mariadb-install-db..."
+    bcg-echo "Running mariadb-install-db..."
     mariadb-install-db --user=mysql --datadir="/var/lib/mysql"
-    _done
+    bcg-done
 
     # generate init file
     INIT_FILE=/tmp/init.sql
-    _echo "Generating initialisation file ${INIT_FILE}..."
+    bcg-echo "Generating initialisation file ${INIT_FILE}..."
     s6-setuidgid mysql /etc/db/generate-init-file "${INIT_FILE}"
-    _done
+    bcg-done
 
     # start server with temporary init file
-    _echo "Starting mariadbd-safe with initialisation file"
+    bcg-echo "Starting mariadbd-safe with initialisation file"
     mariadbd-safe --init-file=${INIT_FILE}
 
 fi
