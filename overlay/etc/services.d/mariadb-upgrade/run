@@ -7,7 +7,7 @@ set -euo pipefail
 # Wait until MariaDB is running before attempting the upgrade
 #======================================================================================================================
 
-if [ -d "/var/lib/mysql/mysql" ] && [ ! -z "$(pidof mariadbd)" ]; then
+if [ -d "${DATA_DIR}/mysql" ] && [ ! -z "$(pidof mariadbd)" ]; then
 
     # run upgrade executable
     bcg-echo "$(mariadb --version)"

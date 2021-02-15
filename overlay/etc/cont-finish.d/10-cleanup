@@ -9,5 +9,5 @@ set -euo pipefail
 
 bcg-echo "Cleaning up temporary files and old process IDs..."
 rm -rf /tmp/*
-rm /var/lib/mysql/*.pid > /dev/null 2>&1
+rm ${DATA_DIR}/*.pid > /dev/null 2>&1
 bcg-done
