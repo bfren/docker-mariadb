@@ -124,9 +124,9 @@ bcg-done
 
 bcg-echo "Verifying certificates..."
 if [ openssl verify -CAfile ${CA_CERT} ${SERVER_CERT} ${CLIENT_CERT} ] ; then
-    rm -f ${SERVER_REQ} ${CLIENT_REQ}
+    #rm -f ${SERVER_REQ} ${CLIENT_REQ}
     bcg-done
 else
-    bcg-rmrf "${SSL}/*"
+    #bcg-rmrf "${SSL}/*"
     bcg-error "Unable to verify SSL certificates."
 fi
