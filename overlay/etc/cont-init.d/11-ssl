@@ -15,7 +15,7 @@ set -euo pipefail
 #======================================================================================================================
 
 if [ -e ${SERVER_CERT} ] ; then
-    bcg-ok "SSL certificates already exist."
+    bcg-ok "Using existing SSL certificates."
     exit 0
 fi
 
