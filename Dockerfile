@@ -14,10 +14,6 @@ ENV BACKUP_COMPRESS_FILES="0" \
 
 EXPOSE 3306
 
-RUN mkdir -p /var/lib/mysql \
-    && mkdir -p /var/lib/backup
-VOLUME [ "/var/lib/mysql", "/var/lib/backup" ]
-
 COPY ./MARIADB_BUILD /tmp/MARIADB_BUILD
 RUN export MARIADB_VERSION=$(cat /tmp/MARIADB_BUILD) \
     && echo "MariaDB v${MARIADB_VERSION}" \
@@ -33,5 +29,7 @@ RUN export MARIADB_VERSION=$(cat /tmp/MARIADB_BUILD) \
     && echo "0 */8 * * * /usr/local/bin/db-backup" >> /etc/crontabs/root
 
 COPY ./overlay /
+
+VOLUME [ "/var/lib/mysql", "/var/lib/backup", "/etc/my.cnf.d" ]
 
 HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=5 CMD [ "healthcheck" ]
