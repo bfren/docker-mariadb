@@ -4,15 +4,7 @@ set -euo pipefail
 
 
 #======================================================================================================================
-# Config is re-written every time in case environment variables have been changed
+# Call db-generate-config executable
 #======================================================================================================================
 
-bcg-echo "Writing MariaDB config..."
-esh -o /etc/my.cnf \
-    /etc/templates/my.cnf.esh
-bcg-done
-
-bcg-echo "Setting MariaDB config permissions..."
-chown mysql:mysql /etc/my.cnf
-chmod 0444 /etc/my.cnf
-bcg-done
+db-generate-config

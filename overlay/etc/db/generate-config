@@ -4,7 +4,14 @@ set -euo pipefail
 
 
 #======================================================================================================================
-# Forward MariaDB log to Docker
+# Config is re-written every time in case environment variables have been changed
 #======================================================================================================================
 
-bcg-forward "mariadb-log" ${ERROR_LOG}
+bcg-echo "Writing MariaDB config..."
+esh -o ${MY_CNF} \
+    /etc/templates/my.cnf.esh
+bcg-done
+
+bcg-echo "Setting MariaDB config permissions to be read-only..."
+chmod 0444 ${MY_CNF}
+bcg-done

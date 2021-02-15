@@ -1,10 +1,10 @@
 #!/usr/bin/with-contenv bash
 
-set -euo pipefail
+set -eo pipefail
 
 
 #======================================================================================================================
-# Forward MariaDB log to Docker
+# Run generate-config executable
 #======================================================================================================================
 
-bcg-forward "mariadb-log" ${ERROR_LOG}
+s6-setuidgid mariadb /etc/db/generate-config
