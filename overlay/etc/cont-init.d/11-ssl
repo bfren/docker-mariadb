@@ -14,7 +14,7 @@ set -euo pipefail
 # If server certificate exists, exit script
 #======================================================================================================================
 
-if [ -e ${SERVER_CERT} ] ; then
+if [ -e ${CLIENT_CERT} ] ; then
     bcg-ok "Using existing SSL certificates."
     exit 0
 fi

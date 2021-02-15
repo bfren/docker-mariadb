@@ -12,7 +12,7 @@ log_warnings=<%= ${MARIADB_LOG_WARNINGS} %>
 character_set_server=<%= ${MARIADB_CHARACTER_SET} %>
 collation_server=<%= ${MARIADB_COLLATION} %>
 
-<% if [ "${ENABLE_SSL-}" = "1" ] && [ -e ${SERVER_CERT} ] ; then -%>
+<% if [ "${ENABLE_SSL-}" = "1" ] && [ -e ${CLIENT_CERT} ] ; then -%>
 # SSL paths
 ssl-ca=<%= ${CA_CERT} %>
 ssl-cert=<%= ${SERVER_CERT} %>
