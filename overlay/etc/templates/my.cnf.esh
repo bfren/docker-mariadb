@@ -4,8 +4,10 @@
 
 # This group is read by the server
 [mariadb]
+datadir=<%= ${DATA_DIR} %>
+socket=<%= ${DATA_DIR} %>/mysql.sock
 
-log_error=/var/log/mariadb/error.log
+log_error=<%= ${ERROR_LOG} %>
 log_warnings=<%= ${MARIADB_LOG_WARNINGS} %>
 
 character_set_server=<%= ${MARIADB_CHARACTER_SET} %>
@@ -15,4 +17,4 @@ collation_server=<%= ${MARIADB_COLLATION} %>
 symbolic-links=0
 
 # include all files from the config directory
-!includedir /etc/my.cnf.d
+!includedir <%= ${MY_CNF_D} %>
