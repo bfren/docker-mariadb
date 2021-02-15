@@ -23,8 +23,8 @@ EXPOSE 3306
 COPY ./MARIADB_BUILD /tmp/MARIADB_BUILD
 RUN export MARIADB_VERSION=$(cat /tmp/MARIADB_BUILD) \
     && echo "MariaDB v${MARIADB_VERSION}" \
-    && addgroup --gid ${GID:-1000} dbadm \
-    && adduser --uid ${UID:-1000} --no-create-home --disabled-password --ingroup dbadm dbadm \
+    && addgroup --gid 1000 dbadm \
+    && adduser --uid 1000 --no-create-home --disabled-password --ingroup dbadm dbadm \
     && apk -U upgrade \
     && apk add \
         bash \
