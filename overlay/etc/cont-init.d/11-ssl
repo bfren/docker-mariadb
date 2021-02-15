@@ -15,7 +15,12 @@ set -euo pipefail
 #======================================================================================================================
 
 # ensure SSL directory exists
-[[ ! -d ${SSL} ]] && mkdir -p ${SSL} && chown dbadm:dbadm ${SSL}
+if [ ! -d ${SSL} ] ; then
+    bcg-echo "Creating ${SSL}..."
+    mkdir -p ${SSL}
+    chown dbadm:dbadm ${SSL}
+    bcg-done
+fi
 
 
 #======================================================================================================================
