@@ -58,6 +58,7 @@ sign-cert() {
         -CAkey ${CA_KEY} \
         -set_serial 01 \
         -out ${2}
+    rm -f "${1}"
 }
 
 
@@ -134,7 +135,6 @@ bcg-done
 
 bcg-echo "Verifying certificates..."
 if [ openssl verify -CAfile ${CA_CERT} ${SERVER_CERT} ${CLIENT_CERT} ] ; then
-    #rm -f ${SERVER_REQ} ${CLIENT_REQ}
     bcg-done
 else
     #bcg-rmrf "${SSL}/*"
