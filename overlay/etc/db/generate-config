@@ -8,11 +8,10 @@ set -euo pipefail
 #======================================================================================================================
 
 bcg-echo "Writing MariaDB config..."
-esh -o /etc/my.cnf \
-    /etc/templates/my.cnf.tmpl
+esh -o ${MY_CNF} \
+    /etc/templates/my.cnf.esh
 bcg-done
 
-bcg-echo "Setting MariaDB config permissions..."
-chown mysql:mysql /etc/my.cnf
-chmod 0444 /etc/my.cnf
+bcg-echo "Setting MariaDB config permissions to be read-only..."
+chmod 0444 ${MY_CNF}
 bcg-done

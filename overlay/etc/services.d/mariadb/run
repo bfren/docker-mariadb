@@ -7,11 +7,11 @@ set -euo pipefail
 # If the mysql directory exists, the server has already been initialised
 #======================================================================================================================
 
-if [ -d "/var/lib/mysql/mysql" ] ; then
+if [ -d "${DATA_DIR}/mysql" ] ; then
 
     # start database
     bcg-echo "Starting mariadbd-safe"
-    mariadbd-safe
+    mariadbd-safe --user=dbadm
 
 
 #======================================================================================================================
@@ -37,17 +37,17 @@ else
 
     # run server installation
     bcg-echo "Running mariadb-install-db..."
-    mariadb-install-db --user=mysql --datadir="/var/lib/mysql"
+    mariadb-install-db --user=dbadm --datadir=${DATA_DIR}
     bcg-done
 
     # generate init file
     INIT_FILE=/tmp/init.sql
     bcg-echo "Generating initialisation file ${INIT_FILE}..."
-    s6-setuidgid mysql /etc/db/generate-init-file "${INIT_FILE}"
+    s6-setuidgid dbadm /etc/db/generate-init-file "${INIT_FILE}"
     bcg-done
 
     # start server with temporary init file
     bcg-echo "Starting mariadbd-safe with initialisation file"
-    mariadbd-safe --init-file=${INIT_FILE}
+    mariadbd-safe --user=dbadm --init-file=${INIT_FILE}
 
 fi

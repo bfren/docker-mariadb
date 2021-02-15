@@ -1,5 +1,6 @@
 /usr/local/bin/db-backup false root:root 0500 0500
 /usr/local/bin/db-export false root:root 0500 0500
+/usr/local/bin/db-generate-config false root:root 0500 0500
 /usr/local/bin/db-import false root:root 0500 0500
 /usr/local/bin/db-upgrade false root:root 0500 0500
 /usr/local/bin/db-upgrade-disable false root:root 0500 0500

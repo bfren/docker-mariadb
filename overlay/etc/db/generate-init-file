@@ -46,9 +46,9 @@ echo "ALTER USER 'root'@'localhost' IDENTIFIED BY '${MARIADB_ROOT_PASSWORD}';" >
 echo "GRANT ALL ON *.* TO 'root'@'localhost' WITH GRANT OPTION;" >> ${INIT_FILE}
 echo "FLUSH PRIVILEGES;" >> ${INIT_FILE}
 
-# delete the mysql user (no need to use up the space)
-bcg-echo " .. delete mysql user"
-echo "DROP USER IF EXISTS mysql@localhost;" >> ${INIT_FILE}
+# delete the dbadm user (no need to use up the space)
+bcg-echo " .. delete dbadm user"
+echo "DROP USER IF EXISTS dbadm@localhost;" >> ${INIT_FILE}
 
 # delete the test database (no need to use up the space)
 bcg-echo " .. delete test database"

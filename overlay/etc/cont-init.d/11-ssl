@@ -4,10 +4,7 @@ set -euo pipefail
 
 
 #======================================================================================================================
-# Old PIDs clog up the mysql directory
+# If SSL is not enabled, exit script gracefully
 #======================================================================================================================
 
-bcg-echo "Cleaning up temporary files and old process IDs..."
-rm -rf /tmp/*
-rm ${DATA_DIR}/*.pid > /dev/null 2>&1
-bcg-done
+[[ "${ENABLE_SSL-}" != "1" ]] && bcg-echo "SSL is not enabled." && exit 0
