@@ -11,7 +11,7 @@ set -euo pipefail
 #   2   Variable value
 #======================================================================================================================
 
-add_env() { bcg-echo "${1}=${2}" ; echo ${2} > /var/run/s6/container_environment/${1}; }
+add_env() { bcg-echo "${1}=${2}" ; printf "%s" ${2} > /var/run/s6/container_environment/${1}; }
 
 # Database configuration
 MY_CNF=/etc/my.cnf
@@ -26,15 +26,17 @@ add_env "BACKUP_DIR" "/var/lib/backup"
 add_env "ERROR_LOG" "/var/log/mariadb/error.log"
 
 # SSL configuration
-SSL=${MY_CNF_D}/ssl
-add_env "SSL" "${SSL}"
-add_env "CA_KEY" "${SSL}/ca-key.pem"
-add_env "CA_CERT" "${SSL}/ca-cert.pem"
-add_env "SERVER_KEY" "${SSL}/server-key.pem"
-add_env "SERVER_KEY_TMP" "${SSL}/server-key.tmp"
-add_env "SERVER_REQ" "${SSL}/server-req.pem"
-add_env "SERVER_CERT" "${SSL}/server-cert.pem"
-add_env "CLIENT_KEY" "${SSL}/client-key.pem"
-add_env "CLIENT_KEY_TMP" "${SSL}/client-key.tmp"
-add_env "CLIENT_REQ" "${SSL}/client-req.pem"
-add_env "CLIENT_CERT" "${SSL}/client-server.pem"
+if [ "${ENABLE_SSL-}" = "1" ] ; then
+    MY_CNF_D_SSL=${MY_CNF_D}/ssl
+    add_env "MY_CNF_D_SSL" "${MY_CNF_D_SSL}"
+    add_env "CA_KEY" "${MY_CNF_D_SSL}/ca-key.pem"
+    add_env "CA_CERT" "${MY_CNF_D_SSL}/ca-cert.pem"
+    add_env "SERVER_KEY" "${MY_CNF_D_SSL}/server-key.pem"
+    add_env "SERVER_KEY_TMP" "${MY_CNF_D_SSL}/server-key.tmp"
+    add_env "SERVER_REQ" "${MY_CNF_D_SSL}/server-req.pem"
+    add_env "SERVER_CERT" "${MY_CNF_D_SSL}/server-cert.pem"
+    add_env "CLIENT_KEY" "${MY_CNF_D_SSL}/client-key.pem"
+    add_env "CLIENT_KEY_TMP" "${MY_CNF_D_SSL}/client-key.tmp"
+    add_env "CLIENT_REQ" "${MY_CNF_D_SSL}/client-req.pem"
+    add_env "CLIENT_CERT" "${MY_CNF_D_SSL}/client-cert.pem"
+fi

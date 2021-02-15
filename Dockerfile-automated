@@ -28,6 +28,7 @@ RUN export MARIADB_VERSION=$(cat /tmp/MARIADB_BUILD) \
     && apk -U upgrade \
     && apk add \
         bash \
+        openssl \
         mariadb=${MARIADB_VERSION} \
         mariadb-client=${MARIADB_VERSION} \
         mariadb-server-utils=${MARIADB_VERSION} \
@@ -36,6 +37,6 @@ RUN export MARIADB_VERSION=$(cat /tmp/MARIADB_BUILD) \
 
 COPY ./overlay /
 
-VOLUME [ "/var/lib/mysql", "/var/lib/backup", "/etc/my.cnf.d" ]
+VOLUME [ "/var/lib/mysql", "/var/lib/backup", "/etc/my.cnf.d", "/ssl" ]
 
 HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=5 CMD [ "healthcheck" ]
