@@ -9,7 +9,7 @@ set -euo pipefail
 
 bcg-echo "Writing MariaDB config..."
 esh -o /etc/my.cnf \
-    /etc/templates/my.cnf.tmpl
+    /etc/templates/my.cnf.esh
 bcg-done
 
 bcg-echo "Setting MariaDB config permissions..."

@@ -1,0 +1,40 @@
+#!/usr/bin/with-contenv bash
+
+set -euo pipefail
+
+
+#======================================================================================================================
+# Add an environment variable to the S6 environment.
+#
+# Arguments:
+#   1   Variable name
+#   2   Variable value
+#======================================================================================================================
+
+add_env() { bcg-echo "${1}=${2}" ; echo ${2} > /var/run/s6/container_environment/${1}; }
+
+# Database configuration
+MY_CNF=/etc/my.cnf
+add_env "MY_CNF" "${MY_CNF}"
+
+MY_CNF_D=${MY_CNF}.d
+add_env "MY_CNF_D" "${MY_CNF_D}"
+
+add_env "DATA_DIR" "/var/lib/mysql"
+add_env "BACKUP_DIR" "/var/lib/backup"
+
+add_env "ERROR_LOG" "/var/log/mariadb/error.log"
+
+# SSL configuration
+SSL=${MY_CNF_D}/ssl
+add_env "SSL" "${SSL}"
+add_env "CA_KEY" "${SSL}/ca-key.pem"
+add_env "CA_CERT" "${SSL}/ca-cert.pem"
+add_env "SERVER_KEY" "${SSL}/server-key.pem"
+add_env "SERVER_KEY_TMP" "${SSL}/server-key.tmp"
+add_env "SERVER_REQ" "${SSL}/server-req.pem"
+add_env "SERVER_CERT" "${SSL}/server-cert.pem"
+add_env "CLIENT_KEY" "${SSL}/client-key.pem"
+add_env "CLIENT_KEY_TMP" "${SSL}/client-key.tmp"
+add_env "CLIENT_REQ" "${SSL}/client-req.pem"
+add_env "CLIENT_CERT" "${SSL}/client-server.pem"
