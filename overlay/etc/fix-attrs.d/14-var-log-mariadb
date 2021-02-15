@@ -1,1 +1,1 @@
-/var/log/mariadb true mysql:mysql 0644 0755
+/var/log/mariadb true mariadb:mariadb 0644 0755

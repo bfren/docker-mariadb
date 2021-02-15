@@ -37,13 +37,13 @@ else
 
     # run server installation
     bcg-echo "Running mariadb-install-db..."
-    mariadb-install-db --user=mysql --datadir=${DATA_DIR}
+    mariadb-install-db --user=mariadb --datadir=${DATA_DIR}
     bcg-done
 
     # generate init file
     INIT_FILE=/tmp/init.sql
     bcg-echo "Generating initialisation file ${INIT_FILE}..."
-    s6-setuidgid mysql /etc/db/generate-init-file "${INIT_FILE}"
+    s6-setuidgid mariadb /etc/db/generate-init-file "${INIT_FILE}"
     bcg-done
 
     # start server with temporary init file

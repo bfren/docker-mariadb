@@ -7,4 +7,4 @@ set -euo pipefail
 # Run /etc/db/import executable
 #======================================================================================================================
 
-s6-setuidgid mysql /etc/db/import
+s6-setuidgid mariadb /etc/db/import

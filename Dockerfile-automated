@@ -17,8 +17,8 @@ EXPOSE 3306
 COPY ./MARIADB_BUILD /tmp/MARIADB_BUILD
 RUN export MARIADB_VERSION=$(cat /tmp/MARIADB_BUILD) \
     && echo "MariaDB v${MARIADB_VERSION}" \
-    && addgroup --gid 1000 mysql \
-    && adduser --uid 1000 --no-create-home --disabled-password --ingroup mysql mysql \
+    && addgroup --gid 1000 mariadb \
+    && adduser --uid 1000 --no-create-home --disabled-password --ingroup mariadb mariadb \
     && apk -U upgrade \
     && apk add \
         bash \

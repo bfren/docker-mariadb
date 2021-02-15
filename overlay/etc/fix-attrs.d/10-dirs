@@ -1,2 +1,2 @@
-/var/lib/mysql true mysql:mysql 0770 0750
-/var/lib/backup true mysql:mysql 0440 0750
+/var/lib/mysql true mariadb:mariadb 0770 0750
+/var/lib/backup true mariadb:mariadb 0440 0750
