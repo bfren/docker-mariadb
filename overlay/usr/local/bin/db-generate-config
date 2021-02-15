@@ -7,4 +7,4 @@ set -eo pipefail
 # Run generate-config executable
 #======================================================================================================================
 
-s6-setuidgid mariadb /etc/db/generate-config
+s6-setuidgid mysql /etc/db/generate-config
