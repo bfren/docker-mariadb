@@ -143,5 +143,5 @@ fi
 #======================================================================================================================
 
 bcg-error "Unable to verify SSL certificates: clearing SSL directory..."
-rm -rf "${SSL}/*"
+rm -rf "${MY_CNF_D_SSL}/*"
 bcg-done
