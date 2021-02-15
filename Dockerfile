@@ -6,10 +6,16 @@ LABEL maintainer="Ben Green <ben@bcgdesign.com>" \
     org.label-schema.vendor="Ben Green" \
     org.label-schema.schema-version="1.0"
 
-ENV BACKUP_COMPRESS_FILES="0" \
+ENV \
+    # set to "1" to compress backup sql files
+    BACKUP_COMPRESS_FILES="0" \
+    # the number of days after which backups will be deleted
     BACKUP_KEEP_FOR_DAYS="28" \
+    # see https://mariadb.com/kb/en/server-system-variables/#character_set_server
     MARIADB_CHARACTER_SET="utf8" \
+    # see https://mariadb.com/kb/en/server-system-variables/#collation_server
     MARIADB_COLLATION="utf8_general_ci" \
+    # see https://mariadb.com/kb/en/server-system-variables/#log_warnings
     MARIADB_LOG_WARNINGS="2"
 
 EXPOSE 3306
@@ -17,8 +23,8 @@ EXPOSE 3306
 COPY ./MARIADB_BUILD /tmp/MARIADB_BUILD
 RUN export MARIADB_VERSION=$(cat /tmp/MARIADB_BUILD) \
     && echo "MariaDB v${MARIADB_VERSION}" \
-    && addgroup --gid 1000 mariadb \
-    && adduser --uid 1000 --no-create-home --disabled-password --ingroup mariadb mariadb \
+    && addgroup --gid ${GID:-1000} dbadm \
+    && adduser --uid ${UID:-1000} --no-create-home --disabled-password --ingroup dbadm dbadm \
     && apk -U upgrade \
     && apk add \
         bash \
