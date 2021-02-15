@@ -17,7 +17,7 @@ generate-request() {
     openssl req
         -nodes \
         -keyout ${2} \
-        -newkey rsa:${3} \
+        -newkey rsa:${3:-4096} \
         -out ${4} \
         -subj "/C=NA/ST=NA/L=NA/O=NA/OU=NA/CN=MariaDB ${1}"
 }
@@ -93,7 +93,7 @@ bcg-done
 
 # generate server key and request
 bcg-echo "Generating server key and request..."
-generate-request "Server" ${SERVER_KEY_TMP} ${SSL_SERVER_KEY_BITS:-4096} ${SERVER_REQ}
+generate-request "Server" ${SERVER_KEY_TMP} "${SSL_SERVER_KEY_BITS-}" ${SERVER_REQ}
 bcg-done
 
 # process server key
@@ -113,7 +113,7 @@ bcg-done
 
 # generate client key and request
 bcg-echo "Generating client key and request..."
-generate-request "Client" ${CLIENT_KEY_TMP} ${SSL_CLIENT_KEY_BITS:-4096} ${CLIENT_REQ}
+generate-request "Client" ${CLIENT_KEY_TMP} "${SSL_CLIENT_KEY_BITS-}" ${CLIENT_REQ}
 bcg-done
 
 # process client key
