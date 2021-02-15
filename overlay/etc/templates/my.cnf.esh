@@ -5,7 +5,6 @@
 # This group is read by the server
 [mariadb]
 datadir=<%= ${DATA_DIR} %>
-socket=<%= ${DATA_DIR} %>/mysql.sock
 
 log_error=<%= ${ERROR_LOG} %>
 log_warnings=<%= ${MARIADB_LOG_WARNINGS} %>
