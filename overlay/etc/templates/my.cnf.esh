@@ -13,6 +13,15 @@ log_warnings=<%= ${MARIADB_LOG_WARNINGS} %>
 character_set_server=<%= ${MARIADB_CHARACTER_SET} %>
 collation_server=<%= ${MARIADB_COLLATION} %>
 
+<% if [ "${ENABLE_SSL-}" = "1" ] && [ -e ${SERVER_CERT} ] ; then -%>
+# SSL paths
+ssl-ca=<%= ${CA_CERT} %>
+ssl-cert=<%= ${SERVER_CERT} %>
+ssl-key=<%= ${SERVER_KEY} %>
+# Don't use old TLS versions
+tls_version=TLSv1.2,TLSv1.3
+<% fi -%>
+
 # Disabling symbolic-links is recommended to prevent assorted security risks
 symbolic-links=0
 
