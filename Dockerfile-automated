@@ -28,6 +28,7 @@ RUN export MARIADB_VERSION=$(cat /tmp/MARIADB_BUILD) \
     && apk -U upgrade \
     && apk add \
         bash \
+        openssl \
         mariadb=${MARIADB_VERSION} \
         mariadb-client=${MARIADB_VERSION} \
         mariadb-server-utils=${MARIADB_VERSION} \
