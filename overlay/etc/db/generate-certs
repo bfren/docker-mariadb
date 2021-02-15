@@ -1,0 +1,115 @@
+#!/usr/bin/with-contenv bash
+
+set -euo pipefail
+
+
+#======================================================================================================================
+# For the commands and the following sequence of commands,
+# see https://www.cyberciti.biz/faq/how-to-setup-mariadb-ssl-and-secure-connections-from-clients/
+#======================================================================================================================
+
+
+#======================================================================================================================
+# Generate CA key and certificate
+#======================================================================================================================
+
+# generate CA key
+bcg-echo "Generating CA key ${CA_KEY}..."
+openssl genrsa ${SSL_CA_KEY_BITS:-4096} > ${CA_KEY}
+bcg-done
+
+# generate CA certificate
+bcg-echo "Generating CA certificate ${CA_CERT}..."
+openssl req \
+    -x509 \
+    -nodes \
+    -days ${SSL_DAYS:-3650} \
+    -key ${CA_KEY} \
+    -out ${CA_CERT} \
+    -subj "/C=NA/ST=NA/L=NA/O=NA/OU=NA/CN=MariaDB Admin"
+bcg-done
+
+
+#======================================================================================================================
+# Generate server key and certificate
+#======================================================================================================================
+
+# generate server key and request
+bcg-echo "Generating server key and request..."
+openssl req \
+    -nodes \
+    -days ${SSL_DAYS:-3650} \
+    -newkey rsa:${SSL_SERVER_KEY_BITS:-4096} \
+    -keyout ${SERVER_KEY_TMP} \
+    -out ${SERVER_REQ} \
+    -subj "/C=NA/ST=NA/L=NA/O=NA/OU=NA/CN=MariaDB Server"
+bcg-done
+
+# process server key
+bcg-echo "Processing server key ${SERVER_KEY}..."
+openssl rsa \
+    -in ${SERVER_KEY_TMP} \
+    -out ${SERVER_KEY}
+rm -f ${SERVER_KEY_TMP}
+bcg-done
+
+# sign the server certificate
+bcg-echo "Signing server certificate ${SERVER_CERT}..."
+openssl x509 \
+    -req \
+    -days ${SSL_DAYS:-3650} \
+    -in ${SERVER_REQ} \
+    -ca ${CA_CERT} \
+    -CAkey ${CA_KEY} \
+    -set_serial 01 \
+    -out ${SERVER_CERT}
+bcg-done
+
+
+#======================================================================================================================
+# Generate client key and certificate
+#======================================================================================================================
+
+# generate client key and request
+bcg-echo "Generating client key and request..."
+openssl req
+    -nodes \
+    -days ${SSL_DAYS:-3650} \
+    -newkey rsa:${SSL_CLIENT_KEY_BITS:-4096}
+    -keyout ${CLIENT_KEY} \
+    -out ${CLIENT_REQ} \
+    -subj "/C=NA/ST=NA/L=NA/O=NA/OU=NA/CN=MariaDB Client"
+bcg-done
+
+# process client key
+bcg-echo "Processing client key ${CLIENT_KEY}..."
+openssl rsa \
+    -in ${CLIENT_KEY_TMP} \
+    -out ${CLIENT_KEY}
+bcg-done
+
+# sign the server certificate
+bcg-echo "Signing client certificate ${CLIENT_CERT}..."
+openssl x509 \
+    -req \
+    -days ${SSL_DAYS:-3650} \
+    -in ${CLIENT_REQ} \
+    -ca ${CA_CERT} \
+    -CAkey ${CA_KEY} \
+    -set_serial 01 \
+    -out ${CLIENT_CERT}
+bcg-done
+
+
+#======================================================================================================================
+# Verify client and server certificates
+#======================================================================================================================
+
+bcg-echo "Verifying certificates..."
+if [ openssl verify -CAfile ${CA_CERT} ${SERVER_CERT} ${CLIENT_CERT} ] ; then
+    rm -f ${SERVER_REQ} ${SERVER_KEY_TMP} ${CLIENT_REQ} ${CLIENT_KEY_TMP}
+    bcg-done
+else
+    rm -rf ${SSL}/*
+    bcg-error "Unable to verify SSL certificates."
+fi

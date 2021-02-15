@@ -1,5 +1,6 @@
 /etc/db/backup false dbadm:dbadm 0500 0500
 /etc/db/export false dbadm:dbadm 0500 0500
+/etc/db/generate-certs false dbadm:dbadm 0500 0500
 /etc/db/generate-config false dbadm:dbadm 0500 0500
 /etc/db/generate-init-file false dbadm:dbadm 0500 0500
 /etc/db/import false dbadm:dbadm 0500 0500
