@@ -14,10 +14,8 @@ set -euo pipefail
 #======================================================================================================================
 
 generate-request() {
-    openssl req \
-        #-x509 \
+    openssl req
         -nodes \
-        #-days ${SSL_DAYS:-3650} \
         -keyout ${2} \
         -newkey rsa:${3} \
         -out ${4} \
