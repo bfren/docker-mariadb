@@ -7,4 +7,4 @@ set -eo pipefail
 # Run /etc/db/generate-config executable
 #======================================================================================================================
 
-s6-setuidgid dbadm /etc/db/generate-config
+/etc/db/generate-config

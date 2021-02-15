@@ -13,5 +13,6 @@ esh -o ${MY_CNF} \
 bcg-done
 
 bcg-echo "Setting MariaDB config permissions to be read-only..."
+chown dbadm:dbadm
 chmod 0444 ${MY_CNF}
 bcg-done
