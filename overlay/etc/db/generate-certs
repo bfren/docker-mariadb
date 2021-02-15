@@ -69,7 +69,6 @@ bcg-done
 # process server key
 bcg-echo "Processing server key ${SERVER_KEY}..."
 process-key ${SERVER_KEY_TMP} ${SERVER_KEY}
-rm -f ${SERVER_KEY_TMP}
 bcg-done
 
 # sign the server certificate
@@ -84,7 +83,7 @@ bcg-done
 
 # generate client key and request
 bcg-echo "Generating client key and request..."
-generate "Server" ${CLIENT_KEY_TMP} ${SSL_CLIENT_KEY_BITS:-4096} ${CLIENT_REQ}
+generate "Client" ${CLIENT_KEY_TMP} ${SSL_CLIENT_KEY_BITS:-4096} ${CLIENT_REQ}
 bcg-done
 
 # process client key
