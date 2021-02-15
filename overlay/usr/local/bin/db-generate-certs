@@ -7,4 +7,5 @@ set -eo pipefail
 # Run /etc/db/generate-certs executable
 #======================================================================================================================
 
-s6-setuidgid dbadm /etc/db/generate-certs
+/etc/db/generate-certs
+bcg-fix-attrs

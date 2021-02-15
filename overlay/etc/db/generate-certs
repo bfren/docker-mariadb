@@ -14,7 +14,7 @@ set -euo pipefail
 #======================================================================================================================
 
 generate-request() {
-    openssl req
+    openssl req \
         -nodes \
         -keyout ${2} \
         -newkey rsa:${3:-4096} \
@@ -132,9 +132,16 @@ bcg-done
 #======================================================================================================================
 
 bcg-echo "Verifying certificates..."
-if [ openssl verify -CAfile ${CA_CERT} ${SERVER_CERT} ${CLIENT_CERT} ] ; then
+if openssl verify -CAfile ${CA_CERT} ${SERVER_CERT} ${CLIENT_CERT} ; then
     bcg-done
-else
-    #bcg-rmrf "${SSL}/*"
-    bcg-error "Unable to verify SSL certificates."
+    exit 0
 fi
+
+
+#======================================================================================================================
+# Output error and clear directories
+#======================================================================================================================
+
+bcg-error "Unable to verify SSL certificates: clearing SSL directory..."
+rm -rf "${SSL}/*"
+bcg-done

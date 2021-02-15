@@ -18,7 +18,6 @@ set -euo pipefail
 if [ ! -d ${SSL} ] ; then
     bcg-echo "Creating ${SSL}..."
     mkdir -p ${SSL}
-    chown dbadm:dbadm ${SSL}
     bcg-done
 fi
 
