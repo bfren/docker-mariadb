@@ -11,7 +11,7 @@ if [ -d "${DATA_DIR}/mysql" ] ; then
 
     # start database
     bcg-echo "Starting mariadbd-safe"
-    mariadbd-safe
+    mariadbd-safe --user=dbadm
 
 
 #======================================================================================================================
@@ -48,6 +48,6 @@ else
 
     # start server with temporary init file
     bcg-echo "Starting mariadbd-safe with initialisation file"
-    mariadbd-safe --init-file=${INIT_FILE}
+    mariadbd-safe --user=dbadm --init-file=${INIT_FILE}
 
 fi
