@@ -4,12 +4,6 @@ set -euo pipefail
 
 
 #======================================================================================================================
-# For the commands and the following sequence of commands,
-# see https://www.cyberciti.biz/faq/how-to-setup-mariadb-ssl-and-secure-connections-from-clients/
-#======================================================================================================================
-
-
-#======================================================================================================================
 # Generate key and certificate.
 #
 # Arguments
@@ -21,6 +15,7 @@ set -euo pipefail
 
 generate() {
     openssl req \
+        -x509 \
         -nodes \
         -days ${SSL_DAYS:-3650} \
         -keyout ${2} \
@@ -45,6 +40,15 @@ process-key() {
     rm -f "${1}"
 }
 
+
+#======================================================================================================================
+# Sign a certificate using the generated authority.
+#
+# Arguments
+#   1   Path to certificate request
+#   2   Path to certificate
+#======================================================================================================================
+
 sign-cert() {
     openssl x509 \
         -req \
@@ -55,6 +59,12 @@ sign-cert() {
         -set_serial 01 \
         -out ${2}
 }
+
+
+#======================================================================================================================
+# For the commands and the following sequence of commands,
+# see https://www.cyberciti.biz/faq/how-to-setup-mariadb-ssl-and-secure-connections-from-clients/
+#======================================================================================================================
 
 
 #======================================================================================================================
