@@ -94,7 +94,7 @@ openssl x509 \
     -req \
     -days ${SSL_DAYS:-3650} \
     -in ${CLIENT_REQ} \
-    -ca ${CA_CERT} \
+    -CA ${CA_CERT} \
     -CAkey ${CA_KEY} \
     -set_serial 01 \
     -out ${CLIENT_CERT}
