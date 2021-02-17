@@ -4,39 +4,33 @@ set -euo pipefail
 
 
 #======================================================================================================================
-# Add an environment variable to the S6 environment.
-#
-# Arguments:
-#   1   Variable name
-#   2   Variable value
+# Add environment variables.
 #======================================================================================================================
-
-add_env() { bcg-echo "${1}=${2}" ; printf "%s" ${2} > /var/run/s6/container_environment/${1}; }
 
 # Database configuration
 MY_CNF=/etc/my.cnf
-add_env "MY_CNF" "${MY_CNF}"
+bcg-env "MY_CNF" "${MY_CNF}"
 
 MY_CNF_D=${MY_CNF}.d
-add_env "MY_CNF_D" "${MY_CNF_D}"
+bcg-env "MY_CNF_D" "${MY_CNF_D}"
 
-add_env "DATA_DIR" "/var/lib/mysql"
-add_env "BACKUP_DIR" "/var/lib/backup"
+bcg-env "DATA_DIR" "/var/lib/mysql"
+bcg-env "BACKUP_DIR" "/var/lib/backup"
 
-add_env "ERROR_LOG" "/var/log/mariadb/error.log"
+bcg-env "ERROR_LOG" "/var/log/mariadb/error.log"
 
 # SSL configuration
 if [ "${ENABLE_SSL-}" = "1" ] ; then
     MY_CNF_D_SSL=${MY_CNF_D}/ssl
-    add_env "MY_CNF_D_SSL" "${MY_CNF_D_SSL}"
-    add_env "CA_KEY" "${MY_CNF_D_SSL}/ca-key.pem"
-    add_env "CA_CERT" "${MY_CNF_D_SSL}/ca-cert.pem"
-    add_env "SERVER_KEY" "${MY_CNF_D_SSL}/server-key.pem"
-    add_env "SERVER_KEY_TMP" "${MY_CNF_D_SSL}/server-key.tmp"
-    add_env "SERVER_REQ" "${MY_CNF_D_SSL}/server-req.pem"
-    add_env "SERVER_CERT" "${MY_CNF_D_SSL}/server-cert.pem"
-    add_env "CLIENT_KEY" "${MY_CNF_D_SSL}/client-key.pem"
-    add_env "CLIENT_KEY_TMP" "${MY_CNF_D_SSL}/client-key.tmp"
-    add_env "CLIENT_REQ" "${MY_CNF_D_SSL}/client-req.pem"
-    add_env "CLIENT_CERT" "${MY_CNF_D_SSL}/client-cert.pem"
+    bcg-env "MY_CNF_D_SSL" "${MY_CNF_D_SSL}"
+    bcg-env "CA_KEY" "${MY_CNF_D_SSL}/ca-key.pem"
+    bcg-env "CA_CERT" "${MY_CNF_D_SSL}/ca-cert.pem"
+    bcg-env "SERVER_KEY" "${MY_CNF_D_SSL}/server-key.pem"
+    bcg-env "SERVER_KEY_TMP" "${MY_CNF_D_SSL}/server-key.tmp"
+    bcg-env "SERVER_REQ" "${MY_CNF_D_SSL}/server-req.pem"
+    bcg-env "SERVER_CERT" "${MY_CNF_D_SSL}/server-cert.pem"
+    bcg-env "CLIENT_KEY" "${MY_CNF_D_SSL}/client-key.pem"
+    bcg-env "CLIENT_KEY_TMP" "${MY_CNF_D_SSL}/client-key.tmp"
+    bcg-env "CLIENT_REQ" "${MY_CNF_D_SSL}/client-req.pem"
+    bcg-env "CLIENT_CERT" "${MY_CNF_D_SSL}/client-cert.pem"
 fi
