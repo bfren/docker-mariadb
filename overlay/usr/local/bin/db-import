@@ -4,7 +4,7 @@ set -euo pipefail
 
 
 #======================================================================================================================
-# Run /etc/db/import executable
+# Run ${LIB}/mariadb/import executable
 #======================================================================================================================
 
-s6-setuidgid dbadm /etc/db/import
+s6-setuidgid dbadm ${LIB}/mariadb/import

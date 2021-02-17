@@ -4,11 +4,11 @@ set -euo pipefail
 
 
 #======================================================================================================================
-# Run /etc/db/export executable
+# Run ${LIB}/mariadb/export executable
 #======================================================================================================================
 
 if [ $# -eq 1 ] && [ -n "${1}" ] ; then
-    s6-setuidgid dbadm /etc/db/export "${1}"
+    s6-setuidgid dbadm ${LIB}/mariadb/export "${1}"
 else
     bcg-error "db-export: You must specify a database name."
 fi

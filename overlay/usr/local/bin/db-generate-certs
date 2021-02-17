@@ -4,10 +4,10 @@ set -eo pipefail
 
 
 #======================================================================================================================
-# Run /etc/db/generate-certs executable
+# Run ${LIB}/mariadb/generate-certs executable
 #======================================================================================================================
 
-/etc/db/generate-certs
+${LIB}/mariadb/generate-certs
 bcg-fix-attrs
 
 

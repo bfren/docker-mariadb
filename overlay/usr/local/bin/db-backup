@@ -4,7 +4,7 @@ set -eo pipefail
 
 
 #======================================================================================================================
-# Run /etc/db/backup executable
+# Run ${LIB}/mariadb/backup executable
 #======================================================================================================================
 
-s6-setuidgid dbadm /etc/db/backup
+s6-setuidgid dbadm ${LIB}/mariadb/backup

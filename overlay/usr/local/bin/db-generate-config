@@ -4,7 +4,7 @@ set -eo pipefail
 
 
 #======================================================================================================================
-# Run /etc/db/generate-config executable
+# Run ${LIB}/mariadb/generate-config executable
 #======================================================================================================================
 
-/etc/db/generate-config
+${LIB}/mariadb/generate-config
