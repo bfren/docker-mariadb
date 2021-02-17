@@ -8,9 +8,17 @@ LABEL maintainer="Ben Green <ben@bcgdesign.com>" \
 
 ENV \
     # set to "1" to compress backup sql files
-    BACKUP_COMPRESS_FILES="0" \
+    DB_BACKUP_COMPRESS_FILES="0" \
     # the number of days after which backups will be deleted
-    BACKUP_KEEP_FOR_DAYS="28" \
+    DB_BACKUP_KEEP_FOR_DAYS="28" \
+    # the number of days before self-generated SSL certificates will expire
+    DB_SSL_DAYS="3650" \
+    # the size in bits of the CA SSL private key
+    DB_SSL_CA_KEY_BITS="4096" \
+    # the size in bits of the server SSL private key
+    DB_SSL_SERVER_KEY_BITS="4096" \
+    # the size in bits of the client SSL private key
+    DB_SSL_CLIENT_KEY_BITS="4096" \
     # see https://mariadb.com/kb/en/server-system-variables/#character_set_server
     MARIADB_CHARACTER_SET="utf8" \
     # see https://mariadb.com/kb/en/server-system-variables/#collation_server

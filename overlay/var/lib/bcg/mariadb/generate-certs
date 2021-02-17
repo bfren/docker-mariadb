@@ -22,7 +22,7 @@ generate-request() {
     openssl req \
         -nodes \
         -keyout ${2} \
-        -newkey rsa:${3:-4096} \
+        -newkey rsa:${3} \
         -out ${4} \
         -subj "/C=NA/ST=NA/L=NA/O=NA/OU=NA/CN=MariaDB ${1}"
 }
@@ -61,7 +61,7 @@ sign-cert() {
 
     openssl x509 \
         -req \
-        -days ${SSL_DAYS:-3650} \
+        -days ${DB_SSL_DAYS} \
         -in ${1} \
         -CA ${DB_SSL_CA_CERT} \
         -CAkey ${DB_SSL_CA_KEY} \
@@ -90,7 +90,7 @@ sign-cert() {
 
 # generate CA key
 bcg-echo "Generating CA key ${DB_SSL_CA_KEY}..."
-openssl genrsa ${SSL_DB_SSL_CA_KEY_BITS:-4096} > ${DB_SSL_CA_KEY}
+openssl genrsa ${DB_SSL_CA_KEY_BITS} > ${DB_SSL_CA_KEY}
 bcg-done
 
 # generate CA certificate
@@ -98,7 +98,7 @@ bcg-echo "Generating CA certificate ${DB_SSL_CA_CERT}..."
 openssl req \
     -x509 \
     -nodes \
-    -days ${SSL_DAYS:-3650} \
+    -days ${DB_SSL_DAYS} \
     -key ${DB_SSL_CA_KEY} \
     -out ${DB_SSL_CA_CERT} \
     -subj "/C=NA/ST=NA/L=NA/O=NA/OU=NA/CN=MariaDB Admin"
@@ -111,7 +111,7 @@ bcg-done
 
 # generate server key and request
 bcg-echo "Generating server key and request..."
-generate-request "Server" ${DB_SSL_SERVER_KEY_TMP} "${SSL_DB_SSL_SERVER_KEY_BITS-}" ${DB_SSL_SERVER_REQ}
+generate-request "Server" ${DB_SSL_SERVER_KEY_TMP} "${DB_SSL_SERVER_KEY_BITS}" ${DB_SSL_SERVER_REQ}
 bcg-done
 
 # process server key
@@ -131,7 +131,7 @@ bcg-done
 
 # generate client key and request
 bcg-echo "Generating client key and request..."
-generate-request "Client" ${DB_SSL_CLIENT_KEY_TMP} "${SSL_DB_SSL_CLIENT_KEY_BITS-}" ${DB_SSL_CLIENT_REQ}
+generate-request "Client" ${DB_SSL_CLIENT_KEY_TMP} "${DB_SSL_CLIENT_KEY_BITS}" ${DB_SSL_CLIENT_REQ}
 bcg-done
 
 # process client key
