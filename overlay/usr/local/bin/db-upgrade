@@ -7,7 +7,7 @@ set -euo pipefail
 # Check if upgrade is necessary
 #======================================================================================================================
 
-UPGRADE=${DATA_DIR}/mysql_upgrade_info
+UPGRADE=${MARIADB_DATA}/mysql_upgrade_info
 if [ -f ${UPGRADE} ] ; then
     UPGRADE_VERSION=$(cat ${UPGRADE})
     THIS_VERSION=$(mariadb --version)
