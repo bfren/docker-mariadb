@@ -1,6 +1,6 @@
 #!/bin/sh
 
-set -eo pipefail
+set -euo pipefail
 
 
 #======================================================================================================================
@@ -16,7 +16,7 @@ bcg-done
 # Install MariaDB and dependencies.
 #======================================================================================================================
 
-MARIADB_VERSION=$(cat /tmp/MARIADB_BUILD)
+MARIADB_VERSION=$(cat /tmp/MARIADB_VERSION)
 bcg-echo "Installing MariaDB v${MARIADB_VERSION}..."
 apk add --no-cache \
     bash \
