@@ -7,6 +7,9 @@ set -euo pipefail
 # Add environment variables.
 #======================================================================================================================
 
+# Library configuration
+bcg-env "LIB_MARIADB" "${LIB}/mariadb"
+
 # Database configuration
 MY_CNF=/etc/my.cnf
 bcg-env "MY_CNF" "${MY_CNF}"
