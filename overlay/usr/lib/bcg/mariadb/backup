@@ -33,7 +33,7 @@ for DATABASE in ${DATABASES} ; do
     DUMP_FILE="${TEMP_BACKUP_PATH}/${DATABASE}.sql"
 
     # dump database and continue on failure
-    bcg-echo " - ${DATABASE}"
+    bcg-echo " .. ${DATABASE}"
     mariadb-dump --add-locks -uroot -p${MARIADB_ROOT_PASSWORD} ${DATABASE} > ${DUMP_FILE} || true
 
     ## compress file
@@ -51,8 +51,6 @@ bcg-echo "Moving backups to ${THIS_BACKUP_PATH}..."
 mv ${TEMP_BACKUP_PATH} ${THIS_BACKUP_PATH}
 bcg-done
 
-bcg-fix-attrs
-
 
 #======================================================================================================================
 # Remove old backups.
@@ -62,7 +60,7 @@ if [ "${MARIADB_BACKUP_KEEP_FOR_DAYS}" -gt 0 ] ; then
 
     bcg-echo "Deleting backups older than ${MARIADB_BACKUP_KEEP_FOR_DAYS} days..."
     MMIN=$((60*24*${MARIADB_BACKUP_KEEP_FOR_DAYS}))
-    find ${BACKUP_PATH}/* -type d -mmin +${MMIN} | xargs rm -rf
+    find ${MARIADB_BACKUP}/* -type d -mmin +${MMIN} | xargs rm -rf
     bcg-done
 
 fi
