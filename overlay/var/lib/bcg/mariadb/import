@@ -4,11 +4,11 @@ set -euo pipefail
 
 
 #======================================================================================================================
-# Get import files (from backup directory)
+# Get import files (from backup directory).
 #======================================================================================================================
 
-bcg-echo "Importing batch files from /var/lib/backup..."
-for FILE in /var/lib/backup/*.sql ; do
+bcg-echo "Importing SQL files from ${BACKUP_DIR}..."
+for FILE in ${BACKUP_DIR}/*.sql ; do
 
     # split out database name from file
     NAME=$(basename -- "${FILE}")

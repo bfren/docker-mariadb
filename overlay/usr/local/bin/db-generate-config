@@ -1,10 +1,10 @@
 #!/usr/bin/with-contenv bash
 
-set -eo pipefail
+set -euo pipefail
 
 
 #======================================================================================================================
-# Run ${LIB}/mariadb/generate-config executable
+# Run library generate-config executable.
 #======================================================================================================================
 
-${LIB}/mariadb/generate-config
+${LIB_MARIADB}/generate-config

@@ -1,10 +1,10 @@
 #!/usr/bin/with-contenv bash
 
-set -eo pipefail
+set -euo pipefail
 
 
 #======================================================================================================================
-# Run ${LIB}/mariadb/backup executable
+# Run library backup executable.
 #======================================================================================================================
 
-s6-setuidgid dbadm ${LIB}/mariadb/backup
+s6-setuidgid dbadm ${LIB_MARIADB}/backup

@@ -4,7 +4,7 @@ set -euo pipefail
 
 
 #======================================================================================================================
-# Check init file has been set
+# Check init file has been set.
 #======================================================================================================================
 
 [[ $# -ne 1 || -z "${1}" ]] && bcg-error "You must define the path to the initialisation file."
@@ -13,10 +13,12 @@ echo "# Database initialisation script" > ${INIT_FILE}
 
 
 #======================================================================================================================
-# Create a database table and grant privileges to user
-#   2: database name
-#   3: username
-#   4: password
+# Create a database table and grant privileges to user.
+#
+# Arguments
+#   1: database name
+#   2: username
+#   3: password
 #======================================================================================================================
 
 create_database () {

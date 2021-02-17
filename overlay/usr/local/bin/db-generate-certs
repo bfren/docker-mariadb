@@ -1,18 +1,18 @@
 #!/usr/bin/with-contenv bash
 
-set -eo pipefail
+set -euo pipefail
 
 
 #======================================================================================================================
-# Run ${LIB}/mariadb/generate-certs executable
+# Run library generate-certs executable.
 #======================================================================================================================
 
-${LIB}/mariadb/generate-certs
+${LIB_MARIADB}/generate-certs
 bcg-fix-attrs
 
 
 #======================================================================================================================
-# Copy client certificates to /ssl and make publicly readable
+# Copy client certificates to /ssl and make publicly readable.
 #======================================================================================================================
 
 cp ${CA_CERT} /ssl/

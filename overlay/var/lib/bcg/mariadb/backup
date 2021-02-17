@@ -4,16 +4,15 @@ set -euo pipefail
 
 
 #======================================================================================================================
-# Set variables
+# Set variables.
 #======================================================================================================================
 
-BACKUP_PATH=/var/lib/backup
 DATE=$(date '+%Y%m%d%H%M')
-THIS_BACKUP_PATH="${BACKUP_PATH}/${DATE}"
+THIS_BACKUP_PATH=${BACKUP_DIR}/${DATE}
 
 
 #======================================================================================================================
-# Get databases
+# Get databases.
 #======================================================================================================================
 
 EXCLUDE="mysql|information_schema|performance_schema|sys"
@@ -22,7 +21,7 @@ DATABASES=$(mariadb -uroot -p${MARIADB_ROOT_PASSWORD} -e 'SHOW DATABASES;' | sed
 
 
 #======================================================================================================================
-# Dump databases to a temporary folder and compress
+# Dump databases to a temporary folder and compress.
 #======================================================================================================================
 
 TEMP_BACKUP_PATH=$(mktemp -d)
@@ -37,9 +36,6 @@ for DATABASE in ${DATABASES} ; do
     bcg-echo " - ${DATABASE}"
     mariadb-dump --add-locks -uroot -p${MARIADB_ROOT_PASSWORD} ${DATABASE} > ${DUMP_FILE} || true
 
-    # set read-only permissions
-    chmod 440 ${DUMP_FILE}
-
     ## compress file
     [[ "${BACKUP_COMPRESS_FILES}" = "1" ]] && gzip ${DUMP_FILE}
 
@@ -48,17 +44,18 @@ bcg-done
 
 
 #======================================================================================================================
-# Move backups to backup directory
+# Move backups to backup directory and set permissions.
 #======================================================================================================================
 
 bcg-echo "Moving backups to ${THIS_BACKUP_PATH}..."
 mv ${TEMP_BACKUP_PATH} ${THIS_BACKUP_PATH}
-chmod 750 ${THIS_BACKUP_PATH}
 bcg-done
+
+bcg-fix-attrs
 
 
 #======================================================================================================================
-# Remove old backups
+# Remove old backups.
 #======================================================================================================================
 
 if [ "${BACKUP_KEEP_FOR_DAYS}" -gt 0 ] ; then

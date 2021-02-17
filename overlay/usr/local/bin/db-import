@@ -4,7 +4,7 @@ set -euo pipefail
 
 
 #======================================================================================================================
-# Run ${LIB}/mariadb/import executable
+# Run library import executable.
 #======================================================================================================================
 
-s6-setuidgid dbadm ${LIB}/mariadb/import
+s6-setuidgid dbadm ${LIB_MARIADB}/import

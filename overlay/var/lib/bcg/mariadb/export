@@ -4,17 +4,21 @@ set -euo pipefail
 
 
 #======================================================================================================================
-# Set variables
+# Check arguments.
+#   1   Database name
 #======================================================================================================================
 
-BACKUP_PATH=/var/lib/backup
-EXPORT_FILE="${BACKUP_PATH}/${1}.sql"
+[[ -z "${1-}" ]] && bcg-error "export: You must provide the name of the database to export."
+
+[[ ! -d "${DATA_DIR}/${1}" ]] && bcg-error "export: Database '${1}' does not exist."
+EXPORT_FILE="${BACKUP_DIR}/${1}.sql"
 
 
 #======================================================================================================================
-# Dump database to file
+# Dump database to file.
 #======================================================================================================================
 
 bcg-echo "Exporting database '${1}' to ${EXPORT_FILE}..."
-mariadb-dump --add-locks -uroot -p${MARIADB_ROOT_PASSWORD} "${1}" > "${EXPORT_FILE}" || bcg-error "Unable to export database '${1}'."
+mariadb-dump --add-locks -uroot -p${MARIADB_ROOT_PASSWORD} "${1}" > "${EXPORT_FILE}" \
+    || bcg-error "export: Unable to export database '${1}'."
 bcg-done
