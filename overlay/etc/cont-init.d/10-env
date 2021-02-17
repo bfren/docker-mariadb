@@ -24,6 +24,7 @@ bcg-env "DB_ERROR_LOG" "/var/log/mariadb/error.log"
 
 # SSL configuration
 if [ "${ENABLE_SSL-}" = "1" ] ; then
+    bcg-env "DB_SSL" "/ssl"
     DB_SSL_CNF_D=${DB_CNF_D}/ssl
     bcg-env "DB_SSL_CNF_D" "${DB_SSL_CNF_D}"
     bcg-env "DB_SSL_CA_KEY" "${DB_SSL_CNF_D}/ca-key.pem"

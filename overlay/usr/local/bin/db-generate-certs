@@ -8,15 +8,14 @@ set -euo pipefail
 #======================================================================================================================
 
 ${LIB_MARIADB}/generate-certs
-bcg-fix-attrs
 
 
 #======================================================================================================================
 # Copy client certificates to /ssl and make publicly readable.
 #======================================================================================================================
 
-cp ${DB_SSL_CA_CERT} /ssl/
-cp ${DB_SSL_CLIENT_KEY} /ssl/
-cp ${DB_SSL_CLIENT_CERT} /ssl/
+cp ${DB_SSL_CA_CERT} ${SSL}/
+cp ${DB_SSL_CLIENT_KEY} ${SSL}/
+cp ${DB_SSL_CLIENT_CERT} ${SSL}/
 
-chmod a+r /ssl/*
+bcg-fix-attrs
