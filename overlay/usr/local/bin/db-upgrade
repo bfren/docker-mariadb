@@ -4,11 +4,28 @@ set -euo pipefail
 
 
 #======================================================================================================================
-# Run mariadb-upgrade as root user.
+# Check if upgrade is necessary
 #======================================================================================================================
 
-bcg-debug "Take backup before running mariadb-upgrade"
+UPGRADE=${DATA_DIR}/mysql_upgrade_info
+if [ -f ${UPGRADE} ] ; then
+    UPGRADE_VERSION=$(cat ${UPGRADE})
+    THIS_VERSION=$(mariadb --version)
+    [[ ${THIS_VERSION} == *"${UPGRADE_VERSION}"* ]] && bcg-echo "Upgrade is not necessary." && exit 0
+fi
+
+
+#======================================================================================================================
+# Take backup first.
+#======================================================================================================================
+
+bcg-debug "db-upgrade: Taking backup before running mariadb-upgrade"
 db-backup
+
+
+#======================================================================================================================
+# Run mariadb-upgrade as root user.
+#======================================================================================================================
 
 bcg-echo "Running mariadb-upgrade..."
 mariadb-upgrade -uroot -p${MARIADB_ROOT_PASSWORD}
