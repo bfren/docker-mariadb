@@ -8,11 +8,11 @@ set -euo pipefail
 #======================================================================================================================
 
 bcg-echo "Writing MariaDB config..."
-esh -o ${DB_CNF} \
+esh -o ${MARIADB_CNF} \
     ${TEMPLATES}/my.cnf.esh
 bcg-done
 
 bcg-echo "Setting MariaDB config permissions to be read-only..."
-chown dbadm:dbadm ${DB_CNF}
-chmod 0444 ${DB_CNF}
+chown dbadm:dbadm ${MARIADB_CNF}
+chmod 0444 ${MARIADB_CNF}
 bcg-done

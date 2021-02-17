@@ -43,20 +43,20 @@ See [For Backups](#for-backups) for configuration variables.
 
 ### For Backups
 
-| Variable                   | Values                       | Description                                              | Default |
-| -------------------------- | ---------------------------- | -------------------------------------------------------- | ------- |
-| `DB_BACKUP_COMPRESS_FILES` | 0 or 1                       | Whether or not to compress backup files (using gzip).    | 0       |
-| `DB_BACKUP_KEEP_FOR_DAYS`  | 0: keep forever<br>Num: days | How many days to keep backups before auto-deleting them. | 14      |
+| Variable                        | Values                       | Description                                              | Default |
+| ------------------------------- | ---------------------------- | -------------------------------------------------------- | ------- |
+| `MARIADB_BACKUP_COMPRESS_FILES` | 0 or 1                       | Whether or not to compress backup files (using gzip).    | 0       |
+| `MARIADB_BACKUP_KEEP_FOR_DAYS`  | 0: keep forever<br>Num: days | How many days to keep backups before auto-deleting them. | 14      |
 
 ### For SSL
 
-| Variable                 | Values  | Description                                                            | Default          |
-| ------------------------ | ------- | ---------------------------------------------------------------------- | ---------------- |
-| `DB_SSL_ENABLE`          | 0 or 1  | Set to "1" to enable SSL support.                                      | 0                |
-| `DB_SSL_DAYS`            | integer | The number of days before self-generated SSL certificates will expire. | 3650 (ten years) |
-| `DB_SSL_CA_KEY_BITS`     | integer | The size in bits of the CA SSL private key.                            | 4096             |
-| `DB_SSL_SERVER_KEY_BITS` | integer | The size in bits of the server SSL private key.                        | 4096             |
-| `DB_SSL_CLIENT_KEY_BITS` | integer | The size in bits of the client SSL private key.                        | 4096             |
+| Variable                      | Values  | Description                                                            | Default          |
+| ----------------------------- | ------- | ---------------------------------------------------------------------- | ---------------- |
+| `MARIADB_SSL_ENABLE`          | 0 or 1  | Set to "1" to enable SSL support.                                      | 0                |
+| `MARIADB_SSL_DAYS`            | integer | The number of days before self-generated SSL certificates will expire. | 3650 (ten years) |
+| `MARIADB_SSL_CA_KEY_BITS`     | integer | The size in bits of the CA SSL private key.                            | 4096             |
+| `MARIADB_SSL_SERVER_KEY_BITS` | integer | The size in bits of the server SSL private key.                        | 4096             |
+| `MARIADB_SSL_CLIENT_KEY_BITS` | integer | The size in bits of the client SSL private key.                        | 4096             |
 
 ### For Database
 

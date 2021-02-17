@@ -7,14 +7,14 @@ set -euo pipefail
 # If SSL is not enabled, exit script gracefully.
 #======================================================================================================================
 
-[[ "${SSL_ENABLE}" != "1" ]] && bcg-echo "SSL is not enabled." && exit 0
+[[ "${MARIADB_SSL_ENABLE}" != "1" ]] && bcg-echo "SSL is not enabled." && exit 0
 
 
 #======================================================================================================================
 # If server certificate exists, exit script.
 #======================================================================================================================
 
-if [ -e ${DB_SSL_CLIENT_CERT} ] ; then
+if [ -f ${MARIADB_SSL_CLIENT_CERT} ] ; then
     bcg-ok "Using existing SSL certificates."
     exit 0
 fi

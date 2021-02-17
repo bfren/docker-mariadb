@@ -8,7 +8,7 @@ set -euo pipefail
 #======================================================================================================================
 
 DATE=$(date '+%Y%m%d%H%M')
-THIS_BACKUP_PATH=${DB_BACKUP_DIR}/${DATE}
+THIS_BACKUP_PATH=${MARIADB_BACKUP_DIR}/${DATE}
 
 
 #======================================================================================================================
@@ -37,7 +37,7 @@ for DATABASE in ${DATABASES} ; do
     mariadb-dump --add-locks -uroot -p${MARIADB_ROOT_PASSWORD} ${DATABASE} > ${DUMP_FILE} || true
 
     ## compress file
-    [[ "${DB_BACKUP_COMPRESS_FILES}" = "1" ]] && gzip ${DUMP_FILE}
+    [[ "${MARIADB_BACKUP_COMPRESS_FILES}" = "1" ]] && gzip ${DUMP_FILE}
 
 done
 bcg-done
@@ -58,10 +58,10 @@ bcg-fix-attrs
 # Remove old backups.
 #======================================================================================================================
 
-if [ "${DB_BACKUP_KEEP_FOR_DAYS}" -gt 0 ] ; then
+if [ "${MARIADB_BACKUP_KEEP_FOR_DAYS}" -gt 0 ] ; then
 
-    bcg-echo "Deleting backups older than ${DB_BACKUP_KEEP_FOR_DAYS} days..."
-    MMIN=$((60*24*${DB_BACKUP_KEEP_FOR_DAYS}))
+    bcg-echo "Deleting backups older than ${MARIADB_BACKUP_KEEP_FOR_DAYS} days..."
+    MMIN=$((60*24*${MARIADB_BACKUP_KEEP_FOR_DAYS}))
     find ${BACKUP_PATH}/* -type d -mmin +${MMIN} | xargs rm -rf
     bcg-done
 

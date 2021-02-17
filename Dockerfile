@@ -8,19 +8,19 @@ LABEL maintainer="Ben Green <ben@bcgdesign.com>" \
 
 ENV \
     # set to "1" to compress backup sql files
-    DB_BACKUP_COMPRESS_FILES="0" \
+    MARIADB_BACKUP_COMPRESS_FILES="0" \
     # the number of days after which backups will be deleted
-    DB_BACKUP_KEEP_FOR_DAYS="28" \
+    MARIADB_BACKUP_KEEP_FOR_DAYS="28" \
     # set to "1" to enable SSL support
-    DB_SSL_ENABLE="0" \
+    MARIADB_SSL_ENABLE="0" \
     # the number of days before self-generated SSL certificates will expire
-    DB_SSL_DAYS="3650" \
+    MARIADB_SSL_DAYS="3650" \
     # the size in bits of the CA SSL private key
-    DB_SSL_CA_KEY_BITS="4096" \
+    MARIADB_SSL_CA_KEY_BITS="4096" \
     # the size in bits of the server SSL private key
-    DB_SSL_SERVER_KEY_BITS="4096" \
+    MARIADB_SSL_SERVER_KEY_BITS="4096" \
     # the size in bits of the client SSL private key
-    DB_SSL_CLIENT_KEY_BITS="4096" \
+    MARIADB_SSL_CLIENT_KEY_BITS="4096" \
     # see https://mariadb.com/kb/en/server-system-variables/#character_set_server
     MARIADB_CHARACTER_SET="utf8" \
     # see https://mariadb.com/kb/en/server-system-variables/#collation_server

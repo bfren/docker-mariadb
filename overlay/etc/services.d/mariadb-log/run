@@ -7,4 +7,4 @@ set -euo pipefail
 # Forward MariaDB log to Docker.
 #======================================================================================================================
 
-bcg-forward mariadb-log ${DB_ERROR_LOG}
+bcg-forward mariadb-log ${MARIADB_ERROR_LOG}
