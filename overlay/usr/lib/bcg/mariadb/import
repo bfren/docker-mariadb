@@ -7,8 +7,8 @@ set -euo pipefail
 # Get import files (from backup directory).
 #======================================================================================================================
 
-bcg-echo "Importing SQL files from ${MARIADB_BACKUP_DIR}..."
-for FILE in ${MARIADB_BACKUP_DIR}/*.sql ; do
+bcg-echo "Importing SQL files from ${MARIADB_BACKUP}..."
+for FILE in ${MARIADB_BACKUP}/*.sql ; do
 
     # split out database name from file
     NAME=$(basename -- "${FILE}")

@@ -14,7 +14,7 @@ set -euo pipefail
 # If the mysql directory exists, the server has already been initialised.
 #======================================================================================================================
 
-if [ -d ${MARIADB_DATA_DIR}/mysql ] ; then
+if [ -d ${MARIADB_DATA}/mysql ] ; then
 
     # start database
     bcg-echo "Starting mariadbd-safe"
@@ -44,7 +44,7 @@ else
 
     # run server installation
     bcg-debug " .. running mariadb-install-db..."
-    mariadb-install-db --user=dbadm --datadir=${MARIADB_DATA_DIR}
+    mariadb-install-db --user=dbadm --datadir=${MARIADB_DATA}
 
     # generate init file
     INIT_FILE=/tmp/init.sql

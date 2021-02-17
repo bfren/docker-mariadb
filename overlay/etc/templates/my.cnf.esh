@@ -4,7 +4,7 @@
 
 # This group is read by the server
 [mariadb]
-datadir=<%= ${MARIADB_DATA_DIR} %>
+datadir=<%= ${MARIADB_DATA} %>
 
 log_error=<%= ${MARIADB_ERROR_LOG} %>
 log_warnings=<%= ${MARIADB_LOG_WARNINGS} %>

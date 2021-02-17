@@ -17,8 +17,8 @@ bcg-env "MARIADB_CNF" "${MARIADB_CNF}"
 MARIADB_CNF_D=${MARIADB_CNF}.d
 bcg-env "MARIADB_CNF_D" "${MARIADB_CNF_D}"
 
-bcg-env "MARIADB_DATA_DIR" "/var/lib/mysql"
-bcg-env "MARIADB_BACKUP_DIR" "/var/lib/backup"
+bcg-env "MARIADB_DATA" "/var/lib/mysql"
+bcg-env "MARIADB_BACKUP" "/var/lib/backup"
 
 bcg-env "MARIADB_ERROR_LOG" "/var/log/mariadb/error.log"
 
