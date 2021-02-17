@@ -7,9 +7,8 @@ set -euo pipefail
 # Check init file has been set.
 #======================================================================================================================
 
-[[ $# -ne 1 || -z "${1}" ]] && bcg-error "You must define the path to the initialisation file."
+[[ $# -ne 1 || -z "${1}" ]] && bcg-error "generate-init-file: You must define the path to the initialisation file."
 INIT_FILE="${1}"
-echo "# Database initialisation script" > ${INIT_FILE}
 
 
 #======================================================================================================================
@@ -41,6 +40,9 @@ create_database () {
 #   remove test database
 #   create application database(s) and user
 #======================================================================================================================
+
+# create file
+echo "# Database initialisation script" > ${INIT_FILE}
 
 # update root user with password and ensure full access
 bcg-echo " .. alter root user"

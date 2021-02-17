@@ -149,6 +149,6 @@ fi
 # Output error and clear directories.
 #======================================================================================================================
 
-bcg-error "Unable to verify SSL certificates: clearing SSL directory..."
+bcg-error "generate-certs: Unable to verify SSL certificates, clearing SSL directory..."
 rm -rf "${MY_CNF_D_SSL}/*"
 bcg-done

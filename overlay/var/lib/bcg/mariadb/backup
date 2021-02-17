@@ -17,7 +17,7 @@ THIS_BACKUP_PATH=${BACKUP_DIR}/${DATE}
 
 EXCLUDE="mysql|information_schema|performance_schema|sys"
 DATABASES=$(mariadb -uroot -p${MARIADB_ROOT_PASSWORD} -e 'SHOW DATABASES;' | sed 1d | grep -v -E "(${EXCLUDE})")
-[[ -z "${DATABASES}" ]] && bcg-error "No databases found to backup."
+[[ -z "${DATABASES}" ]] && bcg-error "backup: No databases found to backup."
 
 
 #======================================================================================================================
