@@ -7,8 +7,8 @@ set -euo pipefail
 # Get import files (from backup directory).
 #======================================================================================================================
 
-bcg-echo "Importing SQL files from ${BACKUP_DIR}..."
-for FILE in ${BACKUP_DIR}/*.sql ; do
+bcg-echo "Importing SQL files from ${DB_BACKUP_DIR}..."
+for FILE in ${DB_BACKUP_DIR}/*.sql ; do
 
     # split out database name from file
     NAME=$(basename -- "${FILE}")

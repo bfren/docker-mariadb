@@ -15,8 +15,8 @@ bcg-fix-attrs
 # Copy client certificates to /ssl and make publicly readable.
 #======================================================================================================================
 
-cp ${CA_CERT} /ssl/
-cp ${CLIENT_KEY} /ssl/
-cp ${CLIENT_CERT} /ssl/
+cp ${DB_SSL_CA_CERT} /ssl/
+cp ${DB_SSL_CLIENT_KEY} /ssl/
+cp ${DB_SSL_CLIENT_CERT} /ssl/
 
 chmod a+r /ssl/*

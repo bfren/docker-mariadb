@@ -8,7 +8,7 @@ set -euo pipefail
 # First, wait until the database service is running.
 #======================================================================================================================
 
-if [ -d ${DATA_DIR}/mysql ] && [ ! -z "$(pidof mariadbd)" ]; then
+if [ -d ${DB_DATA_DIR}/mysql ] && [ ! -z "$(pidof mariadbd)" ]; then
 
     # run upgrade executable
     bcg-debug "$(mariadb --version)"

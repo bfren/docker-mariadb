@@ -11,29 +11,29 @@ set -euo pipefail
 bcg-env "LIB_MARIADB" "${LIB}/mariadb"
 
 # Database configuration
-MY_CNF=/etc/my.cnf
-bcg-env "MY_CNF" "${MY_CNF}"
+DB_CNF=/etc/my.cnf
+bcg-env "DB_CNF" "${DB_CNF}"
 
-MY_CNF_D=${MY_CNF}.d
-bcg-env "MY_CNF_D" "${MY_CNF_D}"
+DB_CNF_D=${DB_CNF}.d
+bcg-env "DB_CNF_D" "${DB_CNF_D}"
 
-bcg-env "DATA_DIR" "/var/lib/mysql"
-bcg-env "BACKUP_DIR" "/var/lib/backup"
+bcg-env "DB_DATA_DIR" "/var/lib/mysql"
+bcg-env "DB_BACKUP_DIR" "/var/lib/backup"
 
-bcg-env "ERROR_LOG" "/var/log/mariadb/error.log"
+bcg-env "DB_ERROR_LOG" "/var/log/mariadb/error.log"
 
 # SSL configuration
 if [ "${ENABLE_SSL-}" = "1" ] ; then
-    MY_CNF_D_SSL=${MY_CNF_D}/ssl
-    bcg-env "MY_CNF_D_SSL" "${MY_CNF_D_SSL}"
-    bcg-env "CA_KEY" "${MY_CNF_D_SSL}/ca-key.pem"
-    bcg-env "CA_CERT" "${MY_CNF_D_SSL}/ca-cert.pem"
-    bcg-env "SERVER_KEY" "${MY_CNF_D_SSL}/server-key.pem"
-    bcg-env "SERVER_KEY_TMP" "${MY_CNF_D_SSL}/server-key.tmp"
-    bcg-env "SERVER_REQ" "${MY_CNF_D_SSL}/server-req.pem"
-    bcg-env "SERVER_CERT" "${MY_CNF_D_SSL}/server-cert.pem"
-    bcg-env "CLIENT_KEY" "${MY_CNF_D_SSL}/client-key.pem"
-    bcg-env "CLIENT_KEY_TMP" "${MY_CNF_D_SSL}/client-key.tmp"
-    bcg-env "CLIENT_REQ" "${MY_CNF_D_SSL}/client-req.pem"
-    bcg-env "CLIENT_CERT" "${MY_CNF_D_SSL}/client-cert.pem"
+    DB_SSL_CNF_D=${DB_CNF_D}/ssl
+    bcg-env "DB_SSL_CNF_D" "${DB_SSL_CNF_D}"
+    bcg-env "DB_SSL_CA_KEY" "${DB_SSL_CNF_D}/ca-key.pem"
+    bcg-env "DB_SSL_CA_CERT" "${DB_SSL_CNF_D}/ca-cert.pem"
+    bcg-env "DB_SSL_SERVER_KEY" "${DB_SSL_CNF_D}/server-key.pem"
+    bcg-env "DB_SSL_SERVER_KEY_TMP" "${DB_SSL_CNF_D}/server-key.tmp"
+    bcg-env "DB_SSL_SERVER_REQ" "${DB_SSL_CNF_D}/server-req.pem"
+    bcg-env "DB_SSL_SERVER_CERT" "${DB_SSL_CNF_D}/server-cert.pem"
+    bcg-env "DB_SSL_CLIENT_KEY" "${DB_SSL_CNF_D}/client-key.pem"
+    bcg-env "DB_SSL_CLIENT_KEY_TMP" "${DB_SSL_CNF_D}/client-key.tmp"
+    bcg-env "DB_SSL_CLIENT_REQ" "${DB_SSL_CNF_D}/client-req.pem"
+    bcg-env "DB_SSL_CLIENT_CERT" "${DB_SSL_CNF_D}/client-cert.pem"
 fi
