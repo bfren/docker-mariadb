@@ -1,4 +1,4 @@
-FROM bcgdesign/alpine-s6:alpine-3.13-1.4.0
+FROM bcgdesign/alpine-s6:alpine-3.13-1.5.0
 
 LABEL maintainer="Ben Green <ben@bcgdesign.com>" \
     org.label-schema.name="MariaDB" \
@@ -20,22 +20,10 @@ ENV \
 
 EXPOSE 3306
 
-COPY ./MARIADB_BUILD /tmp/MARIADB_BUILD
-RUN export MARIADB_VERSION=$(cat /tmp/MARIADB_BUILD) \
-    && echo "MariaDB v${MARIADB_VERSION}" \
-    && addgroup --gid 1000 dbadm \
-    && adduser --uid 1000 --no-create-home --disabled-password --ingroup dbadm dbadm \
-    && apk -U upgrade \
-    && apk add \
-        bash \
-        openssl \
-        mariadb=${MARIADB_VERSION} \
-        mariadb-client=${MARIADB_VERSION} \
-        mariadb-server-utils=${MARIADB_VERSION} \
-    && rm -rf /var/cache/apk/* /etc/mysql /etc/my.cnf* /var/lib/mysql/* /tmp/* \
-    && echo "0 */8 * * * /usr/local/bin/db-backup" >> /etc/crontabs/root
-
 COPY ./overlay /
+COPY ./MARIADB_BUILD /tmp/MARIADB_BUILD
+
+RUN bcg-install
 
 VOLUME [ "/var/lib/mysql", "/var/lib/backup", "/etc/my.cnf.d", "/ssl" ]
 
