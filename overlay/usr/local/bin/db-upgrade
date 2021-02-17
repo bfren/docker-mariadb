@@ -7,6 +7,9 @@ set -euo pipefail
 # Run mariadb-upgrade as root user.
 #======================================================================================================================
 
+bcg-debug "Take backup before running mariadb-upgrade"
+db-backup
+
 bcg-echo "Running mariadb-upgrade..."
 mariadb-upgrade -uroot -p${MARIADB_ROOT_PASSWORD}
 bcg-done
