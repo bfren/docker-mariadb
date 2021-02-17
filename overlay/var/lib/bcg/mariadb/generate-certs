@@ -14,6 +14,11 @@ set -euo pipefail
 #======================================================================================================================
 
 generate-request() {
+    bcg-debug "generate-certs: generate-request() name=${1}"
+    bcg-debug "generate-certs: generate-request() key file=${2}"
+    bcg-debug "generate-certs: generate-request() key bits=${3}"
+    bcg-debug "generate-certs: generate-request() certificate file=${4}"
+
     openssl req \
         -nodes \
         -keyout ${2} \
@@ -32,6 +37,9 @@ generate-request() {
 #======================================================================================================================
 
 process-key() {
+    bcg-debug "generate-certs: process-key() input=${1}"
+    bcg-debug "generate-certs: process-key() output=${2}"
+
     openssl rsa \
         -in ${1} \
         -out ${2}
@@ -48,6 +56,9 @@ process-key() {
 #======================================================================================================================
 
 sign-cert() {
+    bcg-debug "generate-certs: sign-cert() input=${1}"
+    bcg-debug "generate-certs: sign-cert() output=${2}"
+
     openssl x509 \
         -req \
         -days ${SSL_DAYS:-3650} \
@@ -104,12 +115,12 @@ generate-request "Server" ${SERVER_KEY_TMP} "${SSL_SERVER_KEY_BITS-}" ${SERVER_R
 bcg-done
 
 # process server key
-bcg-echo "Processing server key ${SERVER_KEY}..."
+bcg-echo "Processing server key..."
 process-key ${SERVER_KEY_TMP} ${SERVER_KEY}
 bcg-done
 
 # sign the server certificate
-bcg-echo "Signing server certificate ${SERVER_CERT}..."
+bcg-echo "Signing server certificate..."
 sign-cert ${SERVER_REQ} ${SERVER_CERT}
 bcg-done
 
@@ -124,12 +135,12 @@ generate-request "Client" ${CLIENT_KEY_TMP} "${SSL_CLIENT_KEY_BITS-}" ${CLIENT_R
 bcg-done
 
 # process client key
-bcg-echo "Processing client key ${CLIENT_KEY}..."
+bcg-echo "Processing client key..."
 process-key ${CLIENT_KEY_TMP} ${CLIENT_KEY}
 bcg-done
 
 # sign the server certificate
-bcg-echo "Signing client certificate ${CLIENT_CERT}..."
+bcg-echo "Signing client certificate..."
 sign-cert ${CLIENT_REQ} ${CLIENT_CERT}
 bcg-done
 

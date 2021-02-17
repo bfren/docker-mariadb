@@ -16,7 +16,7 @@ for FILE in ${BACKUP_DIR}/*.sql ; do
 
     # execute file
     bcg-echo " .. importing '${DATABASE}'"
-    mariadb "${DATABASE}" < ${FILE} || bcg-notok " .. something went wrong"
+    mariadb "${DATABASE}" < ${FILE} || bcg-notok "  . something went wrong"
 
 done
 bcg-done

@@ -26,25 +26,23 @@ if [ -d ${DATA_DIR}/mysql ] ; then
 else
 
     # disable upgrade service
-    bcg-echo "Database server not yet installed"
+    bcg-debug "mariadb: Database server not yet installed"
     db-upgrade-disable
 
     # check for root password
-    [[ -z "${MARIADB_ROOT_PASSWORD-}" ]] && bcg-error "MARIADB_ROOT_PASSWORD must be set."
+    [[ -z "${MARIADB_ROOT_PASSWORD-}" ]] && bcg-error "mariadb: MARIADB_ROOT_PASSWORD must be set."
 
     # check for application user and password
-    [[ -z "${MARIADB_USERNAME-}" || -z "${MARIADB_PASSWORD-}" ]] && bcg-error "MARIADB_USERNAME and MARIADB_PASSWORD must be set."
+    [[ -z "${MARIADB_USERNAME-}" || -z "${MARIADB_PASSWORD-}" ]] && bcg-error "mariadb: MARIADB_USERNAME and MARIADB_PASSWORD must be set."
 
     # run server installation
-    bcg-echo "Running mariadb-install-db..."
+    bcg-debug " .. running mariadb-install-db..."
     mariadb-install-db --user=dbadm --datadir=${DATA_DIR}
-    bcg-done
 
     # generate init file
     INIT_FILE=/tmp/init.sql
-    bcg-echo "Generating initialisation file ${INIT_FILE}..."
+    bcg-debug " .. generating initialisation file ${INIT_FILE}..."
     s6-setuidgid dbadm ${LIB_MARIADB}/generate-init-file "${INIT_FILE}"
-    bcg-done
 
     # start server with temporary init file
     bcg-echo "Starting mariadbd-safe with initialisation file"
