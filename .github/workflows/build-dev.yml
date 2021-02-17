@@ -9,6 +9,7 @@ on:
     paths:
       - '.github/workflows/build-dev.yml'
       - 'overlay/**'
+      - 'Dockerfile'
       - 'VERSION'
 
 jobs:
