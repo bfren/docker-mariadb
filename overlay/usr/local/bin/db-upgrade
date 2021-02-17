@@ -9,9 +9,15 @@ set -euo pipefail
 
 UPGRADE=${MARIADB_DATA}/mysql_upgrade_info
 if [ -f ${UPGRADE} ] ; then
-    UPGRADE_VERSION=$(cat ${UPGRADE})
+
+    UPGRADE_VERSION=$(tr -d '\0' < ${UPGRADE})
+    bcg-debug "db-upgrade: Upgrade version ${UPGRADE_VERSION}"
+
     THIS_VERSION=$(mariadb --version)
+    bcg-debug "db-upgrade: Current version ${THIS_VERSION}"
+
     [[ ${THIS_VERSION} == *"${UPGRADE_VERSION}"* ]] && bcg-echo "Upgrade is not necessary." && exit 0
+
 fi
 
 
