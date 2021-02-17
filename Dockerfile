@@ -36,5 +36,3 @@ COPY ./MARIADB_BUILD /tmp/MARIADB_VERSION
 RUN bcg-install
 
 VOLUME [ "/var/lib/mysql", "/var/lib/backup", "/etc/my.cnf.d", "/ssl" ]
-
-HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=5 CMD [ "healthcheck" ]
