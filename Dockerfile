@@ -11,6 +11,8 @@ ENV \
     DB_BACKUP_COMPRESS_FILES="0" \
     # the number of days after which backups will be deleted
     DB_BACKUP_KEEP_FOR_DAYS="28" \
+    # set to "1" to enable SSL support
+    DB_SSL_ENABLE="0" \
     # the number of days before self-generated SSL certificates will expire
     DB_SSL_DAYS="3650" \
     # the size in bits of the CA SSL private key
