@@ -43,12 +43,12 @@ else
     [[ -z "${MARIADB_USERNAME-}" || -z "${MARIADB_PASSWORD-}" ]] && bcg-error "mariadb: MARIADB_USERNAME and MARIADB_PASSWORD must be set."
 
     # run server installation
-    bcg-debug " .. running mariadb-install-db..."
+    bcg-debug "mariadb: running mariadb-install-db..."
     mariadb-install-db --user=dbadm --datadir=${MARIADB_DATA}
 
     # generate init file
     INIT_FILE=/tmp/init.sql
-    bcg-debug " .. generating initialisation file ${INIT_FILE}..."
+    bcg-debug "mariadb: generating initialisation file ${INIT_FILE}..."
     s6-setuidgid dbadm ${LIB_MARIADB}/generate-init-file "${INIT_FILE}"
 
     # start server with temporary init file
