@@ -1,6 +1,7 @@
 #!/usr/bin/with-contenv bash
 
 set -euo pipefail
+export BCG_E=`basename ${0}`
 
 
 #======================================================================================================================
@@ -15,8 +16,9 @@ for FILE in ${MARIADB_BACKUP}/*.sql ; do
     DATABASE="${NAME%.*}"
 
     # execute file
-    bcg-echo " .. importing '${DATABASE}'"
-    mariadb -uroot -p${MARIADB_ROOT_PASSWORD} "${DATABASE}" < ${FILE} || bcg-notok "  . something went wrong"
+    bcg-echo " .. importing '${DATABASE}'."
+    mariadb -uroot -p${MARIADB_ROOT_PASSWORD} "${DATABASE}" < ${FILE} \
+        || bcg-notok "  . something went wrong."
 
 done
 bcg-done

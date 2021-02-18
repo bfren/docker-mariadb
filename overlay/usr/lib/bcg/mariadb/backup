@@ -1,6 +1,7 @@
 #!/usr/bin/with-contenv bash
 
 set -euo pipefail
+export BCG_E=`basename ${0}`
 
 
 #======================================================================================================================
@@ -9,6 +10,7 @@ set -euo pipefail
 
 DATE=$(date '+%Y%m%d%H%M')
 THIS_BACKUP_PATH=${MARIADB_BACKUP}/${DATE}
+bcg-debug "Backup path ${THIS_BACKUP_PATH}."
 
 
 #======================================================================================================================
@@ -16,8 +18,9 @@ THIS_BACKUP_PATH=${MARIADB_BACKUP}/${DATE}
 #======================================================================================================================
 
 EXCLUDE="mysql|information_schema|performance_schema|sys"
+bcg-debug "Exclude ${EXCLUDE}."
 DATABASES=$(mariadb -uroot -p${MARIADB_ROOT_PASSWORD} -e 'SHOW DATABASES;' | sed 1d | grep -v -E "(${EXCLUDE})")
-[[ -z "${DATABASES}" ]] && bcg-error "backup: No databases found to backup."
+[[ -z "${DATABASES}" ]] && bcg-error "No databases found to backup."
 
 
 #======================================================================================================================
@@ -31,12 +34,13 @@ for DATABASE in ${DATABASES} ; do
 
     # path to this database dump
     DUMP_FILE="${TEMP_BACKUP_PATH}/${DATABASE}.sql"
+    bcg-debug "Dumping to ${DUMP_FILE}."
 
     # dump database and continue on failure
     bcg-echo " .. ${DATABASE}"
     mariadb-dump --add-locks -uroot -p${MARIADB_ROOT_PASSWORD} ${DATABASE} > ${DUMP_FILE} || true
 
-    ## compress file
+    # compress file
     [[ "${MARIADB_BACKUP_COMPRESS_FILES}" = "1" ]] && gzip ${DUMP_FILE}
 
 done

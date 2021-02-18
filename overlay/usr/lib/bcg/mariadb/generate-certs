@@ -1,6 +1,7 @@
 #!/usr/bin/with-contenv bash
 
 set -euo pipefail
+export BCG_E=`basename ${0}`
 
 
 #======================================================================================================================
@@ -14,10 +15,10 @@ set -euo pipefail
 #======================================================================================================================
 
 generate-request() {
-    bcg-debug "generate-certs: generate-request() name=${1}"
-    bcg-debug "generate-certs: generate-request() key file=${2}"
-    bcg-debug "generate-certs: generate-request() key bits=${3}"
-    bcg-debug "generate-certs: generate-request() certificate file=${4}"
+    bcg-debug "generate-request() name=${1}"
+    bcg-debug "generate-request() key file=${2}"
+    bcg-debug "generate-request() key bits=${3}"
+    bcg-debug "generate-request() certificate file=${4}"
 
     openssl req \
         -nodes \
@@ -37,8 +38,8 @@ generate-request() {
 #======================================================================================================================
 
 process-key() {
-    bcg-debug "generate-certs: process-key() input=${1}"
-    bcg-debug "generate-certs: process-key() output=${2}"
+    bcg-debug "process-key() input=${1}"
+    bcg-debug "process-key() output=${2}"
 
     openssl rsa \
         -in ${1} \
@@ -56,8 +57,8 @@ process-key() {
 #======================================================================================================================
 
 sign-cert() {
-    bcg-debug "generate-certs: sign-cert() input=${1}"
-    bcg-debug "generate-certs: sign-cert() output=${2}"
+    bcg-debug "sign-cert() input=${1}"
+    bcg-debug "sign-cert() output=${2}"
 
     openssl x509 \
         -req \
@@ -160,6 +161,6 @@ fi
 # Output error and clear directories.
 #======================================================================================================================
 
-bcg-error "generate-certs: Unable to verify SSL certificates, clearing SSL directory..."
+bcg-error "Unable to verify SSL certificates, clearing SSL directory..."
 rm -rf "${MARIADB_SSL_CNF_D}/*"
 bcg-done

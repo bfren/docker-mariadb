@@ -1,13 +1,14 @@
 #!/usr/bin/with-contenv bash
 
 set -euo pipefail
+export BCG_E="mariadb/$(basename ${0})"
 
 
 #======================================================================================================================
 # If the configuration does not exist, something has gone wrong during initialisation.
 #======================================================================================================================
 
-[[ ! -f ${MARIADB_CNF} ]] && bcg-error "mariadb: Configuration file not found."
+[[ ! -f ${MARIADB_CNF} ]] && bcg-error "Configuration file not found."
 
 
 #======================================================================================================================
@@ -17,7 +18,7 @@ set -euo pipefail
 if [ -d ${MARIADB_DATA}/mysql ] ; then
 
     # start database
-    bcg-echo "Starting mariadbd-safe"
+    bcg-echo "Starting mariadbd-safe."
     mariadbd-safe --user=dbadm
 
 
@@ -33,26 +34,26 @@ if [ -d ${MARIADB_DATA}/mysql ] ; then
 else
 
     # disable upgrade service
-    bcg-debug "mariadb: Database server not yet installed"
+    bcg-debug "Database server not installed."
     db-upgrade-disable
 
     # check for root password
-    [[ -z "${MARIADB_ROOT_PASSWORD-}" ]] && bcg-error "mariadb: MARIADB_ROOT_PASSWORD must be set."
+    [[ -z "${MARIADB_ROOT_PASSWORD-}" ]] && bcg-error "MARIADB_ROOT_PASSWORD must be set."
 
     # check for application user and password
-    [[ -z "${MARIADB_USERNAME-}" || -z "${MARIADB_PASSWORD-}" ]] && bcg-error "mariadb: MARIADB_USERNAME and MARIADB_PASSWORD must be set."
+    [[ -z "${MARIADB_USERNAME-}" || -z "${MARIADB_PASSWORD-}" ]] && bcg-error "MARIADB_USERNAME and MARIADB_PASSWORD must be set."
 
     # run server installation
-    bcg-debug "mariadb: running mariadb-install-db..."
+    bcg-debug "Running mariadb-install-db..."
     mariadb-install-db --user=dbadm --datadir=${MARIADB_DATA}
 
     # generate init file
     INIT_FILE=/tmp/init.sql
-    bcg-debug "mariadb: generating initialisation file ${INIT_FILE}..."
+    bcg-debug "Generating initialisation file ${INIT_FILE}..."
     s6-setuidgid dbadm ${LIB_MARIADB}/generate-init-file "${INIT_FILE}"
 
     # start server with temporary init file
-    bcg-echo "Starting mariadbd-safe with initialisation file"
+    bcg-echo "Starting mariadbd-safe with initialisation file."
     mariadbd-safe --user=dbadm --init-file=${INIT_FILE}
 
 fi

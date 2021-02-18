@@ -1,6 +1,7 @@
 #!/usr/bin/with-contenv bash
 
 set -euo pipefail
+export BCG_E=`basename ${0}`
 
 
 #======================================================================================================================
@@ -11,13 +12,13 @@ UPGRADE=${MARIADB_DATA}/mysql_upgrade_info
 if [ -f ${UPGRADE} ] ; then
 
     UPGRADE_VERSION=$(tr -d '\0' < ${UPGRADE}) # remove null byte from mysql_upgrade_info
-    bcg-debug "upgrade: Data version ${UPGRADE_VERSION}"
+    bcg-debug "Data version ${UPGRADE_VERSION}."
 
     THIS_VERSION=$(mariadb --version)
-    bcg-debug "upgrade: Server version ${THIS_VERSION}"
+    bcg-debug "Server version ${THIS_VERSION}."
 
     if [ ${THIS_VERSION} == *"${UPGRADE_VERSION}"* ] ;
-        bcg-echo "upgrade: Data and Server versions match, upgrade not necessary."
+        bcg-echo "Data and Server versions match, upgrade not necessary."
         exit 0
     fi
 
@@ -28,7 +29,7 @@ fi
 # Take backup first.
 #======================================================================================================================
 
-bcg-debug "upgrade: Taking backup before running mariadb-upgrade"
+bcg-debug "Taking backup before running mariadb-upgrade."
 db-backup
 
 

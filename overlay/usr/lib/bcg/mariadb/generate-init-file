@@ -1,13 +1,14 @@
 #!/usr/bin/with-contenv bash
 
 set -euo pipefail
+export BCG_E=`basename ${0}`
 
 
 #======================================================================================================================
 # Check init file has been set.
 #======================================================================================================================
 
-[[ $# -ne 1 || -z "${1}" ]] && bcg-error "generate-init-file: You must define the path to the initialisation file."
+[[ $# -ne 1 || -z "${1}" ]] && bcg-error "You must define the path to the initialisation file."
 INIT_FILE="${1}"
 
 
@@ -51,11 +52,11 @@ echo "GRANT ALL ON *.* TO 'root'@'localhost' WITH GRANT OPTION;" >> ${INIT_FILE}
 echo "FLUSH PRIVILEGES;" >> ${INIT_FILE}
 
 # delete the dbadm user (no need to use up the space)
-bcg-debug " .. delete dbadm user"
+bcg-debug " .. delete dbadm user."
 echo "DROP USER IF EXISTS dbadm@localhost;" >> ${INIT_FILE}
 
 # delete the test database (no need to use up the space)
-bcg-debug " .. delete test database"
+bcg-debug " .. delete test database."
 echo "DROP DATABASE IF EXISTS test;" >> ${INIT_FILE}
 
 # if database(s) specified, create (each) database and grant user permissions
@@ -65,14 +66,14 @@ if [ ! -z "${MARIADB_DATABASE-}" ] ; then
     DATABASES=$(echo ${MARIADB_DATABASE} | tr "," "\n")
 
     for DATABASE in ${DATABASES} ; do
-        bcg-debug " .. ${DATABASE}"
+        bcg-debug " .. ${DATABASE}."
         create_database "${DATABASE}" "${MARIADB_USERNAME}" "${MARIADB_PASSWORD}"
     done
 
 # no database specified so use username as database name
 else
 
-    bcg-debug " .. add application database: ${MARIADB_USERNAME}"
+    bcg-debug " .. add application database: ${MARIADB_USERNAME}."
     create_database "${MARIADB_USERNAME}" "${MARIADB_USERNAME}" "${MARIADB_PASSWORD}"
 
 fi
