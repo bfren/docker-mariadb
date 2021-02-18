@@ -13,17 +13,25 @@ bcg-done
 
 
 #======================================================================================================================
+# Get MariaDB version.
+#======================================================================================================================
+
+cd /tmp
+
+VERSION=$(cat VERSION)
+bcg-debug "install: MariaDB version ${VERSION}."
+
+
+#======================================================================================================================
 # Install MariaDB and dependencies.
 #======================================================================================================================
 
-MARIADB_VERSION=$(cat /tmp/MARIADB_VERSION)
-bcg-echo "Installing MariaDB v${MARIADB_VERSION}..."
 apk add --no-cache \
     bash \
     openssl \
-    mariadb=${MARIADB_VERSION} \
-    mariadb-client=${MARIADB_VERSION} \
-    mariadb-server-utils=${MARIADB_VERSION} \
+    mariadb=${VERSION} \
+    mariadb-client=${VERSION} \
+    mariadb-server-utils=${VERSION} \
 
 
 #======================================================================================================================
