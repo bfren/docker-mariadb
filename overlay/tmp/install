@@ -39,8 +39,21 @@ bcg-done
 # Cleanup.
 #======================================================================================================================
 
-bcg-debug "Cleanup default database config and files."
+bcg-debug "Cleaning up default database config and files."
 rm -rf /etc/my.cnf* /etc/mysql /var/lib/mysql/*
+
+
+#======================================================================================================================
+# Create mariab directories.
+#======================================================================================================================
+
+bcg-debug "Creating mariadb directories."
+
+mkdir -p /var/lib/backup
+mkdir /var/lib/mysql
+
+mkdir -p /etc/my.cnf.d/ssl
+mkdir /ssl
 
 
 #======================================================================================================================
