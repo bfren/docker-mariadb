@@ -43,6 +43,7 @@ create_database () {
 #======================================================================================================================
 
 # create file
+bcg-debug "Creating init file ${INIT_FILE}..."
 echo "# Database initialisation script" > ${INIT_FILE}
 
 # update root user with password and ensure full access
