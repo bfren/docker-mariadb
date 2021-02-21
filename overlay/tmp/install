@@ -50,7 +50,6 @@ rm -rf /etc/my.cnf* /etc/mysql /var/lib/mysql/*
 bcg-debug "Creating mariadb directories."
 
 mkdir -p /var/lib/backup
-mkdir /var/lib/mysql
 
 mkdir -p /etc/my.cnf.d/ssl
 mkdir /ssl
