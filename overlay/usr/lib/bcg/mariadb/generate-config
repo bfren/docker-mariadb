@@ -10,7 +10,7 @@ export BCG_E=`basename ${0}`
 
 bcg-echo "Writing MariaDB config..."
 esh -o ${MARIADB_CNF} \
-    ${TEMPLATES}/my.cnf.esh
+    ${BCG_TEMPLATES}/my.cnf.esh
 bcg-done
 
 bcg-echo "Setting MariaDB config permissions to be read-only..."

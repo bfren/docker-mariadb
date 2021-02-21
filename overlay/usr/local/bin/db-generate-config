@@ -8,4 +8,4 @@ export BCG_E=`basename ${0}`
 # Run library generate-config executable.
 #======================================================================================================================
 
-${LIB_MARIADB}/generate-config
+${MARIADB_LIB}/generate-config

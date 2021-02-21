@@ -12,5 +12,3 @@ bcg-echo "Clearing temporary files and old process IDs..."
 rm -f ${MARIADB_DATA}/*.err
 rm -f ${MARIADB_DATA}/*.pid
 bcg-done
-
-bcg-clear

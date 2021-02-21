@@ -50,7 +50,7 @@ else
     # generate init file
     INIT_FILE=/tmp/init.sql
     bcg-debug "Generating initialisation file ${INIT_FILE}..."
-    s6-setuidgid dbadm ${LIB_MARIADB}/generate-init-file "${INIT_FILE}"
+    s6-setuidgid dbadm ${MARIADB_LIB}/generate-init-file "${INIT_FILE}"
 
     # start server with temporary init file
     bcg-echo "Starting mariadbd-safe with initialisation file."

@@ -8,4 +8,4 @@ export BCG_E=`basename ${0}`
 # Run library upgrade executable.
 #======================================================================================================================
 
-${LIB_MARIADB}/upgrade
+${MARIADB_LIB}/upgrade

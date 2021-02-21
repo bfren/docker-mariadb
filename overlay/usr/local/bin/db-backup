@@ -8,5 +8,5 @@ export BCG_E=`basename ${0}`
 # Run library backup executable.
 #======================================================================================================================
 
-s6-setuidgid dbadm ${LIB_MARIADB}/backup
+s6-setuidgid dbadm ${MARIADB_LIB}/backup
 bcg-fix-attrs

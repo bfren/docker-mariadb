@@ -8,4 +8,4 @@ export BCG_E=`basename ${0}`
 # Run library export executable.
 #======================================================================================================================
 
-s6-setuidgid dbadm ${LIB_MARIADB}/export "${1-}"
+s6-setuidgid dbadm ${MARIADB_LIB}/export "${1-}"

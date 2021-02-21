@@ -9,7 +9,7 @@ export BCG_E=`basename ${0}`
 #======================================================================================================================
 
 # Library configuration
-bcg-env "LIB_MARIADB" "${LIB}/mariadb"
+bcg-env "MARIADB_LIB" "${BCG_LIB}/mariadb"
 
 # Database configuration
 MARIADB_CNF=/etc/my.cnf
