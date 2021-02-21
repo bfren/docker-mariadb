@@ -1,6 +1,7 @@
 #!/usr/bin/with-contenv bash
 
 set -euo pipefail
+export BCG_E=`basename ${0}`
 
 
 #======================================================================================================================
@@ -14,10 +15,15 @@ set -euo pipefail
 #======================================================================================================================
 
 generate-request() {
+    bcg-debug "Name=${1}." "generate-request"
+    bcg-debug "Key file=${2}." "generate-request"
+    bcg-debug "Key bits=${3}." "generate-request"
+    bcg-debug "Certificate file=${4}." "generate-request"
+
     openssl req \
         -nodes \
         -keyout ${2} \
-        -newkey rsa:${3:-4096} \
+        -newkey rsa:${3} \
         -out ${4} \
         -subj "/C=NA/ST=NA/L=NA/O=NA/OU=NA/CN=MariaDB ${1}"
 }
@@ -32,10 +38,15 @@ generate-request() {
 #======================================================================================================================
 
 process-key() {
+    bcg-debug "Input=${1}." "process-key"
+    bcg-debug "Output=${2}." "process-key"
+
     openssl rsa \
         -in ${1} \
         -out ${2}
-    rm -f "${1}"
+
+    bcg-debug "Deleting ${1}." "process-key"
+    rm -f ${1}
 }
 
 
@@ -48,15 +59,20 @@ process-key() {
 #======================================================================================================================
 
 sign-cert() {
+    bcg-debug "Input=${1}." "sign-cert"
+    bcg-debug "Output=${2}." "sign-cert"
+
     openssl x509 \
         -req \
-        -days ${SSL_DAYS:-3650} \
+        -days ${MARIADB_SSL_DAYS} \
         -in ${1} \
-        -CA ${CA_CERT} \
-        -CAkey ${CA_KEY} \
+        -CA ${MARIADB_SSL_CA_CERT} \
+        -CAkey ${MARIADB_SSL_CA_KEY} \
         -set_serial 01 \
         -out ${2}
-    rm -f "${1}"
+
+    bcg-debug "Deleting ${1}." "sign-cert"
+    rm -f ${1}
 }
 
 
@@ -67,81 +83,88 @@ sign-cert() {
 
 
 #======================================================================================================================
-# Generate CA key and certificate
+# Ensure SSL directory exists.
+#======================================================================================================================
+
+[[ ! -d ${MARIADB_SSL_CNF_D} ]] && mkdir -p ${MARIADB_SSL_CNF_D}
+
+
+#======================================================================================================================
+# Generate CA key and certificate.
 #======================================================================================================================
 
 # generate CA key
-bcg-echo "Generating CA key ${CA_KEY}..."
-openssl genrsa ${SSL_CA_KEY_BITS:-4096} > ${CA_KEY}
+bcg-echo "Generating CA key ${MARIADB_SSL_CA_KEY}..."
+openssl genrsa ${MARIADB_SSL_CA_KEY_BITS} > ${MARIADB_SSL_CA_KEY}
 bcg-done
 
 # generate CA certificate
-bcg-echo "Generating CA certificate ${CA_CERT}..."
+bcg-echo "Generating CA certificate ${MARIADB_SSL_CA_CERT}..."
 openssl req \
     -x509 \
     -nodes \
-    -days ${SSL_DAYS:-3650} \
-    -key ${CA_KEY} \
-    -out ${CA_CERT} \
+    -days ${MARIADB_SSL_DAYS} \
+    -key ${MARIADB_SSL_CA_KEY} \
+    -out ${MARIADB_SSL_CA_CERT} \
     -subj "/C=NA/ST=NA/L=NA/O=NA/OU=NA/CN=MariaDB Admin"
 bcg-done
 
 
 #======================================================================================================================
-# Generate server key and certificate
+# Generate server key and certificate.
 #======================================================================================================================
 
 # generate server key and request
 bcg-echo "Generating server key and request..."
-generate-request "Server" ${SERVER_KEY_TMP} "${SSL_SERVER_KEY_BITS-}" ${SERVER_REQ}
+generate-request "Server" ${MARIADB_SSL_SERVER_KEY_TMP} "${MARIADB_SSL_SERVER_KEY_BITS}" ${MARIADB_SSL_SERVER_REQ}
 bcg-done
 
 # process server key
-bcg-echo "Processing server key ${SERVER_KEY}..."
-process-key ${SERVER_KEY_TMP} ${SERVER_KEY}
+bcg-echo "Processing server key..."
+process-key ${MARIADB_SSL_SERVER_KEY_TMP} ${MARIADB_SSL_SERVER_KEY}
 bcg-done
 
 # sign the server certificate
-bcg-echo "Signing server certificate ${SERVER_CERT}..."
-sign-cert ${SERVER_REQ} ${SERVER_CERT}
+bcg-echo "Signing server certificate..."
+sign-cert ${MARIADB_SSL_SERVER_REQ} ${MARIADB_SSL_SERVER_CERT}
 bcg-done
 
 
 #======================================================================================================================
-# Generate client key and certificate
+# Generate client key and certificate.
 #======================================================================================================================
 
 # generate client key and request
 bcg-echo "Generating client key and request..."
-generate-request "Client" ${CLIENT_KEY_TMP} "${SSL_CLIENT_KEY_BITS-}" ${CLIENT_REQ}
+generate-request "Client" ${MARIADB_SSL_CLIENT_KEY_TMP} "${MARIADB_SSL_CLIENT_KEY_BITS}" ${MARIADB_SSL_CLIENT_REQ}
 bcg-done
 
 # process client key
-bcg-echo "Processing client key ${CLIENT_KEY}..."
-process-key ${CLIENT_KEY_TMP} ${CLIENT_KEY}
+bcg-echo "Processing client key..."
+process-key ${MARIADB_SSL_CLIENT_KEY_TMP} ${MARIADB_SSL_CLIENT_KEY}
 bcg-done
 
 # sign the server certificate
-bcg-echo "Signing client certificate ${CLIENT_CERT}..."
-sign-cert ${CLIENT_REQ} ${CLIENT_CERT}
+bcg-echo "Signing client certificate..."
+sign-cert ${MARIADB_SSL_CLIENT_REQ} ${MARIADB_SSL_CLIENT_CERT}
 bcg-done
 
 
 #======================================================================================================================
-# Verify client and server certificates
+# Verify client and server certificates.
 #======================================================================================================================
 
 bcg-echo "Verifying certificates..."
-if openssl verify -CAfile ${CA_CERT} ${SERVER_CERT} ${CLIENT_CERT} ; then
+if openssl verify -CAfile ${MARIADB_SSL_CA_CERT} ${MARIADB_SSL_SERVER_CERT} ${MARIADB_SSL_CLIENT_CERT} ; then
     bcg-done
     exit 0
 fi
 
 
 #======================================================================================================================
-# Output error and clear directories
+# Output error and clear directories.
 #======================================================================================================================
 
-bcg-error "Unable to verify SSL certificates: clearing SSL directory..."
-rm -rf "${MY_CNF_D_SSL}/*"
+bcg-error "Unable to verify SSL certificates, clearing SSL directory..."
+rm -rf "${MARIADB_SSL_CNF_D}/*"
 bcg-done

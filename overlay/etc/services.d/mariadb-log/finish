@@ -1,12 +1,10 @@
-#!/usr/bin/with-contenv bash
+#!/usr/bin/with-contenv sh
 
 set -euo pipefail
-export BCG_E=`basename ${0}`
 
 
 #======================================================================================================================
-# Run library backup executable.
+# Show helpful log message.
 #======================================================================================================================
 
-s6-setuidgid dbadm ${MARIADB_LIB}/backup
-bcg-fix-attrs
+bcg-svc-finish -s ${PWD##*/}

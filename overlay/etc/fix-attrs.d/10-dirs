@@ -1,2 +1,0 @@
-/var/lib/mysql true dbadm:dbadm 0770 0750
-/var/lib/backup true dbadm:dbadm 0440 0750

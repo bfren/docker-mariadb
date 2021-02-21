@@ -1,10 +1,11 @@
 #!/usr/bin/with-contenv bash
 
 set -euo pipefail
+export BCG_E="${PWD##*/}/$(basename ${0})"
 
 
 #======================================================================================================================
-# Forward MariaDB log to Docker
+# Forward MariaDB log to Docker.
 #======================================================================================================================
 
-bcg-forward "mariadb-log" ${ERROR_LOG}
+bcg-forward mariadb-log ${MARIADB_ERROR_LOG}

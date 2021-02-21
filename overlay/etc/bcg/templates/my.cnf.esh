@@ -4,19 +4,19 @@
 
 # This group is read by the server
 [mariadb]
-datadir=<%= ${DATA_DIR} %>
+datadir=<%= ${MARIADB_DATA} %>
 
-log_error=<%= ${ERROR_LOG} %>
+log_error=<%= ${MARIADB_ERROR_LOG} %>
 log_warnings=<%= ${MARIADB_LOG_WARNINGS} %>
 
 character_set_server=<%= ${MARIADB_CHARACTER_SET} %>
 collation_server=<%= ${MARIADB_COLLATION} %>
 
-<% if [ "${ENABLE_SSL-}" = "1" ] && [ -e ${CLIENT_CERT} ] ; then -%>
+<% if [ "${MARIADB_SSL_ENABLE}" = "1" ] && [ -f ${MARIADB_SSL_CLIENT_CERT} ] ; then -%>
 # SSL paths
-ssl-ca=<%= ${CA_CERT} %>
-ssl-cert=<%= ${SERVER_CERT} %>
-ssl-key=<%= ${SERVER_KEY} %>
+ssl-ca=<%= ${MARIADB_SSL_CA_CERT} %>
+ssl-cert=<%= ${MARIADB_SSL_SERVER_CERT} %>
+ssl-key=<%= ${MARIADB_SSL_SERVER_KEY} %>
 # Don't use old TLS versions
 tls_version=TLSv1.2,TLSv1.3
 <% fi -%>
@@ -25,4 +25,4 @@ tls_version=TLSv1.2,TLSv1.3
 symbolic-links=0
 
 # include all files from the config directory
-!includedir <%= ${MY_CNF_D} %>
+!includedir <%= ${MARIADB_CNF_D} %>

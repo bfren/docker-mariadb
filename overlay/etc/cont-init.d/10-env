@@ -1,42 +1,45 @@
 #!/usr/bin/with-contenv bash
 
 set -euo pipefail
+export BCG_E=`basename ${0}`
 
 
 #======================================================================================================================
-# Add an environment variable to the S6 environment.
-#
-# Arguments:
-#   1   Variable name
-#   2   Variable value
+# Add environment variables.
 #======================================================================================================================
 
-add_env() { bcg-echo "${1}=${2}" ; printf "%s" ${2} > /var/run/s6/container_environment/${1}; }
+# Library configuration
+bcg-env "MARIADB_LIB" "${BCG_LIB}/mariadb"
 
 # Database configuration
-MY_CNF=/etc/my.cnf
-add_env "MY_CNF" "${MY_CNF}"
+MARIADB_CNF=/etc/my.cnf
+bcg-env "MARIADB_CNF" "${MARIADB_CNF}"
 
-MY_CNF_D=${MY_CNF}.d
-add_env "MY_CNF_D" "${MY_CNF_D}"
+MARIADB_CNF_D=${MARIADB_CNF}.d
+bcg-env "MARIADB_CNF_D" "${MARIADB_CNF_D}"
 
-add_env "DATA_DIR" "/var/lib/mysql"
-add_env "BACKUP_DIR" "/var/lib/backup"
+bcg-env "MARIADB_DATA" "/var/lib/mysql"
+bcg-env "MARIADB_BACKUP" "/var/lib/backup"
 
-add_env "ERROR_LOG" "/var/log/mariadb/error.log"
+bcg-env "MARIADB_ERROR_LOG" "/var/log/mariadb/error.log"
 
 # SSL configuration
-if [ "${ENABLE_SSL-}" = "1" ] ; then
-    MY_CNF_D_SSL=${MY_CNF_D}/ssl
-    add_env "MY_CNF_D_SSL" "${MY_CNF_D_SSL}"
-    add_env "CA_KEY" "${MY_CNF_D_SSL}/ca-key.pem"
-    add_env "CA_CERT" "${MY_CNF_D_SSL}/ca-cert.pem"
-    add_env "SERVER_KEY" "${MY_CNF_D_SSL}/server-key.pem"
-    add_env "SERVER_KEY_TMP" "${MY_CNF_D_SSL}/server-key.tmp"
-    add_env "SERVER_REQ" "${MY_CNF_D_SSL}/server-req.pem"
-    add_env "SERVER_CERT" "${MY_CNF_D_SSL}/server-cert.pem"
-    add_env "CLIENT_KEY" "${MY_CNF_D_SSL}/client-key.pem"
-    add_env "CLIENT_KEY_TMP" "${MY_CNF_D_SSL}/client-key.tmp"
-    add_env "CLIENT_REQ" "${MY_CNF_D_SSL}/client-req.pem"
-    add_env "CLIENT_CERT" "${MY_CNF_D_SSL}/client-cert.pem"
+if [ "${MARIADB_SSL_ENABLE}" = "1" ] ; then
+
+    MARIADB_SSL=/ssl
+    bcg-env "MARIADB_SSL" "${MARIADB_SSL}"
+
+    MARIADB_SSL_CNF_D=${MARIADB_CNF_D}/ssl
+    bcg-env "MARIADB_SSL_CNF_D" "${MARIADB_SSL_CNF_D}"
+    bcg-env "MARIADB_SSL_CA_KEY" "${MARIADB_SSL_CNF_D}/ca-key.pem"
+    bcg-env "MARIADB_SSL_CA_CERT" "${MARIADB_SSL_CNF_D}/ca-cert.pem"
+    bcg-env "MARIADB_SSL_SERVER_KEY" "${MARIADB_SSL_CNF_D}/server-key.pem"
+    bcg-env "MARIADB_SSL_SERVER_KEY_TMP" "${MARIADB_SSL_CNF_D}/server-key.tmp"
+    bcg-env "MARIADB_SSL_SERVER_REQ" "${MARIADB_SSL_CNF_D}/server-req.pem"
+    bcg-env "MARIADB_SSL_SERVER_CERT" "${MARIADB_SSL_CNF_D}/server-cert.pem"
+    bcg-env "MARIADB_SSL_CLIENT_KEY" "${MARIADB_SSL_CNF_D}/client-key.pem"
+    bcg-env "MARIADB_SSL_CLIENT_KEY_TMP" "${MARIADB_SSL_CNF_D}/client-key.tmp"
+    bcg-env "MARIADB_SSL_CLIENT_REQ" "${MARIADB_SSL_CNF_D}/client-req.pem"
+    bcg-env "MARIADB_SSL_CLIENT_CERT" "${MARIADB_SSL_CNF_D}/client-cert.pem"
+
 fi

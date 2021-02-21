@@ -1,10 +1,11 @@
 #!/usr/bin/with-contenv bash
 
-set -eo pipefail
+set -euo pipefail
+export BCG_E=`basename ${0}`
 
 
 #======================================================================================================================
-# Run /etc/db/generate-config executable
+# Run library generate-config executable.
 #======================================================================================================================
 
-/etc/db/generate-config
+${MARIADB_LIB}/generate-config

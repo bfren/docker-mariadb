@@ -5,24 +5,38 @@ export BCG_E=`basename ${0}`
 
 
 #======================================================================================================================
-# If SSL is not enabled, exit script gracefully.
+# Check if upgrade is necessary
 #======================================================================================================================
 
-[[ "${MARIADB_SSL_ENABLE}" != "1" ]] && bcg-echo "SSL is not enabled." && exit 0
+UPGRADE=${MARIADB_DATA}/mysql_upgrade_info
+if [ -f ${UPGRADE} ] ; then
 
+    UPGRADE_VERSION=$(tr -d '\0' < ${UPGRADE}) # remove null byte from mysql_upgrade_info
+    bcg-debug "Data version ${UPGRADE_VERSION}."
 
-#======================================================================================================================
-# If server certificate exists, exit script.
-#======================================================================================================================
+    THIS_VERSION=$(mariadb --version)
+    bcg-debug "Server version ${THIS_VERSION}."
 
-if [ -f ${MARIADB_SSL_CLIENT_CERT} ] ; then
-    bcg-ok "Using existing SSL certificates."
-    exit 0
+    if [ ${THIS_VERSION} == *"${UPGRADE_VERSION}"* ] ; then
+        bcg-echo "Data and Server versions match, upgrade not necessary."
+        exit 0
+    fi
+
 fi
 
 
 #======================================================================================================================
-# Call db-generate-certs executable.
+# Take backup first.
 #======================================================================================================================
 
-db-generate-certs
+bcg-debug "Taking backup before running mariadb-upgrade."
+db-backup
+
+
+#======================================================================================================================
+# Run mariadb-upgrade as root user.
+#======================================================================================================================
+
+bcg-echo "Running mariadb-upgrade..."
+mariadb-upgrade -uroot -p${MARIADB_ROOT_PASSWORD}
+bcg-done

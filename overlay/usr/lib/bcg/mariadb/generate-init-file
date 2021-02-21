@@ -1,22 +1,24 @@
 #!/usr/bin/with-contenv bash
 
 set -euo pipefail
+export BCG_E=`basename ${0}`
 
 
 #======================================================================================================================
-# Check init file has been set
+# Check init file has been set.
 #======================================================================================================================
 
-[[ $# -ne 1 || -z "${1}" ]] && bcg-error "You must define the path to the initialisation file."
-INIT_FILE="${1}"
-echo "# Database initialisation script" > ${INIT_FILE}
+[[ -z "${1-}" ]] && bcg-error "You must define the path to the initialisation file."
+INIT_FILE=${1}
 
 
 #======================================================================================================================
-# Create a database table and grant privileges to user
-#   2: database name
-#   3: username
-#   4: password
+# Create a database table and grant privileges to user.
+#
+# Arguments
+#   1: database name
+#   2: username
+#   3: password
 #======================================================================================================================
 
 create_database () {
@@ -40,35 +42,39 @@ create_database () {
 #   create application database(s) and user
 #======================================================================================================================
 
+# create file
+bcg-debug "Creating init file ${INIT_FILE}..."
+echo "# Database initialisation script" > ${INIT_FILE}
+
 # update root user with password and ensure full access
-bcg-echo " .. alter root user"
+bcg-debug " .. alter root user"
 echo "ALTER USER 'root'@'localhost' IDENTIFIED BY '${MARIADB_ROOT_PASSWORD}';" >> ${INIT_FILE}
 echo "GRANT ALL ON *.* TO 'root'@'localhost' WITH GRANT OPTION;" >> ${INIT_FILE}
 echo "FLUSH PRIVILEGES;" >> ${INIT_FILE}
 
 # delete the dbadm user (no need to use up the space)
-bcg-echo " .. delete dbadm user"
+bcg-debug " .. delete dbadm user."
 echo "DROP USER IF EXISTS dbadm@localhost;" >> ${INIT_FILE}
 
 # delete the test database (no need to use up the space)
-bcg-echo " .. delete test database"
+bcg-debug " .. delete test database."
 echo "DROP DATABASE IF EXISTS test;" >> ${INIT_FILE}
 
 # if database(s) specified, create (each) database and grant user permissions
 if [ ! -z "${MARIADB_DATABASE-}" ] ; then
 
-    bcg-echo " .. add application databases:"
+    bcg-debug " .. add application databases:"
     DATABASES=$(echo ${MARIADB_DATABASE} | tr "," "\n")
 
     for DATABASE in ${DATABASES} ; do
-        bcg-echo " .. ${DATABASE}"
+        bcg-debug " .. ${DATABASE}."
         create_database "${DATABASE}" "${MARIADB_USERNAME}" "${MARIADB_PASSWORD}"
     done
 
 # no database specified so use username as database name
 else
 
-    bcg-echo " .. add application database: ${MARIADB_USERNAME}"
+    bcg-debug " .. add application database: ${MARIADB_USERNAME}."
     create_database "${MARIADB_USERNAME}" "${MARIADB_USERNAME}" "${MARIADB_PASSWORD}"
 
 fi

@@ -5,18 +5,22 @@ export BCG_E=`basename ${0}`
 
 
 #======================================================================================================================
-# Run library generate-certs executable.
+# Check arguments.
+#   1   Database name
 #======================================================================================================================
 
-${MARIADB_LIB}/generate-certs
+[[ -z "${1-}" ]] && bcg-error "You must provide the name of the database to export."
+DATABASE=${1}
+
+[[ ! -d "${MARIADB_DATA}/${DATABASE}" ]] && bcg-error "Database '${DATABASE}' does not exist."
+EXPORT_FILE="${MARIADB_BACKUP}/${DATABASE}.sql"
 
 
 #======================================================================================================================
-# Copy client certificates to /ssl and make publicly readable.
+# Dump database to file.
 #======================================================================================================================
 
-cp ${MARIADB_SSL_CA_CERT} ${MARIADB_SSL}
-cp ${MARIADB_SSL_CLIENT_KEY} ${MARIADB_SSL}
-cp ${MARIADB_SSL_CLIENT_CERT} ${MARIADB_SSL}
-
-bcg-fix-attrs
+bcg-echo "Exporting database '${DATABASE}' to ${EXPORT_FILE}..."
+mariadb-dump --add-locks -uroot -p${MARIADB_ROOT_PASSWORD} "${DATABASE}" > "${EXPORT_FILE}" \
+    || bcg-error " .. unable to export database '${DATABASE}'."
+bcg-done

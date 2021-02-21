@@ -1,14 +1,11 @@
 #!/usr/bin/with-contenv bash
 
 set -euo pipefail
+export BCG_E=`basename ${0}`
 
 
 #======================================================================================================================
-# Run /etc/db/export executable
+# Run library export executable.
 #======================================================================================================================
 
-if [ $# -eq 1 ] && [ -n "${1}" ] ; then
-    s6-setuidgid dbadm /etc/db/export "${1}"
-else
-    bcg-error "db-export: You must specify a database name."
-fi
+s6-setuidgid dbadm ${MARIADB_LIB}/export "${1-}"

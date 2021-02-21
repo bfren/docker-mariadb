@@ -1,10 +1,11 @@
 #!/usr/bin/with-contenv bash
 
 set -euo pipefail
+export BCG_E=`basename ${0}`
 
 
 #======================================================================================================================
-# Use base executable to disable upgrade service
+# Use base executable to disable upgrade service.
 #======================================================================================================================
 
-bcg-disable "mariadb-upgrade"
+bcg-svc disable mariadb-upgrade

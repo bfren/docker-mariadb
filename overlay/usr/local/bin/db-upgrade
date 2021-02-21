@@ -1,12 +1,11 @@
 #!/usr/bin/with-contenv bash
 
 set -euo pipefail
+export BCG_E=`basename ${0}`
 
 
 #======================================================================================================================
-# Run mariadb-upgrade as root user
+# Run library upgrade executable.
 #======================================================================================================================
 
-bcg-echo "Running mariadb-upgrade..."
-mariadb-upgrade -uroot -p${MARIADB_ROOT_PASSWORD}
-bcg-done
+${MARIADB_LIB}/upgrade
