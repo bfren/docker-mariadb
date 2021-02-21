@@ -15,12 +15,8 @@ ${LIB_MARIADB}/generate-certs
 # Copy client certificates to /ssl and make publicly readable.
 #======================================================================================================================
 
-cp ${MARIADB_SSL_CA_CERT} ${MARIADB_SSL}/
-cp ${MARIADB_SSL_CLIENT_KEY} ${MARIADB_SSL}/
-cp ${MARIADB_SSL_CLIENT_CERT} ${MARIADB_SSL}/
-
-cat ${MARIADB_SSL_CA_CERT} > ${MARIADB_SSL_CLIENT}
-cat ${MARIADB_SSL_CLIENT_KEY} >> ${MARIADB_SSL_CLIENT}
-cat ${MARIADB_SSL_CLIENT_CERT} >> ${MARIADB_SSL_CLIENT}
+cp ${MARIADB_SSL_CA_CERT} ${MARIADB_SSL}
+cp ${MARIADB_SSL_CLIENT_KEY} ${MARIADB_SSL}
+cp ${MARIADB_SSL_CLIENT_CERT} ${MARIADB_SSL}
 
 bcg-fix-attrs
