@@ -25,7 +25,8 @@ bcg-env "MARIADB_ERROR_LOG" "/var/log/mariadb/error.log"
 
 # SSL configuration
 if [ "${MARIADB_SSL_ENABLE}" = "1" ] ; then
-    bcg-env "MARIADB_SSL" "/ssl"
+    MARIADB_SSL=/ssl
+    bcg-env "MARIADB_SSL" "${MARIADB_SSL}"
     MARIADB_SSL_CNF_D=${MARIADB_CNF_D}/ssl
     bcg-env "MARIADB_SSL_CNF_D" "${MARIADB_SSL_CNF_D}"
     bcg-env "MARIADB_SSL_CA_KEY" "${MARIADB_SSL_CNF_D}/ca-key.pem"
@@ -38,4 +39,5 @@ if [ "${MARIADB_SSL_ENABLE}" = "1" ] ; then
     bcg-env "MARIADB_SSL_CLIENT_KEY_TMP" "${MARIADB_SSL_CNF_D}/client-key.tmp"
     bcg-env "MARIADB_SSL_CLIENT_REQ" "${MARIADB_SSL_CNF_D}/client-req.pem"
     bcg-env "MARIADB_SSL_CLIENT_CERT" "${MARIADB_SSL_CNF_D}/client-cert.pem"
+    bcg-env "MARIADB_SSL_CLIENT" "${MARIADB_SSL}/client.pem"
 fi
