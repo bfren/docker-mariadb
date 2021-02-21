@@ -8,8 +8,8 @@ export BCG_E=`basename ${0}`
 # Check init file has been set.
 #======================================================================================================================
 
-[[ $# -ne 1 || -z "${1}" ]] && bcg-error "You must define the path to the initialisation file."
-INIT_FILE="${1}"
+[[ -z "${1-}" ]] && bcg-error "You must define the path to the initialisation file."
+INIT_FILE=${1}
 
 
 #======================================================================================================================

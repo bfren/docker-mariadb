@@ -9,8 +9,7 @@ export BCG_E=`basename ${0}`
 #======================================================================================================================
 
 DATE=$(date '+%Y%m%d%H%M')
-THIS_BACKUP_PATH=${MARIADB_BACKUP}/${DATE}
-bcg-debug "Backup path ${THIS_BACKUP_PATH}."
+bcg-debug "Backup: ${DATE}."
 
 
 #======================================================================================================================
@@ -27,9 +26,9 @@ DATABASES=$(mariadb -uroot -p${MARIADB_ROOT_PASSWORD} -e 'SHOW DATABASES;' | sed
 # Dump databases to a temporary folder and compress.
 #======================================================================================================================
 
-TEMP_BACKUP_PATH=$(mktemp -d)
-
+TEMP_BACKUP_PATH=$(mktemp -d -t backup.XXXXXX) || bcg-error "Unable to make temporary backup directory."
 bcg-echo "Backing up databases to ${TEMP_BACKUP_PATH}..."
+
 for DATABASE in ${DATABASES} ; do
 
     # path to this database dump
@@ -51,8 +50,9 @@ bcg-done
 # Move backups to backup directory and set permissions.
 #======================================================================================================================
 
-bcg-echo "Moving backups to ${THIS_BACKUP_PATH}..."
-mv ${TEMP_BACKUP_PATH} ${THIS_BACKUP_PATH}
+BACKUP_PATH=${MARIADB_BACKUP}/${DATE}
+bcg-echo "Moving backups to ${BACKUP_PATH}..."
+mv ${TEMP_BACKUP_PATH} ${BACKUP_PATH}
 bcg-done
 
 

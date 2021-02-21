@@ -15,10 +15,10 @@ export BCG_E=`basename ${0}`
 #======================================================================================================================
 
 generate-request() {
-    bcg-debug "generate-request() name=${1}"
-    bcg-debug "generate-request() key file=${2}"
-    bcg-debug "generate-request() key bits=${3}"
-    bcg-debug "generate-request() certificate file=${4}"
+    bcg-debug "Name=${1}." "generate-request"
+    bcg-debug "Key file=${2}." "generate-request"
+    bcg-debug "Key bits=${3}." "generate-request"
+    bcg-debug "Certificate file=${4}." "generate-request"
 
     openssl req \
         -nodes \
@@ -38,12 +38,14 @@ generate-request() {
 #======================================================================================================================
 
 process-key() {
-    bcg-debug "process-key() input=${1}"
-    bcg-debug "process-key() output=${2}"
+    bcg-debug "Input=${1}." "process-key"
+    bcg-debug "Output=${2}." "process-key"
 
     openssl rsa \
         -in ${1} \
         -out ${2}
+
+    bcg-debug "Deleting ${1}." "process-key"
     rm -f ${1}
 }
 
@@ -57,8 +59,8 @@ process-key() {
 #======================================================================================================================
 
 sign-cert() {
-    bcg-debug "sign-cert() input=${1}"
-    bcg-debug "sign-cert() output=${2}"
+    bcg-debug "Input=${1}." "sign-cert"
+    bcg-debug "Output=${2}." "sign-cert"
 
     openssl x509 \
         -req \
@@ -68,6 +70,8 @@ sign-cert() {
         -CAkey ${MARIADB_SSL_CA_KEY} \
         -set_serial 01 \
         -out ${2}
+
+    bcg-debug "Deleting ${1}." "sign-cert"
     rm -f ${1}
 }
 
