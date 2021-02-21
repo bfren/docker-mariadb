@@ -17,7 +17,7 @@ if [ -f ${UPGRADE} ] ; then
     THIS_VERSION=$(mariadb --version)
     bcg-debug "Server version ${THIS_VERSION}."
 
-    if [ ${THIS_VERSION} == *"${UPGRADE_VERSION}"* ] ;
+    if [ ${THIS_VERSION} == *"${UPGRADE_VERSION}"* ] ; then
         bcg-echo "Data and Server versions match, upgrade not necessary."
         exit 0
     fi
