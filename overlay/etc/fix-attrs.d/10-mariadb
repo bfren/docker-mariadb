@@ -1,5 +1,4 @@
-/etc/my.cnf false dbadm:dbadm 0440 0750
-/etc/my.cnf.d true dbadm:dbadm 0440 0750
+/etc/my.cnf* true dbadm:dbadm 0440 0750
 /ssl true dbadm:dbadm 0444 0750
 /var/lib/mysql true dbadm:dbadm 0770 0750
 /var/lib/backup true dbadm:dbadm 0440 0750

@@ -8,8 +8,9 @@ export BCG_E=`basename ${0}`
 # Old PIDs clog up the mysql directory
 #======================================================================================================================
 
-bcg-echo "Cleaning up temporary files and old process IDs..."
-rm -rf /tmp/*
-rm ${MARIADB_DATA}/*.err > /dev/null 2>&1
-rm ${MARIADB_DATA}/*.pid > /dev/null 2>&1
+bcg-echo "Clearing temporary files and old process IDs..."
+rm -f ${MARIADB_DATA}/*.err
+rm -f ${MARIADB_DATA}/*.pid
 bcg-done
+
+bcg-clear
