@@ -21,6 +21,8 @@ bcg-env "MARIADB_CNF_D" "${MARIADB_CNF_D}"
 bcg-env "MARIADB_DATA" "/var/lib/mysql"
 bcg-env "MARIADB_BACKUP" "/var/lib/backup"
 
+bcg-env "MARIADB_UPGRADE_INFO" "${MARIADB_DATA}/mysql_upgrade_info"
+
 bcg-env "MARIADB_ERROR_LOG" "/var/log/mariadb/error.log"
 
 # SSL configuration
