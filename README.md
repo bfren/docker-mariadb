@@ -84,7 +84,7 @@ See [For Backups](#for-backups) for configuration variables.
 
 ## License
 
-> MIT
+> [MIT](https://bcg.mit-license.org/2020)
 
 ## Copyright
 
