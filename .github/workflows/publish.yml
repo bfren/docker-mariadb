@@ -63,12 +63,12 @@ jobs:
           tags: |
             bcgdesign/mariadb:latest
             bcgdesign/mariadb:${{ steps.version.outputs.content }}
-            bcgdesign/mariadb:mariadb-${{ steps.mariadb_major.outputs.content }}
-            bcgdesign/mariadb:mariadb-${{ steps.mariadb_minor.outputs.content }}
-            bcgdesign/mariadb:mariadb-${{ steps.mariadb_minor.outputs.content }}-${{ steps.version.outputs.content }}
-            bcgdesign/mariadb:mariadb-${{ steps.mariadb_revision.outputs.content }}
-            bcgdesign/mariadb:mariadb-${{ steps.mariadb_revision.outputs.content }}-${{ steps.version.outputs.content }}
-            bcgdesign/mariadb:mariadb-${{ steps.mariadb_build.outputs.content }}
+            bcgdesign/mariadb:mariadb${{ steps.mariadb_major.outputs.content }}
+            bcgdesign/mariadb:mariadb${{ steps.mariadb_minor.outputs.content }}
+            bcgdesign/mariadb:mariadb${{ steps.mariadb_minor.outputs.content }}-${{ steps.version.outputs.content }}
+            bcgdesign/mariadb:mariadb${{ steps.mariadb_revision.outputs.content }}
+            bcgdesign/mariadb:mariadb${{ steps.mariadb_revision.outputs.content }}-${{ steps.version.outputs.content }}
+            bcgdesign/mariadb:mariadb${{ steps.mariadb_build.outputs.content }}
       -
         name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
