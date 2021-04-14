@@ -1,0 +1,16 @@
+version: "3.8"
+
+services:
+  db:
+    image: bcgdesign/mariadb:mariadb${MARIADB_VERSION}
+    container_name: db
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:${MARIADB_PORT}:3306"
+    environment:
+      - MARIADB_ROOT_PASSWORD=${MARIADB_ROOT_PASSWORD}
+      - MARIADB_USERNAME=${MARIADB_USERNAME}
+      - MARIADB_PASSWORD=${MARIADB_PASSWORD}
+    volumes:
+      - ./v/data:/var/lib/mysql
+      - ./v/backup:/var/lib/backup
