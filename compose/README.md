@@ -4,7 +4,7 @@
 
 1. Create a `.env` file on your host machine and copy the contents from the default file in this folder.
 2. **Change the values for the port / passwords / username.** (!)
-3. Create a `docker-compose.yml` file on your host machine and copy the contents from the various `.yml` template files in this folder.
+3. Create a `docker-compose.yml` file on your host machine and copy the contents from one of the various `.yml` template files in this folder.  (Descriptions of each can be found below.)
 4. Run the following: `docker-compose up`.  This will download the image, and run the database installation routine.
 
 The `MARIADB_USERNAME` environment variable is important because the container will automatically create a database of that name when it starts for the first time.
@@ -24,9 +24,9 @@ Backups will be created automatically every 8 hours and stored in `./v/backup`.
 The `.env` file is a convenient way of grouping and defining variables for use in your `docker-compose.yml` file.  The default file looks like this:
 
 ```bash
-MARIADB_VERSION=10.5.8 # check Docker Hub for latest tags
+MARIADB_VERSION=10.5.8 # NB this is the MariaDB version, not the image version
 MARIADB_PORT=3306 # you will access the database over this port
-MARIADB_ROOT_PASSWORD=password
+MARIADB_ROOT_PASSWORD=root_password
 MARIADB_USERNAME=application_name # a database with this name will be created automatically
 MARIADB_PASSWORD=another_password
 ```
@@ -42,6 +42,8 @@ This is the most common way to use a Docker database image: create one per app. 
 **Suggested use: local development machine.**
 
 If you want a single database container that multiple apps can access, or that you can access directly from your container host OS, use `access-from-host.yml`.  This maps `MARIADB_PORT` from localhost to the database container.
+
+This is how I have a test / dev server setup on my development machine.  I have also used this config while migrating native apps to their Docker alternatives.
 
 ## Access from external
 
