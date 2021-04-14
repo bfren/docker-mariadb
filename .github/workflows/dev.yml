@@ -6,8 +6,6 @@ on:
       - 'main'
     tags-ignore:
       - '**'
-    paths-ignore:
-      - './compose/**'
 
 jobs:
   test:
