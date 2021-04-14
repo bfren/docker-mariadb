@@ -33,11 +33,11 @@ See [For Backups](#for-backups) for configuration variables.
 
 ## Volumes
 
-| Volume              | Purpose                                                                                           |
-| ------------------- | ------------------------------------------------------------------------------------------------- |
-| `/etc/mysql/conf.d` | Optional additional mariadb configuration.                                                        |
-| `/var/lib/mysql`    | Data files.                                                                                       |
-| `/var/lib/backup`   | Backup files (also used for export / import scripts - see [helper functions](#helper-functions)). |
+| Volume            | Purpose                                                                                           |
+| ----------------- | ------------------------------------------------------------------------------------------------- |
+| `/etc/my.cnf.d`   | Optional additional mariadb configuration.                                                        |
+| `/var/lib/mysql`  | Data files.                                                                                       |
+| `/var/lib/backup` | Backup files (also used for export / import scripts - see [helper functions](#helper-functions)). |
 
 ## Environment Variables
 
