@@ -17,6 +17,7 @@ Backups will be created automatically every 8 hours and stored in `./v/backup`.
 - [Access from app](#access-from-app)
 - [Access from host](#access-from-host)
 - [Access from external](#access-from-external)
+  - [Client configuration](#client-configuration)
 
 ## Environment Variables
 
