@@ -1,7 +1,7 @@
 #!/usr/bin/with-contenv bash
 
 set -euo pipefail
-export BCG_E=`basename ${0}`
+export BF_E=`basename ${0}`
 
 
 #======================================================================================================================
@@ -10,7 +10,7 @@ export BCG_E=`basename ${0}`
 
 bf-echo "Writing MariaDB config..."
 esh -o ${MARIADB_CNF} \
-    ${BCG_TEMPLATES}/my.cnf.esh
+    ${BF_TEMPLATES}/my.cnf.esh
 bf-done
 
 bf-echo "Setting MariaDB config permissions to be read-only..."
