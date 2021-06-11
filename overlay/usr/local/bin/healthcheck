@@ -8,7 +8,7 @@ export BCG_E=`basename ${0}`
 # Copyright (c) 2015 Thomas Boerger <https://webhippie.de>
 # Originally from https://github.com/dockhippie/mariadb/blob/master/latest/overlay/etc/s6/mariadb/run
 #
-# Modifications copyright (c) 2021 Ben Green <https://bcgdesign.com>
+# Modifications copyright (c) 2021 bfren.uk
 #======================================================================================================================
 
 USERNAME=${MARIADB_USERNAME:-root}
