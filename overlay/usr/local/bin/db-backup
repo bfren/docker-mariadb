@@ -9,4 +9,4 @@ export BCG_E=`basename ${0}`
 #======================================================================================================================
 
 s6-setuidgid dbadm ${MARIADB_LIB}/backup
-bcg-fix-attrs
+bf-fix-attrs

@@ -33,6 +33,6 @@ EXPOSE 3306
 COPY ./overlay /
 COPY ./MARIADB_BUILD /tmp/VERSION
 
-RUN bcg-install
+RUN bf-install
 
 VOLUME [ "/var/lib/mysql", "/var/lib/backup", "/etc/my.cnf.d", "/ssl" ]

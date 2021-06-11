@@ -8,7 +8,7 @@ export BCG_E=`basename ${0}`
 # Remove upgrade info file so the upgrade runs.
 #======================================================================================================================
 
-bcg-debug "Removing ${MARIADB_UPGRADE_INFO}."
+bf-debug "Removing ${MARIADB_UPGRADE_INFO}."
 rm -f ${MARIADB_UPGRADE_INFO}
 
 

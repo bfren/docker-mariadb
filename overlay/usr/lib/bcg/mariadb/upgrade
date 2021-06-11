@@ -11,13 +11,13 @@ export BCG_E=`basename ${0}`
 if [ -f ${MARIADB_UPGRADE_INFO} ] ; then
 
     UPGRADE_VERSION=$(tr -d '\0' < ${MARIADB_UPGRADE_INFO}) # remove null byte from mysql_upgrade_info
-    bcg-debug "Data version ${UPGRADE_VERSION}."
+    bf-debug "Data version ${UPGRADE_VERSION}."
 
     THIS_VERSION=$(mariadb --version)
-    bcg-debug "Server version ${THIS_VERSION}."
+    bf-debug "Server version ${THIS_VERSION}."
 
     if [[ ${THIS_VERSION} == *"${UPGRADE_VERSION}"* ]] ; then
-        bcg-echo "Data and Server versions match, upgrade not necessary."
+        bf-echo "Data and Server versions match, upgrade not necessary."
         exit 0
     fi
 
@@ -28,7 +28,7 @@ fi
 # Take backup first.
 #======================================================================================================================
 
-bcg-debug "Taking backup before running mariadb-upgrade."
+bf-debug "Taking backup before running mariadb-upgrade."
 db-backup
 
 
@@ -36,6 +36,6 @@ db-backup
 # Run mariadb-upgrade as root user.
 #======================================================================================================================
 
-bcg-echo "Running mariadb-upgrade..."
+bf-echo "Running mariadb-upgrade..."
 mariadb-upgrade -uroot -p${MARIADB_ROOT_PASSWORD}
-bcg-done
+bf-done

@@ -9,10 +9,10 @@ export BCG_E=`basename ${0}`
 #   1   Database name
 #======================================================================================================================
 
-[[ -z "${1-}" ]] && bcg-error "You must provide the name of the database to export."
+[[ -z "${1-}" ]] && bf-error "You must provide the name of the database to export."
 DATABASE=${1}
 
-[[ ! -d "${MARIADB_DATA}/${DATABASE}" ]] && bcg-error "Database '${DATABASE}' does not exist."
+[[ ! -d "${MARIADB_DATA}/${DATABASE}" ]] && bf-error "Database '${DATABASE}' does not exist."
 EXPORT_FILE="${MARIADB_BACKUP}/${DATABASE}.sql"
 
 
@@ -20,7 +20,7 @@ EXPORT_FILE="${MARIADB_BACKUP}/${DATABASE}.sql"
 # Dump database to file.
 #======================================================================================================================
 
-bcg-echo "Exporting database '${DATABASE}' to ${EXPORT_FILE}..."
+bf-echo "Exporting database '${DATABASE}' to ${EXPORT_FILE}..."
 mariadb-dump --add-locks -uroot -p${MARIADB_ROOT_PASSWORD} "${DATABASE}" > "${EXPORT_FILE}" \
-    || bcg-error " .. unable to export database '${DATABASE}'."
-bcg-done
+    || bf-error " .. unable to export database '${DATABASE}'."
+bf-done

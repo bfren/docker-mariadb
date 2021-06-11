@@ -22,7 +22,7 @@ else
     # wait 2s before exiting the service - S6 will keep restarting it until MariaDB comes online
     # on first run, the mariadb service will disable this upgrade service itself
     SLEEP=2
-    bcg-debug "Waiting ${SLEEP}s for MariaDB to come online..."
+    bf-debug "Waiting ${SLEEP}s for MariaDB to come online..."
     sleep ${SLEEP}
 
 fi

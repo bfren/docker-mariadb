@@ -8,7 +8,7 @@ export BCG_E=`basename ${0}`
 # Get import files (from backup directory).
 #======================================================================================================================
 
-bcg-echo "Importing SQL files from ${MARIADB_BACKUP}..."
+bf-echo "Importing SQL files from ${MARIADB_BACKUP}..."
 for FILE in ${MARIADB_BACKUP}/*.sql ; do
 
     # split out database name from file
@@ -16,9 +16,9 @@ for FILE in ${MARIADB_BACKUP}/*.sql ; do
     DATABASE="${NAME%.*}"
 
     # execute file
-    bcg-echo " .. importing '${DATABASE}'."
+    bf-echo " .. importing '${DATABASE}'."
     mariadb -uroot -p${MARIADB_ROOT_PASSWORD} "${DATABASE}" < ${FILE} \
-        || bcg-notok "  . something went wrong."
+        || bf-notok "  . something went wrong."
 
 done
-bcg-done
+bf-done
