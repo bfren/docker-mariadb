@@ -1,7 +1,7 @@
 #!/usr/bin/with-contenv bash
 
 set -euo pipefail
-export BCG_E=`basename ${0}`
+export BF_E=`basename ${0}`
 
 
 #======================================================================================================================
@@ -9,7 +9,7 @@ export BCG_E=`basename ${0}`
 #======================================================================================================================
 
 DATE=$(date '+%Y%m%d%H%M')
-bcg-debug "Backup: ${DATE}."
+bf-debug "Backup: ${DATE}."
 
 
 #======================================================================================================================
@@ -17,33 +17,33 @@ bcg-debug "Backup: ${DATE}."
 #======================================================================================================================
 
 EXCLUDE="mysql|information_schema|performance_schema|sys"
-bcg-debug "Exclude ${EXCLUDE}."
+bf-debug "Exclude ${EXCLUDE}."
 DATABASES=$(mariadb -uroot -p${MARIADB_ROOT_PASSWORD} -e 'SHOW DATABASES;' | sed 1d | grep -v -E "(${EXCLUDE})")
-[[ -z "${DATABASES}" ]] && bcg-error "No databases found to backup."
+[[ -z "${DATABASES}" ]] && bf-error "No databases found to backup."
 
 
 #======================================================================================================================
 # Dump databases to a temporary folder and compress.
 #======================================================================================================================
 
-TEMP_BACKUP_PATH=$(mktemp -d -t backup.XXXXXX) || bcg-error "Unable to make temporary backup directory."
-bcg-echo "Backing up databases to ${TEMP_BACKUP_PATH}..."
+TEMP_BACKUP_PATH=$(mktemp -d -t backup.XXXXXX) || bf-error "Unable to make temporary backup directory."
+bf-echo "Backing up databases to ${TEMP_BACKUP_PATH}..."
 
 for DATABASE in ${DATABASES} ; do
 
     # path to this database dump
     DUMP_FILE="${TEMP_BACKUP_PATH}/${DATABASE}.sql"
-    bcg-debug "Dumping to ${DUMP_FILE}."
+    bf-debug "Dumping to ${DUMP_FILE}."
 
     # dump database and continue on failure
-    bcg-echo " .. ${DATABASE}"
+    bf-echo " .. ${DATABASE}"
     mariadb-dump --add-locks -uroot -p${MARIADB_ROOT_PASSWORD} ${DATABASE} > ${DUMP_FILE} || true
 
     # compress file
     [[ "${MARIADB_BACKUP_COMPRESS_FILES}" = "1" ]] && gzip ${DUMP_FILE}
 
 done
-bcg-done
+bf-done
 
 
 #======================================================================================================================
@@ -51,9 +51,9 @@ bcg-done
 #======================================================================================================================
 
 BACKUP_PATH=${MARIADB_BACKUP}/${DATE}
-bcg-echo "Moving backups to ${BACKUP_PATH}..."
+bf-echo "Moving backups to ${BACKUP_PATH}..."
 mv ${TEMP_BACKUP_PATH} ${BACKUP_PATH}
-bcg-done
+bf-done
 
 
 #======================================================================================================================
@@ -62,9 +62,9 @@ bcg-done
 
 if [ "${MARIADB_BACKUP_KEEP_FOR_DAYS}" -gt 0 ] ; then
 
-    bcg-echo "Deleting backups older than ${MARIADB_BACKUP_KEEP_FOR_DAYS} days..."
+    bf-echo "Deleting backups older than ${MARIADB_BACKUP_KEEP_FOR_DAYS} days..."
     MMIN=$((60*24*${MARIADB_BACKUP_KEEP_FOR_DAYS}))
     find ${MARIADB_BACKUP}/* -type d -mmin +${MMIN} | xargs rm -rf
-    bcg-done
+    bf-done
 
 fi

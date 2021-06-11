@@ -1,10 +1,4 @@
-FROM bcgdesign/alpine-s6:alpine3.13-2.1.3
-
-LABEL maintainer="Ben Green <ben@bcgdesign.com>" \
-    org.label-schema.name="MariaDB" \
-    org.label-schema.version="latest" \
-    org.label-schema.vendor="Ben Green" \
-    org.label-schema.schema-version="1.0"
+FROM bfren/alpine-s6:alpine3.13-2.2.0
 
 ENV \
     # set to "1" to compress backup sql files
@@ -33,6 +27,6 @@ EXPOSE 3306
 COPY ./overlay /
 COPY ./MARIADB_BUILD /tmp/VERSION
 
-RUN bcg-install
+RUN bf-install
 
 VOLUME [ "/var/lib/mysql", "/var/lib/backup", "/etc/my.cnf.d", "/ssl" ]

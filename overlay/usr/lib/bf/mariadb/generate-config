@@ -1,18 +1,18 @@
 #!/usr/bin/with-contenv bash
 
 set -euo pipefail
-export BCG_E=`basename ${0}`
+export BF_E=`basename ${0}`
 
 
 #======================================================================================================================
 # Config is re-written every time in case environment variables have been changed.
 #======================================================================================================================
 
-bcg-echo "Writing MariaDB config..."
+bf-echo "Writing MariaDB config..."
 esh -o ${MARIADB_CNF} \
-    ${BCG_TEMPLATES}/my.cnf.esh
-bcg-done
+    ${BF_TEMPLATES}/my.cnf.esh
+bf-done
 
-bcg-echo "Setting MariaDB config permissions to be read-only..."
-bcg-ch -o dbadm:dbadm -m 0400 ${MARIADB_CNF}
-bcg-done
+bf-echo "Setting MariaDB config permissions to be read-only..."
+bf-ch -o dbadm:dbadm -m 0400 ${MARIADB_CNF}
+bf-done

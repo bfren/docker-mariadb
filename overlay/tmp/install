@@ -1,14 +1,14 @@
 #!/bin/sh
 
 set -euo pipefail
-export BCG_E=`basename ${0}`
+export BF_E=`basename ${0}`
 
 
 #======================================================================================================================
 # Add dbadm user.
 #======================================================================================================================
 
-bcg-adduser dbadm
+bf-adduser dbadm
 
 
 #======================================================================================================================
@@ -18,28 +18,28 @@ bcg-adduser dbadm
 cd /tmp
 
 VERSION=$(cat VERSION)
-bcg-debug "MariaDB version ${VERSION}."
+bf-debug "MariaDB version ${VERSION}."
 
 
 #======================================================================================================================
 # Install MariaDB and dependencies.
 #======================================================================================================================
 
-bcg-echo "Installing MariaDB v${VERSION}..."
+bf-echo "Installing MariaDB v${VERSION}..."
 apk add --no-cache \
     bash \
     openssl \
     mariadb=${VERSION} \
     mariadb-client=${VERSION} \
     mariadb-server-utils=${VERSION}
-bcg-done
+bf-done
 
 
 #======================================================================================================================
 # Cleanup.
 #======================================================================================================================
 
-bcg-debug "Cleaning up default database config and files."
+bf-debug "Cleaning up default database config and files."
 rm -rf /etc/my.cnf* /etc/mysql /var/lib/mysql/*
 
 
@@ -47,7 +47,7 @@ rm -rf /etc/my.cnf* /etc/mysql /var/lib/mysql/*
 # Create mariab directories.
 #======================================================================================================================
 
-bcg-debug "Creating mariadb directories."
+bf-debug "Creating mariadb directories."
 
 mkdir -p /var/lib/backup
 
@@ -59,5 +59,5 @@ mkdir /ssl
 # Add backup executable to main cron.
 #======================================================================================================================
 
-bcg-debug "Adding db-backup to cron."
+bf-debug "Adding db-backup to cron."
 echo "0 */8 * * * /usr/local/bin/db-backup" >> /etc/crontabs/root

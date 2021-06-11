@@ -1,14 +1,14 @@
 #!/usr/bin/with-contenv bash
 
 set -euo pipefail
-export BCG_E=`basename ${0}`
+export BF_E=`basename ${0}`
 
 
 #======================================================================================================================
 # Remove upgrade info file so the upgrade runs.
 #======================================================================================================================
 
-bcg-debug "Removing ${MARIADB_UPGRADE_INFO}."
+bf-debug "Removing ${MARIADB_UPGRADE_INFO}."
 rm -f ${MARIADB_UPGRADE_INFO}
 
 

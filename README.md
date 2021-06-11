@@ -1,13 +1,13 @@
 # Docker MariaDB
 
-![GitHub release (latest by date)](https://img.shields.io/github/v/release/bencgreen/docker-mariadb) ![Docker Pulls](https://img.shields.io/docker/pulls/bcgdesign/mariadb?label=pulls) ![Docker Image Size (tag)](https://img.shields.io/docker/image-size/bcgdesign/mariadb/latest?label=size)<br/>
-![GitHub Workflow Status](https://img.shields.io/github/workflow/status/bencgreen/docker-mariadb/dev?label=build)
+![GitHub release (latest by date)](https://img.shields.io/github/v/release/bfren/docker-mariadb) ![Docker Pulls](https://img.shields.io/docker/pulls/bfren/mariadb?label=pulls) ![Docker Image Size (tag)](https://img.shields.io/docker/image-size/bfren/mariadb/latest?label=size)<br/>
+![GitHub Workflow Status](https://img.shields.io/github/workflow/status/bfren/docker-mariadb/dev?label=build)
 
-[Docker Repository](https://hub.docker.com/r/bcgdesign/mariadb) - [bcg|design ecosystem](https://github.com/bencgreen/docker)
+[Docker Repository](https://hub.docker.com/r/bfren/mariadb) - [bfren ecosystem](https://github.com/bfren/docker)
 
 I've been using [webhippie](https://github.com/dockhippie/mariadb)'s MariaDB image for a while, but I wanted to manage backups in a different way, and use the latest version of [MariaDB](https://mariadb.org/).
 
-So this was originally a fork of that, with a different backup script to store backups by date rather than index.  However it is now substantially different, using my own [Alpine](https://hub.docker.com/r/bcgdesign/alpine-s6) base image, with a clean install of the [S6 Overlay](https://github.com/just-containers/s6-overlay).
+So this was originally a fork of that, with a different backup script to store backups by date rather than index.  However it is now substantially different, using my own [Alpine](https://hub.docker.com/r/bfren/alpine-s6) base image, with a clean install of the [S6 Overlay](https://github.com/just-containers/s6-overlay).
 
 ## Contents
 
@@ -16,7 +16,7 @@ So this was originally a fork of that, with a different backup script to store b
 * [Volumes](#volumes)
 * [Environment Variables](#environment-variables)
 * [Helper Functions](#helper-functions)
-* [Authors / Licence / Copyright](#authors)
+* [Licence / Copyright](#licence)
 
 ## Automatic Backups
 
@@ -79,14 +79,10 @@ See [For Backups](#for-backups) for configuration variables.
 | `db-export` | Dumps the specified database as a SQL file to the root of the `/var/lib/backup` volume. | `docker exec <<CONTAINER>> db-export <<DB_NAME>>` |
 | `db-import` | Executes all files in the root of the `/var/lib/backup` volume.                         | `docker exec <<CONTAINER>> db-import`             |
 
-## Authors
+## Licence
 
-* [Ben Green](https://github.com/bencgreen)
-
-## License
-
-> [MIT](https://mit.bcgdesign.com/2020)
+> [MIT](https://mit.bfren.uk/2020)
 
 ## Copyright
 
-> Copyright (c) 2021 Ben Green <https://bcgdesign.com>
+> Copyright (c) 2021 bfren.uk

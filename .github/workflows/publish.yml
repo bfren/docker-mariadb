@@ -14,31 +14,31 @@ jobs:
         uses: actions/checkout@v2
       -
         name: Read MariaDB version - major
-        uses: bencgreen/read-file-action@v1
+        uses: bfren/read-file-action@v1
         with:
           path: ./MARIADB_MAJOR
         id: mariadb_major
       -
         name: Read MariaDB version - minor
-        uses: bencgreen/read-file-action@v1
+        uses: bfren/read-file-action@v1
         with:
           path: ./MARIADB_MINOR
         id: mariadb_minor
       -
         name: Read MariaDB version - revision
-        uses: bencgreen/read-file-action@v1
+        uses: bfren/read-file-action@v1
         with:
           path: ./MARIADB_REVISION
         id: mariadb_revision
       -
         name: Read MariaDB version - build
-        uses: bencgreen/read-file-action@v1
+        uses: bfren/read-file-action@v1
         with:
           path: ./MARIADB_BUILD
         id: mariadb_build
       -
         name: Read image version
-        uses: bencgreen/read-file-action@v1
+        uses: bfren/read-file-action@v1
         with:
           path: ./VERSION
         id: version
@@ -62,14 +62,14 @@ jobs:
           push: true
           platforms: linux/amd64,linux/arm/v7,linux/arm64
           tags: |
-            bcgdesign/mariadb:latest
-            bcgdesign/mariadb:${{ steps.version.outputs.content }}
-            bcgdesign/mariadb:mariadb${{ steps.mariadb_major.outputs.content }}
-            bcgdesign/mariadb:mariadb${{ steps.mariadb_minor.outputs.content }}
-            bcgdesign/mariadb:mariadb${{ steps.mariadb_minor.outputs.content }}-${{ steps.version.outputs.content }}
-            bcgdesign/mariadb:mariadb${{ steps.mariadb_revision.outputs.content }}
-            bcgdesign/mariadb:mariadb${{ steps.mariadb_revision.outputs.content }}-${{ steps.version.outputs.content }}
-            bcgdesign/mariadb:mariadb${{ steps.mariadb_build.outputs.content }}
+            bfren/mariadb:latest
+            bfren/mariadb:${{ steps.version.outputs.content }}
+            bfren/mariadb:mariadb${{ steps.mariadb_major.outputs.content }}
+            bfren/mariadb:mariadb${{ steps.mariadb_minor.outputs.content }}
+            bfren/mariadb:mariadb${{ steps.mariadb_minor.outputs.content }}-${{ steps.version.outputs.content }}
+            bfren/mariadb:mariadb${{ steps.mariadb_revision.outputs.content }}
+            bfren/mariadb:mariadb${{ steps.mariadb_revision.outputs.content }}-${{ steps.version.outputs.content }}
+            bfren/mariadb:mariadb${{ steps.mariadb_build.outputs.content }}
       -
         name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}

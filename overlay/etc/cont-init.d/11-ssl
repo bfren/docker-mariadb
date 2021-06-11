@@ -1,14 +1,14 @@
 #!/usr/bin/with-contenv bash
 
 set -euo pipefail
-export BCG_E=`basename ${0}`
+export BF_E=`basename ${0}`
 
 
 #======================================================================================================================
 # If SSL is not enabled, exit script gracefully.
 #======================================================================================================================
 
-[[ "${MARIADB_SSL_ENABLE}" != "1" ]] && bcg-echo "SSL is not enabled." && exit 0
+[[ "${MARIADB_SSL_ENABLE}" != "1" ]] && bf-echo "SSL is not enabled." && exit 0
 
 
 #======================================================================================================================
@@ -16,7 +16,7 @@ export BCG_E=`basename ${0}`
 #======================================================================================================================
 
 if [ -f ${MARIADB_SSL_CLIENT_CERT} ] ; then
-    bcg-ok "Using existing SSL certificates."
+    bf-ok "Using existing SSL certificates."
     exit 0
 fi
 
