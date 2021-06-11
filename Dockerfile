@@ -1,11 +1,5 @@
 FROM bcgdesign/alpine-s6:alpine3.13-2.1.3
 
-LABEL maintainer="Ben Green <ben@bcgdesign.com>" \
-    org.label-schema.name="MariaDB" \
-    org.label-schema.version="latest" \
-    org.label-schema.vendor="Ben Green" \
-    org.label-schema.schema-version="1.0"
-
 ENV \
     # set to "1" to compress backup sql files
     MARIADB_BACKUP_COMPRESS_FILES="0" \
