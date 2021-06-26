@@ -25,7 +25,7 @@ ENV \
 EXPOSE 3306
 
 COPY ./overlay /
-COPY ./MARIADB_BUILD /tmp/VERSION
+COPY ./alpine3.14/MARIADB_BUILD /tmp/VERSION
 
 RUN bf-install
 
