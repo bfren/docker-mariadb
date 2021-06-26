@@ -5,7 +5,6 @@
 		}
 	],
 	"settings": {
-		"editor.tabSize": 4,
 		"files.trimTrailingWhitespace": true
 	}
 }

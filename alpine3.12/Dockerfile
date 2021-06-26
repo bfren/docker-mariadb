@@ -1,4 +1,4 @@
-FROM bfren/alpine-s6:alpine3.14-2.2.2
+FROM bfren/alpine-s6:alpine3.12-2.2.2
 
 ENV \
     # set to "1" to compress backup sql files
@@ -25,7 +25,7 @@ ENV \
 EXPOSE 3306
 
 COPY ./overlay /
-COPY ./MARIADB_BUILD /tmp/VERSION
+COPY ./alpine3.12/MARIADB_BUILD /tmp/VERSION
 
 RUN bf-install
 
