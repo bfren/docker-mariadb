@@ -1,26 +1,29 @@
-name: dev-alpine3_12
+name: publish-10_5
 
 on:
-  push:
-    branches-ignore:
-      - 'main'
-    tags-ignore:
-      - '**'
+  release:
+    types: [published]
   workflow_dispatch:
 
 jobs:
-  test-alpine3_12:
+  publish-10_5:
     runs-on: ubuntu-latest
     steps:
       -
         name: Checkout code
         uses: actions/checkout@v2
-  build-alpine3_12:
-    runs-on: ubuntu-latest
-    steps:
       -
-        name: Checkout code
-        uses: actions/checkout@v2
+        name: Read MariaDB version - revision
+        uses: bfren/read-file-action@v1
+        with:
+          path: ./10.5/MARIADB_REVISION
+        id: mariadb_revision
+      -
+        name: Read MariaDB version - build
+        uses: bfren/read-file-action@v1
+        with:
+          path: ./10.5/MARIADB_BUILD
+        id: mariadb_build
       -
         name: Read image version
         uses: bfren/read-file-action@v1
@@ -45,12 +48,18 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           context: .
-          file: ./alpine3.12/Dockerfile
+          file: ./10.5/Dockerfile
           push: true
           platforms: linux/amd64,linux/arm/v7,linux/arm64
           tags: |
-            bfren/mariadb:alpine3.12-dev
-            bfren/mariadb:alpine3.12-${{ steps.version.outputs.content }}-beta
+            bfren/mariadb:latest
+            bfren/mariadb:${{ steps.version.outputs.content }}
+            bfren/mariadb:mariadb10
+            bfren/mariadb:mariadb10.5
+            bfren/mariadb:mariadb10.5-${{ steps.version.outputs.content }}
+            bfren/mariadb:mariadb${{ steps.mariadb_revision.outputs.content }}
+            bfren/mariadb:mariadb${{ steps.mariadb_revision.outputs.content }}-${{ steps.version.outputs.content }}
+            bfren/mariadb:mariadb${{ steps.mariadb_build.outputs.content }}
       -
         name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
