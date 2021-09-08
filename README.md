@@ -5,9 +5,7 @@
 
 [Docker Repository](https://hub.docker.com/r/bfren/mariadb) - [bfren ecosystem](https://github.com/bfren/docker)
 
-I've been using [webhippie](https://github.com/dockhippie/mariadb)'s MariaDB image for a while, but I wanted to manage backups in a different way, and use the latest version of [MariaDB](https://mariadb.org/).
-
-So this was originally a fork of that, with a different backup script to store backups by date rather than index.  However it is now substantially different, using my own [Alpine](https://hub.docker.com/r/bfren/alpine-s6) base image, with a clean install of the [S6 Overlay](https://github.com/just-containers/s6-overlay).
+[MariaDB](https://mariadb.org/) comes pre-installed (10.4, 10.5, or 10.6) with automatic backups built-in.
 
 ## Contents
 
@@ -81,8 +79,8 @@ See [For Backups](#for-backups) for configuration variables.
 
 ## Licence
 
-> [MIT](https://mit.bfren.uk/2020)
+> [MIT](https://mit.bfren.dev/2020)
 
 ## Copyright
 
-> Copyright (c) 2021 bfren.uk
+> Copyright (c) 2021 bfren
