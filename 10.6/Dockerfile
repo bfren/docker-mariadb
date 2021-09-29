@@ -1,4 +1,4 @@
-FROM bfren/alpine-s6:alpineedge-2.2.10
+FROM bfren/alpine-s6:alpineedge-2.2.11
 
 ENV \
     # set to "1" to compress backup sql files
