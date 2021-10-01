@@ -16,13 +16,13 @@ jobs:
         name: Read MariaDB version - revision
         uses: bfren/read-file@v1
         with:
-          path: ./10.4/MARIADB_REVISION
+          file: ./10.4/MARIADB_REVISION
         id: mariadb_revision
       -
         name: Read MariaDB version - build
         uses: bfren/read-file@v1
         with:
-          path: ./10.4/MARIADB_BUILD
+          file: ./10.4/MARIADB_BUILD
         id: mariadb_build
       -
         name: Read image version
