@@ -13,7 +13,7 @@ INIT_FILE=${1}
 
 
 #======================================================================================================================
-# Create a database table and grant privileges to user.
+# Create a database and grant privileges to user.
 #
 # Arguments
 #   1: database name
