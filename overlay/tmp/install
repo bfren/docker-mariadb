@@ -44,10 +44,10 @@ rm -rf /etc/my.cnf* /etc/mysql /var/lib/mysql/*
 
 
 #======================================================================================================================
-# Create mariab directories.
+# Create MariaDB directories.
 #======================================================================================================================
 
-bf-debug "Creating mariadb directories."
+bf-debug "Creating MariaDB directories."
 
 mkdir -p /var/lib/backup
 
