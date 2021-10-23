@@ -9,8 +9,7 @@ export BF_E=`basename ${0}`
 #======================================================================================================================
 
 bf-echo "Writing MariaDB config..."
-esh -o ${MARIADB_CNF} \
-    ${BF_TEMPLATES}/my.cnf.esh
+bf-esh ${BF_TEMPLATES}/my.cnf.esh ${MARIADB_CNF}
 bf-done
 
 bf-echo "Setting MariaDB config permissions to be read-only..."
