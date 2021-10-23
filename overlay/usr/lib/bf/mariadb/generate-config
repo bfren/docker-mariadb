@@ -8,10 +8,10 @@ export BF_E=`basename ${0}`
 # Config is re-written every time in case environment variables have been changed.
 #======================================================================================================================
 
-bf-echo "Writing MariaDB config..."
+bf-echo "Generating MariaDB config."
 bf-esh ${BF_TEMPLATES}/my.cnf.esh ${MARIADB_CNF}
 bf-done
 
-bf-echo "Setting MariaDB config permissions to be read-only..."
+bf-echo "Setting MariaDB config permissions to be read-only."
 bf-ch -o dbadm:dbadm -m 0400 ${MARIADB_CNF}
 bf-done
