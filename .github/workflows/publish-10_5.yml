@@ -28,6 +28,18 @@ jobs:
         name: Read image version
         uses: bfren/read-file@v1
         with:
+          file: ./VERSION_MAJOR
+        id: version_major
+      -
+        name: Read image version
+        uses: bfren/read-file@v1
+        with:
+          file: ./VERSION_MINOR
+        id: version_minor
+      -
+        name: Read image version
+        uses: bfren/read-file@v1
+        with:
           file: ./VERSION
         id: version
       -
@@ -53,9 +65,13 @@ jobs:
           platforms: linux/amd64,linux/arm/v7,linux/arm64
           tags: |
             bfren/mariadb:latest
+            bfren/mariadb:${{ steps.version_major.outputs.contents }}
+            bfren/mariadb:${{ steps.version_minor.outputs.contents }}
             bfren/mariadb:${{ steps.version.outputs.contents }}
             bfren/mariadb:mariadb10
             bfren/mariadb:mariadb10.5
+            bfren/mariadb:mariadb10.5-${{ steps.version_major.outputs.contents }}
+            bfren/mariadb:mariadb10.5-${{ steps.version_minor.outputs.contents }}
             bfren/mariadb:mariadb10.5-${{ steps.version.outputs.contents }}
             bfren/mariadb:mariadb${{ steps.mariadb_revision.outputs.contents }}
             bfren/mariadb:mariadb${{ steps.mariadb_revision.outputs.contents }}-${{ steps.version.outputs.contents }}
