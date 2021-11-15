@@ -25,7 +25,7 @@ if [ -d ${MARIADB_DATA}/mysql ] ; then
 #======================================================================================================================
 # Otherwise:
 #   - check for root password
-#   - check for application username and password
+#   - check for application username
 #   - run server installation
 #   - generate initialisation file
 #   - run server using initialisation file
@@ -40,8 +40,8 @@ else
     # check for root password
     [[ -z "${MARIADB_ROOT_PASSWORD-}" ]] && bf-error "MARIADB_ROOT_PASSWORD must be set."
 
-    # check for application user and password
-    [[ -z "${MARIADB_USERNAME-}" || -z "${MARIADB_PASSWORD-}" ]] && bf-error "MARIADB_USERNAME and MARIADB_PASSWORD must be set."
+    # check for application user
+    [[ -z "${MARIADB_USERNAME-}" ]] && bf-error "MARIADB_USERNAME must be set."
 
     # run server installation
     bf-debug "Running mariadb-install-db..."
