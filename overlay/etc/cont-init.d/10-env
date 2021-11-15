@@ -46,3 +46,6 @@ if [ "${MARIADB_SSL_ENABLE}" = "1" ] ; then
     bf-env "MARIADB_SSL_CLIENT_CERT" "${MARIADB_SSL_CNF_D}/client-cert.pem"
 
 fi
+
+# If not defined, set password to match username
+[[ -z "${MARIADB_PASSWORD-}" ]] && bf-env "MARIADB_PASSWORD" "${MARIADB_USERNAME}"
