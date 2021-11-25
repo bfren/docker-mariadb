@@ -49,8 +49,6 @@ jobs:
           push: ${{ startsWith(github.ref, 'refs/heads/') }}
           platforms: linux/amd64,linux/arm/v7,linux/arm64
           tags: |
-            bfren/mariadb:dev
-            bfren/mariadb:${{ steps.version.outputs.contents }}-beta
             bfren/mariadb:mariadb10.5-dev
             bfren/mariadb:mariadb10.5-${{ steps.version.outputs.contents }}-beta
       -
