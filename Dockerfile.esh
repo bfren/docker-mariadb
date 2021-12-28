@@ -1,4 +1,4 @@
-FROM bfren/alpine-s6:alpine3.14-3.2.2
+FROM bfren/alpine-s6:alpine<%= ${ALPINE_MINOR} %>-<%= ${BASE_REVISION} %>
 
 ARG BF_IMAGE
 ARG BF_VERSION
@@ -28,7 +28,7 @@ ENV \
 EXPOSE 3306
 
 COPY ./overlay /
-COPY ./10.5/MARIADB_BUILD /tmp/VERSION
+COPY ./<%= ${MARIADB_MINOR} %>/MARIADB_BUILD /tmp/VERSION
 
 RUN bf-install
 
