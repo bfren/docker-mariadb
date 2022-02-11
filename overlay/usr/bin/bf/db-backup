@@ -9,4 +9,6 @@ export BF_E=`basename ${0}`
 #======================================================================================================================
 
 s6-setuidgid dbadm ${MARIADB_LIB}/backup
-bf-fix-attrs
+
+bf-ch -o dbadm:dbadm -m 0440 -t f /var/lib/backup
+bf-ch -o dbadm:dbadm -m 0750 -t d /var/lib/backup

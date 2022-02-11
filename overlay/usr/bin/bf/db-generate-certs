@@ -19,4 +19,5 @@ cp ${MARIADB_SSL_CA_CERT} ${MARIADB_SSL}
 cp ${MARIADB_SSL_CLIENT_KEY} ${MARIADB_SSL}
 cp ${MARIADB_SSL_CLIENT_CERT} ${MARIADB_SSL}
 
-bf-fix-attrs
+bf-ch -o dbadm:dbadm -m 0444 -t f /ssl
+bf-ch -o dbadm:dbadm -m 0750 -t d /ssl

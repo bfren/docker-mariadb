@@ -45,6 +45,10 @@ else
     bf-debug "Running mariadb-install-db..."
     mariadb-install-db --user=dbadm --datadir=${MARIADB_DATA}
 
+    # set server config permissions
+    bf-ch -o dbadm:dbadm -m 0440 -t f /etc/my.cnf*
+    bf-ch -o dbadm:dbadm -m 0750 -t d /etc/my.cnf*
+
     # generate init file
     INIT_FILE=/tmp/init.sql
     bf-debug "Generating initialisation file ${INIT_FILE}..."
