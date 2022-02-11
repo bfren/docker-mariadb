@@ -33,9 +33,7 @@ if [ -d ${MARIADB_DATA}/mysql ] ; then
 
 else
 
-    # disable upgrade service
     bf-debug "Database server not installed."
-    db-upgrade-disable
 
     # check for root password
     [[ -z "${MARIADB_ROOT_PASSWORD-}" ]] && bf-error "MARIADB_ROOT_PASSWORD must be set."
