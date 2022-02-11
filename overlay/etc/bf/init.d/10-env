@@ -8,10 +8,10 @@ export BF_E=`basename ${0}`
 # Add environment variables.
 #======================================================================================================================
 
-# Library configuration
+# library configuration
 bf-env "MARIADB_LIB" "${BF_LIB}/mariadb"
 
-# Database configuration
+# database configuration
 MARIADB_CNF=/etc/my.cnf
 bf-env "MARIADB_CNF" "${MARIADB_CNF}"
 
@@ -47,5 +47,7 @@ if [ "${MARIADB_SSL_ENABLE}" = "1" ] ; then
 
 fi
 
-# If not defined, set password to match username
-[[ -z "${MARIADB_PASSWORD-}" ]] && bf-env "MARIADB_PASSWORD" "${MARIADB_USERNAME}"
+# if not defined, set password to match username
+if [ -z "${MARIADB_PASSWORD-}" ] ; then
+    bf-env "MARIADB_PASSWORD" "${MARIADB_USERNAME}"
+fi
