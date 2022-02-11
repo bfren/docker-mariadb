@@ -17,8 +17,8 @@ bf-adduser dbadm
 
 cd /tmp
 
-VERSION=$(cat VERSION)
-bf-debug "MariaDB version ${VERSION}."
+VERSION=$(cat MARIADB_BUILD)
+bf-echo "MariaDB version ${VERSION}."
 
 
 #======================================================================================================================
@@ -34,12 +34,14 @@ apk add --no-cache \
     mariadb-server-utils=${VERSION}
 bf-done
 
+bf-ch -o dbadm:dbadm -m 0644 /var/log/mariadb/error.log
+
 
 #======================================================================================================================
 # Cleanup.
 #======================================================================================================================
 
-bf-debug "Cleaning up default database config and files."
+bf-echo "Cleaning up default database config and files."
 rm -rf /etc/my.cnf* /etc/mysql /var/lib/mysql/*
 
 
@@ -47,7 +49,7 @@ rm -rf /etc/my.cnf* /etc/mysql /var/lib/mysql/*
 # Create MariaDB directories.
 #======================================================================================================================
 
-bf-debug "Creating MariaDB directories."
+bf-echo "Creating MariaDB directories."
 
 mkdir -p /var/lib/backup
 
@@ -59,5 +61,5 @@ mkdir /ssl
 # Add backup executable to main cron.
 #======================================================================================================================
 
-bf-debug "Adding db-backup to cron."
+bf-echo "Adding db-backup to cron."
 echo "0 */8 * * * /usr/local/bin/db-backup" >> /etc/crontabs/root

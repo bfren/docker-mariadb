@@ -5,15 +5,19 @@ export BF_E=`basename ${0}`
 
 
 #======================================================================================================================
-# Remove upgrade info file so the upgrade runs.
+# Run library generate-certs executable.
 #======================================================================================================================
 
-bf-debug "Removing ${MARIADB_UPGRADE_INFO}."
-rm -f ${MARIADB_UPGRADE_INFO}
+${MARIADB_LIB}/generate-certs
 
 
 #======================================================================================================================
-# Run db-upgrade executable.
+# Copy client certificates to /ssl and make publicly readable.
 #======================================================================================================================
 
-db-upgrade
+cp ${MARIADB_SSL_CA_CERT} ${MARIADB_SSL}
+cp ${MARIADB_SSL_CLIENT_KEY} ${MARIADB_SSL}
+cp ${MARIADB_SSL_CLIENT_CERT} ${MARIADB_SSL}
+
+bf-ch -o dbadm:dbadm -m 0444 -t f /ssl
+bf-ch -o dbadm:dbadm -m 0750 -t d /ssl

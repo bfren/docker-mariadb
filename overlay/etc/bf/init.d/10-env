@@ -1,0 +1,53 @@
+#!/command/with-contenv bash
+
+set -euo pipefail
+export BF_E=`basename ${0}`
+
+
+#======================================================================================================================
+# Add environment variables.
+#======================================================================================================================
+
+# library configuration
+bf-env "MARIADB_LIB" "${BF_LIB}/mariadb"
+
+# database configuration
+MARIADB_CNF=/etc/my.cnf
+bf-env "MARIADB_CNF" "${MARIADB_CNF}"
+
+MARIADB_CNF_D=${MARIADB_CNF}.d
+bf-env "MARIADB_CNF_D" "${MARIADB_CNF_D}"
+
+MARIADB_DATA=/var/lib/mysql
+bf-env "MARIADB_DATA" "${MARIADB_DATA}"
+bf-env "MARIADB_BACKUP" "/var/lib/backup"
+
+bf-env "MARIADB_UPGRADE_INFO" "${MARIADB_DATA}/mysql_upgrade_info"
+
+bf-env "MARIADB_ERROR_LOG" "/var/log/mariadb/error.log"
+
+# SSL configuration
+if [ "${MARIADB_SSL_ENABLE}" = "1" ] ; then
+
+    MARIADB_SSL=/ssl
+    bf-env "MARIADB_SSL" "${MARIADB_SSL}"
+
+    MARIADB_SSL_CNF_D=${MARIADB_CNF_D}/ssl
+    bf-env "MARIADB_SSL_CNF_D" "${MARIADB_SSL_CNF_D}"
+    bf-env "MARIADB_SSL_CA_KEY" "${MARIADB_SSL_CNF_D}/ca-key.pem"
+    bf-env "MARIADB_SSL_CA_CERT" "${MARIADB_SSL_CNF_D}/ca-cert.pem"
+    bf-env "MARIADB_SSL_SERVER_KEY" "${MARIADB_SSL_CNF_D}/server-key.pem"
+    bf-env "MARIADB_SSL_SERVER_KEY_TMP" "${MARIADB_SSL_CNF_D}/server-key.tmp"
+    bf-env "MARIADB_SSL_SERVER_REQ" "${MARIADB_SSL_CNF_D}/server-req.pem"
+    bf-env "MARIADB_SSL_SERVER_CERT" "${MARIADB_SSL_CNF_D}/server-cert.pem"
+    bf-env "MARIADB_SSL_CLIENT_KEY" "${MARIADB_SSL_CNF_D}/client-key.pem"
+    bf-env "MARIADB_SSL_CLIENT_KEY_TMP" "${MARIADB_SSL_CNF_D}/client-key.tmp"
+    bf-env "MARIADB_SSL_CLIENT_REQ" "${MARIADB_SSL_CNF_D}/client-req.pem"
+    bf-env "MARIADB_SSL_CLIENT_CERT" "${MARIADB_SSL_CNF_D}/client-cert.pem"
+
+fi
+
+# if not defined, set password to match username
+if [ -z "${MARIADB_PASSWORD-}" ] ; then
+    bf-env "MARIADB_PASSWORD" "${MARIADB_USERNAME}"
+fi

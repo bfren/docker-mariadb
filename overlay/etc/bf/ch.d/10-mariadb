@@ -1,0 +1,2 @@
+/var/lib/mysql dbadm:dbadm 0770 0750
+/var/lib/backup dbadm:dbadm 0440 0750

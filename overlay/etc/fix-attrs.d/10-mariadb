@@ -1,6 +1,0 @@
-/etc/my.cnf* true dbadm:dbadm 0440 0750
-/ssl true dbadm:dbadm 0444 0750
-/var/lib/mysql true dbadm:dbadm 0770 0750
-/var/lib/backup true dbadm:dbadm 0440 0750
-/usr/local/bin/db-* false root:root 0500 0500
-/var/log/mariadb true dbadm:dbadm 0644 0755

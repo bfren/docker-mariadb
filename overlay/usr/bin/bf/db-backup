@@ -5,13 +5,10 @@ export BF_E=`basename ${0}`
 
 
 #======================================================================================================================
-# Config is re-written every time in case environment variables have been changed.
+# Run library backup executable.
 #======================================================================================================================
 
-bf-echo "Generating MariaDB config."
-bf-esh ${BF_TEMPLATES}/my.cnf.esh ${MARIADB_CNF}
-bf-done
+s6-setuidgid dbadm ${MARIADB_LIB}/backup
 
-bf-echo "Setting MariaDB config permissions to be read-only."
-bf-ch -o dbadm:dbadm -m 0400 ${MARIADB_CNF}
-bf-done
+bf-ch -o dbadm:dbadm -m 0440 -t f /var/lib/backup
+bf-ch -o dbadm:dbadm -m 0750 -t d /var/lib/backup

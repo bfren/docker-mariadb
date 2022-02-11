@@ -1,19 +1,21 @@
-#!/command/with-contenv bash
+#!/command/with-contenv sh
 
 set -euo pipefail
-export BF_E=`basename ${0}`
+export BF_E="${PWD##*/}/$(basename ${0})"
 
 
 #======================================================================================================================
-# Remove upgrade info file so the upgrade runs.
+# Old PIDs clog up the mysql directory
 #======================================================================================================================
 
-bf-debug "Removing ${MARIADB_UPGRADE_INFO}."
-rm -f ${MARIADB_UPGRADE_INFO}
+bf-echo "Clearing temporary files and old process IDs..."
+rm -f ${MARIADB_DATA}/*.err
+rm -f ${MARIADB_DATA}/*.pid
+bf-done
 
 
 #======================================================================================================================
-# Run db-upgrade executable.
+# Show helpful log message.
 #======================================================================================================================
 
-db-upgrade
+bf-svc-finish -t
