@@ -1,10 +1,11 @@
-#!/usr/bin/with-contenv sh
+#!/command/with-contenv bash
 
 set -euo pipefail
+export BF_E="${PWD##*/}/$(basename ${0})"
 
 
 #======================================================================================================================
-# Show helpful log message.
+# Forward MariaDB log to Docker.
 #======================================================================================================================
 
-bf-svc-finish -s ${PWD##*/}
+bf-forward mariadb-log ${MARIADB_ERROR_LOG}
