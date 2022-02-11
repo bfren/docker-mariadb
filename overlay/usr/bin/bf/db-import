@@ -1,11 +1,11 @@
-#!/usr/bin/with-contenv bash
+#!/command/with-contenv bash
 
 set -euo pipefail
 export BF_E=`basename ${0}`
 
 
 #======================================================================================================================
-# Run library upgrade executable.
+# Run library import executable.
 #======================================================================================================================
 
-${MARIADB_LIB}/upgrade
+s6-setuidgid dbadm ${MARIADB_LIB}/import
