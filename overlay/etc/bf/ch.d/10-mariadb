@@ -2,4 +2,3 @@
 /ssl dbadm:dbadm 0444 0750
 /var/lib/mysql dbadm:dbadm 0770 0750
 /var/lib/backup dbadm:dbadm 0440 0750
-/var/log/mariadb dbadm:dbadm 0644 0755

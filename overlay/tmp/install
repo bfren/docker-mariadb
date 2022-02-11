@@ -34,6 +34,8 @@ apk add --no-cache \
     mariadb-server-utils=${VERSION}
 bf-done
 
+bf-ch -o dbadm:dbadm -m 0644 /var/log/mariadb/error.log
+
 
 #======================================================================================================================
 # Cleanup.
