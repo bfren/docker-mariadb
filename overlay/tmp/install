@@ -62,4 +62,4 @@ mkdir /ssl
 #======================================================================================================================
 
 bf-echo "Adding db-backup to cron."
-echo "0 */8 * * * /usr/local/bin/db-backup" >> /etc/crontabs/root
+echo "0 */8 * * * db-backup" >> /etc/crontabs/root
