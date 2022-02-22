@@ -23,7 +23,7 @@ ENV \
     # see https://mariadb.com/kb/en/server-system-variables/#collation_server
     MARIADB_COLLATION="utf8_general_ci" \
     # see https://mariadb.com/kb/en/server-system-variables/#log_warnings
-    MARIADB_LOG_WARNINGS="2"
+    MARIADB_LOG_WARNINGS="3"
 
 EXPOSE 3306
 
