@@ -5,10 +5,169 @@ export BF_E=`basename ${0}`
 
 
 #======================================================================================================================
-# Run library generate-certs executable.
+# Generate key and certificate.
+#
+# Arguments
+#   1   Certificate name (e.g. 'Server' or 'Client')
+#   2   Path to key
+#   3   Key bits
+#   4   Path to certificate
 #======================================================================================================================
 
-${MARIADB_LIB}/generate-certs
+generate-request() {
+    bf-debug "Name=${1}." "generate-request"
+    bf-debug "Key file=${2}." "generate-request"
+    bf-debug "Key bits=${3}." "generate-request"
+    bf-debug "Certificate file=${4}." "generate-request"
+
+    openssl req \
+        -nodes \
+        -keyout ${2} \
+        -newkey rsa:${3} \
+        -out ${4} \
+        -subj "/C=NA/ST=NA/L=NA/O=NA/OU=NA/CN=MariaDB ${1}"
+}
+
+
+#======================================================================================================================
+# Process RSA key.
+#
+# Arguments
+#   1   Path to input key
+#   2   Path to output key
+#======================================================================================================================
+
+process-key() {
+    bf-debug "Input=${1}." "process-key"
+    bf-debug "Output=${2}." "process-key"
+
+    openssl rsa \
+        -in ${1} \
+        -out ${2}
+
+    bf-debug "Deleting ${1}." "process-key"
+    rm -f ${1}
+}
+
+
+#======================================================================================================================
+# Sign a certificate using the generated authority.
+#
+# Arguments
+#   1   Path to certificate request
+#   2   Path to certificate
+#======================================================================================================================
+
+sign-cert() {
+    bf-debug "Input=${1}." "sign-cert"
+    bf-debug "Output=${2}." "sign-cert"
+
+    openssl x509 \
+        -req \
+        -days ${MARIADB_SSL_DAYS} \
+        -in ${1} \
+        -CA ${MARIADB_SSL_CA_CERT} \
+        -CAkey ${MARIADB_SSL_CA_KEY} \
+        -set_serial 01 \
+        -out ${2}
+
+    bf-debug "Deleting ${1}." "sign-cert"
+    rm -f ${1}
+}
+
+
+#======================================================================================================================
+# For the commands and the following sequence of commands,
+# see https://www.cyberciti.biz/faq/how-to-setup-mariadb-ssl-and-secure-connections-from-clients/
+#======================================================================================================================
+
+
+#======================================================================================================================
+# Ensure SSL directory exists.
+#======================================================================================================================
+
+[[ ! -d ${MARIADB_SSL_CNF_D} ]] && mkdir -p ${MARIADB_SSL_CNF_D}
+
+
+#======================================================================================================================
+# Generate CA key and certificate.
+#======================================================================================================================
+
+# generate CA key
+bf-echo "Generating CA key ${MARIADB_SSL_CA_KEY}..."
+openssl genrsa ${MARIADB_SSL_CA_KEY_BITS} > ${MARIADB_SSL_CA_KEY}
+bf-done
+
+# generate CA certificate
+bf-echo "Generating CA certificate ${MARIADB_SSL_CA_CERT}..."
+openssl req \
+    -x509 \
+    -nodes \
+    -days ${MARIADB_SSL_DAYS} \
+    -key ${MARIADB_SSL_CA_KEY} \
+    -out ${MARIADB_SSL_CA_CERT} \
+    -subj "/C=NA/ST=NA/L=NA/O=NA/OU=NA/CN=MariaDB Admin"
+bf-done
+
+
+#======================================================================================================================
+# Generate server key and certificate.
+#======================================================================================================================
+
+# generate server key and request
+bf-echo "Generating server key and request..."
+generate-request "Server" ${MARIADB_SSL_SERVER_KEY_TMP} "${MARIADB_SSL_SERVER_KEY_BITS}" ${MARIADB_SSL_SERVER_REQ}
+bf-done
+
+# process server key
+bf-echo "Processing server key..."
+process-key ${MARIADB_SSL_SERVER_KEY_TMP} ${MARIADB_SSL_SERVER_KEY}
+bf-done
+
+# sign the server certificate
+bf-echo "Signing server certificate..."
+sign-cert ${MARIADB_SSL_SERVER_REQ} ${MARIADB_SSL_SERVER_CERT}
+bf-done
+
+
+#======================================================================================================================
+# Generate client key and certificate.
+#======================================================================================================================
+
+# generate client key and request
+bf-echo "Generating client key and request..."
+generate-request "Client" ${MARIADB_SSL_CLIENT_KEY_TMP} "${MARIADB_SSL_CLIENT_KEY_BITS}" ${MARIADB_SSL_CLIENT_REQ}
+bf-done
+
+# process client key
+bf-echo "Processing client key..."
+process-key ${MARIADB_SSL_CLIENT_KEY_TMP} ${MARIADB_SSL_CLIENT_KEY}
+bf-done
+
+# sign the server certificate
+bf-echo "Signing client certificate..."
+sign-cert ${MARIADB_SSL_CLIENT_REQ} ${MARIADB_SSL_CLIENT_CERT}
+bf-done
+
+
+#======================================================================================================================
+# Verify client and server certificates.
+#======================================================================================================================
+
+bf-echo "Verifying certificates..."
+if openssl verify -CAfile ${MARIADB_SSL_CA_CERT} ${MARIADB_SSL_SERVER_CERT} ${MARIADB_SSL_CLIENT_CERT} ; then
+    bf-done
+    exit 0
+fi
+
+
+#======================================================================================================================
+# Output error and clear directories.
+#======================================================================================================================
+
+bf-error "Unable to verify SSL certificates, clearing SSL directory..."
+rm -rf "${MARIADB_SSL_CNF_D}/*"
+bf-done
 
 
 #======================================================================================================================
