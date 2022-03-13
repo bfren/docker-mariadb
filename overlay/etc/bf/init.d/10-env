@@ -49,5 +49,5 @@ fi
 
 # if not defined, set password to match username
 if [ -z "${MARIADB_PASSWORD-}" ] ; then
-    bf-env "MARIADB_PASSWORD" "${MARIADB_USERNAME}"
+    bf-env "MARIADB_PASSWORD" "${MARIADB_USERNAME-}"
 fi
