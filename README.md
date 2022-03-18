@@ -1,7 +1,7 @@
 # Docker MariaDB
 
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/bfren/docker-mariadb) ![Docker Pulls](https://img.shields.io/docker/pulls/bfren/mariadb?label=pulls) ![Docker Image Size (tag)](https://img.shields.io/docker/image-size/bfren/mariadb/mariadb10.6?label=size)<br/>
-![GitHub Workflow Status](https://img.shields.io/github/workflow/status/bfren/docker-mariadb/dev?label=build)
+![GitHub Workflow Status](https://img.shields.io/github/workflow/status/bfren/docker-mariadb/dev-10_4?label=10.4) ![GitHub Workflow Status](https://img.shields.io/github/workflow/status/bfren/docker-mariadb/dev-10_5?label=10.5) ![GitHub Workflow Status](https://img.shields.io/github/workflow/status/bfren/docker-mariadb/dev-10_6?label=10.6)
 
 [Docker Repository](https://hub.docker.com/r/bfren/mariadb) - [bfren ecosystem](https://github.com/bfren/docker)
 
