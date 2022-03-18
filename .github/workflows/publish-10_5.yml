@@ -20,7 +20,7 @@ jobs:
         name: Read MariaDB version - revision
         uses: bfren/read-file@v1
         with:
-          file: ./10.5/MARIADB_REVISION
+          file: ./10.5/overlay/tmp/MARIADB_REVISION
         id: mariadb_revision
       -
         name: Read image version
