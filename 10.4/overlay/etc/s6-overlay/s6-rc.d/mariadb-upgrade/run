@@ -1,0 +1,28 @@
+#!/command/with-contenv bash
+
+set -euo pipefail
+export BF_E="${PWD##*/}/$(basename ${0})"
+
+
+#======================================================================================================================
+# Run upgrade executable and then disable the service.
+# First, wait until the database service is running.
+#======================================================================================================================
+
+if [ -d ${MARIADB_DATA}/mysql ] && [ ! -z "$(pidof mysqld)" ]; then
+
+    # run upgrade executable
+    db-upgrade
+
+    # disable the upgrade service
+    db-upgrade-disable
+
+else
+
+    # wait 2s before exiting the service - S6 will keep restarting it until MariaDB comes online
+    # on first run, the mariadb service will disable this upgrade service itself
+    SLEEP=2
+    bf-debug "Waiting ${SLEEP}s for MariaDB to come online..."
+    sleep ${SLEEP}
+
+fi
