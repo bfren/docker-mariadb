@@ -168,15 +168,3 @@ fi
 bf-error "Unable to verify SSL certificates, clearing SSL directory..."
 rm -rf "${MARIADB_SSL_CNF_D}/*"
 bf-done
-
-
-#======================================================================================================================
-# Copy client certificates to /ssl and make publicly readable.
-#======================================================================================================================
-
-cp ${MARIADB_SSL_CA_CERT} ${MARIADB_SSL}
-cp ${MARIADB_SSL_CLIENT_KEY} ${MARIADB_SSL}
-cp ${MARIADB_SSL_CLIENT_CERT} ${MARIADB_SSL}
-
-bf-ch -o dbadm:dbadm -m 0444 -t f /ssl
-bf-ch -o dbadm:dbadm -m 0750 -t d /ssl
