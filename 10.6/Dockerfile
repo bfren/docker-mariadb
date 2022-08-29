@@ -1,7 +1,9 @@
-FROM bfren/alpine-s6:alpine3.16-4.3.10
+FROM bfren/debian-s6:debian11-1.0.0
 
 ARG BF_IMAGE
 ARG BF_VERSION
+
+ADD https://mariadb.org/mariadb_release_signing_key.asc /etc/apt/trusted.gpg.d/mariadb_release_signing_key.asc
 
 ENV \
     # set to "1" to compress backup sql files
