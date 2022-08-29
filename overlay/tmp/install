@@ -26,8 +26,7 @@ bf-echo "MariaDB version ${VERSION}."
 #======================================================================================================================
 
 bf-echo "Installing MariaDB v${VERSION}..."
-DEBIAN_FRONTEND=noninteractive apt update
-DEBIAN_FRONTEND=noninteractive apt install -y --no-install-recommends \
+DEBIAN_FRONTEND=noninteractive apt update && apt install -y --no-install-recommends \
     mariadb-server=1:${VERSION}* \
     mariadb-client=1:${VERSION}*
 bf-done
