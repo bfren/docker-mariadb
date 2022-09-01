@@ -26,6 +26,8 @@ Backups for every database (except `mysql`, `information_schema`, `performance_s
 
 See [For Backups](#for-backups) for configuration variables.
 
+**It is strongly recommended that you run a backup before updating to a more recent version.**
+
 ## Ports
 
 * 3306
