@@ -17,7 +17,7 @@ bf-debug "Backup: ${DATE}."
 
 EXCLUDE="mysql|information_schema|performance_schema|sys"
 bf-debug "Exclude ${EXCLUDE}."
-DATABASES=$(mariadb -uroot -p${MARIADB_ROOT_PASSWORD} -e 'SHOW DATABASES;' | sed 1d | grep -v -E "(${EXCLUDE})")
+DATABASES=$(mariadb --user=root --password=${MARIADB_ROOT_PASSWORD} -e 'SHOW DATABASES;' | sed 1d | grep -v -E "(${EXCLUDE})")
 [[ -z "${DATABASES}" ]] && bf-error "No databases found to backup."
 
 
