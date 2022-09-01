@@ -36,7 +36,7 @@ for DATABASE in ${DATABASES} ; do
 
     # dump database and continue on failure
     bf-echo " .. ${DATABASE}"
-    ./dump "${DATABASE}" "${DUMP_FILE}" || true
+    ${MARIADB_LIB}/dump "${DATABASE}" "${DUMP_FILE}" || true
 
     # compress file
     [[ "${MARIADB_BACKUP_COMPRESS_FILES}" = "1" ]] && gzip ${DUMP_FILE}

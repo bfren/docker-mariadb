@@ -16,7 +16,7 @@ for FILE in ${MARIADB_BACKUP}/*.sql ; do
 
     # execute file
     bf-echo " .. importing '${DATABASE}'."
-    mariadb -uroot -p${MARIADB_ROOT_PASSWORD} "${DATABASE}" < ${FILE} \
+    mariadb --user=root --password=${MARIADB_ROOT_PASSWORD} "${DATABASE}" < ${FILE} \
         || bf-notok "  . something went wrong."
 
 done

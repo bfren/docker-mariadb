@@ -20,5 +20,5 @@ EXPORT_FILE="${MARIADB_BACKUP}/${DATABASE}.sql"
 #======================================================================================================================
 
 bf-echo "Exporting database '${DATABASE}' to ${EXPORT_FILE}..."
-./dump "${DATABASE}" "${EXPORT_FILE}" || bf-error " .. unable to export database '${DATABASE}'."
+${MARIADB_LIB}/dump "${DATABASE}" "${EXPORT_FILE}" || bf-error " .. unable to export database '${DATABASE}'."
 bf-done
