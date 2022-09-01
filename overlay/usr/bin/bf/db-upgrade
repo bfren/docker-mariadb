@@ -29,5 +29,5 @@ fi
 #======================================================================================================================
 
 bf-echo "Running mariadb-upgrade..."
-mariadb-upgrade -user=root --password=${MARIADB_ROOT_PASSWORD} --force
+mariadb-upgrade --user=root --password=${MARIADB_ROOT_PASSWORD} --force
 bf-done
