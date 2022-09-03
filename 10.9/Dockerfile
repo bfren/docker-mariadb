@@ -8,7 +8,7 @@ RUN DEBIAN_FRONTEND=noninteractive \
     apt install -y --no-install-recommends ca-certificates curl openssl && \
     curl -o /etc/apt/trusted.gpg.d/mariadb_release_signing_key.asc \
     https://mariadb.org/mariadb_release_signing_key.asc && \
-    apt purge -y curl ca-certificates
+    apt purge -y curl
 
 ENV \
     # set to "1" to compress backup sql files
