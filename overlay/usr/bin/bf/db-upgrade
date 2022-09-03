@@ -37,5 +37,5 @@ db-backup
 #======================================================================================================================
 
 bf-echo "Running mariadb-upgrade..."
-mariadb-upgrade -uroot -p${MARIADB_ROOT_PASSWORD} --force
+mariadb-upgrade --user=root --password=${MARIADB_ROOT_PASSWORD} --force
 bf-done

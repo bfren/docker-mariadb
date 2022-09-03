@@ -14,7 +14,7 @@ export BF_E=`basename ${0}`
 USERNAME=${MARIADB_USERNAME:-root}
 PASSWORD=${MARIADB_PASSWORD:-${MARIADB_ROOT_PASSWORD}}
 
-CHECK="$(echo 'SELECT 1;' | mariadb -h127.0.0.1 -u${USERNAME} -p${PASSWORD} 2>/dev/null | head -n1)"
+CHECK="$(echo 'SELECT 1;' | mariadb --host=127.0.0.1 --user=${USERNAME} --password=${PASSWORD} 2>/dev/null | head -n1)"
 
 [[ "${CHECK}" == "1" ]] && exit 0
 exit 1
