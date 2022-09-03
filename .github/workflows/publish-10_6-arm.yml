@@ -1,19 +1,12 @@
-name: dev-10_4-arm
+name: publish-10_6-arm
 
 on:
-  push:
-    branches: ['**']
-    tags-ignore: ['**']
+  release:
+    types: [published]
   workflow_dispatch:
 
 jobs:
-  test-10_4-arm:
-    runs-on: ubuntu-latest
-    steps:
-      -
-        name: Checkout code
-        uses: actions/checkout@v3
-  build-10_4-arm:
+  publish-10_6-arm:
     runs-on: ubuntu-latest
     steps:
       -
@@ -23,6 +16,24 @@ jobs:
         name: Get repository name
         run: echo "REPOSITORY_NAME=$(echo '${{ github.repository }}' | awk -F '/' '{print $2}')" >> $GITHUB_ENV
         shell: bash
+      -
+        name: Read MariaDB version - revision
+        uses: bfren/read-file@v1
+        with:
+          file: ./10.6/overlay/tmp/MARIADB_REVISION
+        id: mariadb_revision
+      -
+        name: Read image version
+        uses: bfren/read-file@v1
+        with:
+          file: ./VERSION_MAJOR
+        id: version_major
+      -
+        name: Read image version
+        uses: bfren/read-file@v1
+        with:
+          file: ./VERSION_MINOR
+        id: version_minor
       -
         name: Read image version
         uses: bfren/read-file@v1
@@ -54,17 +65,21 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           context: .
-          file: ./10.4/Dockerfile
+          file: ./10.6/Dockerfile
           build-args: |
             BF_IMAGE=${{ env.REPOSITORY_NAME }}
             BF_VERSION=${{ steps.version.outputs.contents }}
-          push: ${{ startsWith(github.ref, 'refs/heads/') }}
+          push: true
           platforms: linux/arm/v7
           tags: |
-            bfren/mariadb:mariadb10.4-dev
-            bfren/mariadb:mariadb10.4-${{ steps.version.outputs.contents }}-beta
-            ghcr.io/bfren/mariadb:mariadb10.4-dev
-            ghcr.io/bfren/mariadb:mariadb10.4-${{ steps.version.outputs.contents }}-beta
+            bfren/mariadb:mariadb10.6-${{ steps.version_major.outputs.contents }}
+            bfren/mariadb:mariadb10.6-${{ steps.version_minor.outputs.contents }}
+            bfren/mariadb:mariadb10.6-${{ steps.version.outputs.contents }}
+            bfren/mariadb:mariadb${{ steps.mariadb_revision.outputs.contents }}-${{ steps.version.outputs.contents }}
+            ghcr.io/bfren/mariadb:mariadb10.6-${{ steps.version_major.outputs.contents }}
+            ghcr.io/bfren/mariadb:mariadb10.6-${{ steps.version_minor.outputs.contents }}
+            ghcr.io/bfren/mariadb:mariadb10.6-${{ steps.version.outputs.contents }}
+            ghcr.io/bfren/mariadb:mariadb${{ steps.mariadb_revision.outputs.contents }}-${{ steps.version.outputs.contents }}
       -
         name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
