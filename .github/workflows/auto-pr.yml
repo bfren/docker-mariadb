@@ -1,10 +1,10 @@
-name: auto-pr
+name: auto-pr-arm
 
 on:
   create
 
 jobs:
-  create-pr:
+  create-pr-arm:
     if: github.ref_type == 'branch'
     runs-on: ubuntu-latest
     steps:

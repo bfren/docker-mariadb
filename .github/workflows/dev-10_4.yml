@@ -1,4 +1,4 @@
-name: dev-10_4
+name: dev-10_4-arm
 
 on:
   push:
@@ -7,13 +7,13 @@ on:
   workflow_dispatch:
 
 jobs:
-  test-10_4:
+  test-10_4-arm:
     runs-on: ubuntu-latest
     steps:
       -
         name: Checkout code
         uses: actions/checkout@v3
-  build-10_4:
+  build-10_4-arm:
     runs-on: ubuntu-latest
     steps:
       -

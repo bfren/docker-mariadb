@@ -1,4 +1,4 @@
-name: publish-10_6
+name: publish-10_6-arm
 
 on:
   release:
@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  publish-10_6:
+  publish-10_6-arm:
     runs-on: ubuntu-latest
     steps:
       -
