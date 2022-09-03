@@ -20,6 +20,5 @@ EXPORT_FILE="${MARIADB_BACKUP}/${DATABASE}.sql"
 #======================================================================================================================
 
 bf-echo "Exporting database '${DATABASE}' to ${EXPORT_FILE}..."
-mariadb-dump --add-locks -uroot -p${MARIADB_ROOT_PASSWORD} "${DATABASE}" > "${EXPORT_FILE}" \
-    || bf-error " .. unable to export database '${DATABASE}'."
+${MARIADB_LIB}/dump "${DATABASE}" "${EXPORT_FILE}" || bf-error " .. unable to export database '${DATABASE}'."
 bf-done

@@ -24,7 +24,7 @@ Backups will be created automatically every 8 hours and stored in `./v/backup`.
 The `.env` file is a convenient way of grouping and defining variables for use in your `docker-compose.yml` file.  The default file looks like this:
 
 ```bash
-MARIADB_VERSION=10.5.8 # NB this is the MariaDB version, not the image version
+MARIADB_VERSION=10.9.2 # NB this is the MariaDB version, not the image version
 MARIADB_PORT=3306 # you will access the database over this port
 MARIADB_ROOT_PASSWORD=root_password
 MARIADB_USERNAME=application_name # a database with this name will be created automatically
@@ -73,11 +73,11 @@ For example, if you copy the three files created by the container in the host `.
 3. Connect to your database server using the details in `.env`:
 
     ```bash
-    $ mariadb -h 127.0.0.1 -u MARIADB_USERNAME -p
+    $ mariadb --host=127.0.0.1 --user=MARIADB_USERNAME --password
     Enter password: # enter your password
     Welcome to the MariaDB monitor.  Commands end with ; or \g.
-    Your MariaDB connection id is 4
-    Server version: 10.5.8-MariaDB MariaDB Server
+    Your MariaDB connection id is 5
+    Server version: 10.9.2-MariaDB-1:10.9.2+maria~deb11 mariadb.org binary distribution
 
     Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
 

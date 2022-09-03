@@ -59,7 +59,7 @@ jobs:
             BF_IMAGE=${{ env.REPOSITORY_NAME }}
             BF_VERSION=${{ steps.version.outputs.contents }}
           push: ${{ startsWith(github.ref, 'refs/heads/') }}
-          platforms: linux/amd64,linux/arm/v7,linux/arm64
+          platforms: linux/amd64,linux/arm64
           tags: |
             bfren/mariadb:mariadb10.6-dev
             bfren/mariadb:mariadb10.6-${{ steps.version.outputs.contents }}-beta
