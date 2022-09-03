@@ -72,17 +72,13 @@ jobs:
           push: true
           platforms: linux/arm/v7
           tags: |
-            bfren/mariadb:mariadb10.6
             bfren/mariadb:mariadb10.6-${{ steps.version_major.outputs.contents }}
             bfren/mariadb:mariadb10.6-${{ steps.version_minor.outputs.contents }}
             bfren/mariadb:mariadb10.6-${{ steps.version.outputs.contents }}
-            bfren/mariadb:mariadb${{ steps.mariadb_revision.outputs.contents }}
             bfren/mariadb:mariadb${{ steps.mariadb_revision.outputs.contents }}-${{ steps.version.outputs.contents }}
-            ghcr.io/bfren/mariadb:mariadb10.6
             ghcr.io/bfren/mariadb:mariadb10.6-${{ steps.version_major.outputs.contents }}
             ghcr.io/bfren/mariadb:mariadb10.6-${{ steps.version_minor.outputs.contents }}
             ghcr.io/bfren/mariadb:mariadb10.6-${{ steps.version.outputs.contents }}
-            ghcr.io/bfren/mariadb:mariadb${{ steps.mariadb_revision.outputs.contents }}
             ghcr.io/bfren/mariadb:mariadb${{ steps.mariadb_revision.outputs.contents }}-${{ steps.version.outputs.contents }}
       -
         name: Image digest

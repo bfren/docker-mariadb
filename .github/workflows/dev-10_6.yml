@@ -61,9 +61,7 @@ jobs:
           push: ${{ startsWith(github.ref, 'refs/heads/') }}
           platforms: linux/arm/v7
           tags: |
-            bfren/mariadb:mariadb10.6-dev
             bfren/mariadb:mariadb10.6-${{ steps.version.outputs.contents }}-beta
-            ghcr.io/bfren/mariadb:mariadb10.6-dev
             ghcr.io/bfren/mariadb:mariadb10.6-${{ steps.version.outputs.contents }}-beta
       -
         name: Image digest
