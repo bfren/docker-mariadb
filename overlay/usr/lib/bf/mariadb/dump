@@ -29,5 +29,5 @@ mariadb-dump --add-drop-database --user=root --password=${MARIADB_ROOT_PASSWORD}
 #======================================================================================================================
 
 if [ "${MARIADB_BACKUP_COMPRESS_FILES}" = "1" ] ; then
-    xz -T0 ${DUMP_FILE}
+    bzip2 -9 ${DUMP_FILE}
 fi

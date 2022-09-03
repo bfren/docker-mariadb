@@ -8,10 +8,13 @@ set -euo pipefail
 #======================================================================================================================
 
 EXT="sql"
-[[ "${MARIADB_BACKUP_COMPRESS_FILES}" = "1" ]] && EXT="${EXT}.xz"
+[[ "${MARIADB_BACKUP_COMPRESS_FILES}" = "1" ]] && EXT="${EXT}.bz2"
 
 bf-echo "Importing SQL files from ${MARIADB_BACKUP}..."
 for FILE in ${MARIADB_BACKUP}/*.${EXT} ; do
+
+    # decompress file
+    [[ "${MARIADB_BACKUP_COMPRESS_FILES}" = "1" ]] && bzip2 -d ${FILE}
 
     # split out database name from file
     NAME=$(basename -- "${FILE}")
