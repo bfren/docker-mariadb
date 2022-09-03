@@ -1,11 +1,11 @@
-name: auto-release
+name: auto-release-arm
 
 on:
   pull_request:
     types: [closed]
 
 jobs:
-  create-release:
+  create-release-arm:
     if: github.event.pull_request.merged
     runs-on: ubuntu-latest
     steps:

@@ -10,4 +10,4 @@ docker buildx build \
     -t mariadb${MARIADB}-dev \
     . \
     && \
-    docker run -it -e MARIADB_USERNAME=test -e MARIADB_ROOT_PASSWORD=test mariadb${MARIADB}-dev sh
+    docker run -it -e MARIADB_USERNAME=test -e MARIADB_ROOT_PASSWORD=test -e MARIADB_BACKUP_COMPRESS_FILES=1 mariadb${MARIADB}-dev sh

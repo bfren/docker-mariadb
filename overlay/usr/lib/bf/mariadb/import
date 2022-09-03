@@ -7,8 +7,14 @@ set -euo pipefail
 # Get import files (from backup directory).
 #======================================================================================================================
 
+EXT="sql"
+[[ "${MARIADB_BACKUP_COMPRESS_FILES}" = "1" ]] && EXT="${EXT}.bz2"
+
 bf-echo "Importing SQL files from ${MARIADB_BACKUP}..."
-for FILE in ${MARIADB_BACKUP}/*.sql ; do
+for FILE in ${MARIADB_BACKUP}/*.${EXT} ; do
+
+    # decompress file
+    [[ "${MARIADB_BACKUP_COMPRESS_FILES}" = "1" ]] && bzip2 -d ${FILE}
 
     # split out database name from file
     NAME=$(basename -- "${FILE}")
@@ -16,7 +22,7 @@ for FILE in ${MARIADB_BACKUP}/*.sql ; do
 
     # execute file
     bf-echo " .. importing '${DATABASE}'."
-    mariadb -uroot -p${MARIADB_ROOT_PASSWORD} "${DATABASE}" < ${FILE} \
+    mariadb --user=root --password=${MARIADB_ROOT_PASSWORD} "${DATABASE}" < ${FILE} \
         || bf-notok "  . something went wrong."
 
 done

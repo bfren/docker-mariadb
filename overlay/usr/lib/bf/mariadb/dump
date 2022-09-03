@@ -11,14 +11,23 @@ set -euo pipefail
 [[ -z "${1-}" ]] && bf-error "You must provide the name of the database to export."
 DATABASE=${1}
 
+[[ -z "${2-}" ]] && bf-error "You must provide the path of the dump file."
+DUMP_FILE=${2}
+
+
+#======================================================================================================================
+# Dump database to file if it exists.
+#======================================================================================================================
+
 [[ ! -d "${MARIADB_DATA}/${DATABASE}" ]] && bf-error "Database '${DATABASE}' does not exist."
-EXPORT_FILE="${MARIADB_BACKUP}/${DATABASE}.sql"
+
+mariadb-dump --add-drop-database --user=root --password=${MARIADB_ROOT_PASSWORD} --databases "${DATABASE}" > "${DUMP_FILE}"
 
 
 #======================================================================================================================
-# Dump database to file.
+# Compress file.
 #======================================================================================================================
 
-bf-echo "Exporting database '${DATABASE}' to ${EXPORT_FILE}..."
-${MARIADB_LIB}/dump "${DATABASE}" "${EXPORT_FILE}" || bf-error " .. unable to export database '${DATABASE}'."
-bf-done
+if [ "${MARIADB_BACKUP_COMPRESS_FILES}" = "1" ] ; then
+    bzip2 -9 ${DUMP_FILE}
+fi
