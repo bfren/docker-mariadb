@@ -7,8 +7,11 @@ set -euo pipefail
 # Get import files (from backup directory).
 #======================================================================================================================
 
+EXT="sql"
+[[ "${MARIADB_BACKUP_COMPRESS_FILES}" = "1" ]] && EXT="${EXT}.xz"
+
 bf-echo "Importing SQL files from ${MARIADB_BACKUP}..."
-for FILE in ${MARIADB_BACKUP}/*.sql ; do
+for FILE in ${MARIADB_BACKUP}/*.${EXT} ; do
 
     # split out database name from file
     NAME=$(basename -- "${FILE}")
