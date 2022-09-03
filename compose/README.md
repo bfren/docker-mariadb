@@ -73,7 +73,7 @@ For example, if you copy the three files created by the container in the host `.
 3. Connect to your database server using the details in `.env`:
 
     ```bash
-    $ mariadb -h 127.0.0.1 -u MARIADB_USERNAME -p
+    $ mariadb --host=127.0.0.1 --user=MARIADB_USERNAME --password
     Enter password: # enter your password
     Welcome to the MariaDB monitor.  Commands end with ; or \g.
     Your MariaDB connection id is 5
