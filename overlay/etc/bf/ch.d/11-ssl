@@ -1,0 +1,2 @@
+/etc/my.cnf.d dbadm:dbadm 0400 0750
+/ssl dbadm:dbadm 0400 0750
