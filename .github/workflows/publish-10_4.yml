@@ -70,7 +70,7 @@ jobs:
             BF_IMAGE=${{ env.REPOSITORY_NAME }}
             BF_VERSION=${{ steps.version.outputs.contents }}
           push: true
-          platforms: linux/amd64,linux/arm/v7,linux/arm64
+          platforms: linux/arm/v7
           tags: |
             bfren/mariadb:mariadb10.4
             bfren/mariadb:mariadb10.4-${{ steps.version_major.outputs.contents }}
