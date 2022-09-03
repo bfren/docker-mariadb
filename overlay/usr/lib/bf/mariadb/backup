@@ -38,9 +38,6 @@ for DATABASE in ${DATABASES} ; do
     bf-echo " .. ${DATABASE}"
     ${MARIADB_LIB}/dump "${DATABASE}" "${DUMP_FILE}" || true
 
-    # compress file
-    [[ "${MARIADB_BACKUP_COMPRESS_FILES}" = "1" ]] && gzip ${DUMP_FILE}
-
 done
 bf-done
 

@@ -22,3 +22,10 @@ DUMP_FILE=${2}
 [[ ! -d "${MARIADB_DATA}/${DATABASE}" ]] && bf-error "Database '${DATABASE}' does not exist."
 
 mariadb-dump --add-drop-database --user=root --password=${MARIADB_ROOT_PASSWORD} --databases "${DATABASE}" > "${DUMP_FILE}"
+
+
+#======================================================================================================================
+# Compress file.
+#======================================================================================================================
+
+[[ "${MARIADB_BACKUP_COMPRESS_FILES}" = "1" ]] && xz -T0 ${DUMP_FILE}
