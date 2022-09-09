@@ -3,13 +3,6 @@ FROM bfren/debian-s6:debian11-1.0.4
 ARG BF_IMAGE
 ARG BF_VERSION
 
-RUN DEBIAN_FRONTEND=noninteractive \
-    apt update && \
-    apt install -y --no-install-recommends ca-certificates curl openssl && \
-    curl -o /etc/apt/trusted.gpg.d/mariadb_release_signing_key.asc \
-    https://mariadb.org/mariadb_release_signing_key.asc && \
-    apt purge -y curl
-
 ENV \
     # set to "1" to compress backup sql files
     MARIADB_BACKUP_COMPRESS_FILES="0" \
@@ -37,6 +30,7 @@ EXPOSE 3306
 COPY ./overlay /
 COPY ./10.5/overlay /
 
+ADD https://mariadb.org/mariadb_release_signing_key.asc /etc/apt/trusted.gpg.d/
 RUN bf-install
 
 VOLUME [ "/var/lib/mysql", "/var/lib/backup", "/etc/my.cnf.d", "/ssl" ]
