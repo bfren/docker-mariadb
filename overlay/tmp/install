@@ -27,7 +27,6 @@ bf-echo "MariaDB version ${VERSION}."
 
 bf-echo "Installing MariaDB v${VERSION}..."
 DEBIAN_FRONTEND=noninteractive apt update && apt install -y --no-install-recommends \
-    ca-certificates \
     mariadb-server=1:${VERSION}* \
     mariadb-client=1:${VERSION}* \
     openssl
