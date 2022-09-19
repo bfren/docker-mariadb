@@ -4,7 +4,7 @@ set -euo pipefail
 
 docker pull bfren/alpine
 
-BASE_REVISION="1.0.4"
+BASE_REVISION="1.1.0-beta"
 echo "Base: ${BASE_REVISION}"
 
 MARIADB_VERSIONS="10.4 10.5 10.6 10.7 10.8 10.9"
