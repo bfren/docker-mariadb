@@ -4,26 +4,35 @@ set -euo pipefail
 
 
 #======================================================================================================================
-# Get import files (from backup directory).
+# Decompress archives (from backup directory).
 #======================================================================================================================
 
-EXT="sql"
-[[ "${MARIADB_BACKUP_COMPRESS_FILES}" = "1" ]] && EXT="${EXT}.bz2"
+bf-echo "Decompressing archives in ${MARIADB_BACKUP}..."
+for FILE in ${MARIADB_BACKUP}/*.sql.bz2 ; do
+    bzip2 -df ${FILE}
+done
+bf-done
 
-bf-echo "Importing SQL files from ${MARIADB_BACKUP}..."
-for FILE in ${MARIADB_BACKUP}/*.${EXT} ; do
 
-    # decompress file
-    [[ "${MARIADB_BACKUP_COMPRESS_FILES}" = "1" ]] && bzip2 -d ${FILE}
+#======================================================================================================================
+# Import database dump files (from backup directory).
+#======================================================================================================================
+
+bf-echo "Importing dump files in ${MARIADB_BACKUP}..."
+for FILE in ${MARIADB_BACKUP}/*.sql ; do
 
     # split out database name from file
     NAME=$(basename -- "${FILE}")
     DATABASE="${NAME%.*}"
 
-    # execute file
+    # execute import
     bf-echo " .. importing '${DATABASE}'."
-    mariadb --user=root --password=${MARIADB_ROOT_PASSWORD} "${DATABASE}" < ${FILE} \
-        || bf-notok "  . something went wrong."
+    if mariadb --user=root --password=${MARIADB_ROOT_PASSWORD} "${DATABASE}" < ${FILE} ; then
+        bf-debug "  . done - removing ${FILE}."
+        rm -f ${FILE}
+    else
+        bg-notok "  . something went wrong."
+    fi
 
 done
 bf-done
