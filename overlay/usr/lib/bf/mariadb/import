@@ -1,6 +1,7 @@
 #!/bin/bash
 
 set -euo pipefail
+shopt -s nullglob
 
 
 #======================================================================================================================
@@ -27,12 +28,8 @@ for FILE in ${MARIADB_BACKUP}/*.sql ; do
 
     # execute import
     bf-echo " .. importing '${DATABASE}'."
-    if mariadb --user=root --password=${MARIADB_ROOT_PASSWORD} "${DATABASE}" < ${FILE} ; then
-        bf-debug "  . done - removing ${FILE}."
-        rm -f ${FILE}
-    else
-        bg-notok "  . something went wrong."
-    fi
+    mariadb --user=root --password=${MARIADB_ROOT_PASSWORD} < ${FILE} \
+        || bf-notok "  . something went wrong."
 
 done
 bf-done
