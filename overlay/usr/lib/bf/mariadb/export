@@ -10,9 +10,7 @@ set -euo pipefail
 
 [[ -z "${1-}" ]] && bf-error "You must provide the name of the database to export."
 DATABASE=${1}
-
-[[ ! -d "${MARIADB_DATA}/${DATABASE}" ]] && bf-error "Database '${DATABASE}' does not exist."
-EXPORT_FILE="${MARIADB_BACKUP}/${DATABASE}.sql"
+EXPORT_FILE="${MARIADB_BACKUP}/${1}.sql"
 
 
 #======================================================================================================================
