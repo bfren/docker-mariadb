@@ -7,7 +7,7 @@ docker pull bfren/alpine
 BASE_REVISION="1.1.1"
 echo "Base: ${BASE_REVISION}"
 
-MARIADB_VERSIONS="10.4 10.5 10.6 10.7 10.8 10.9"
+MARIADB_VERSIONS="10.4 10.5 10.6 10.7 10.8 10.9 10.10"
 for V in ${MARIADB_VERSIONS} ; do
 
     echo "MariaDB ${V}"
