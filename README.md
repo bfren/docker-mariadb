@@ -1,11 +1,11 @@
 # Docker MariaDB
 
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/bfren/docker-mariadb) ![Docker Pulls](https://img.shields.io/endpoint?url=https%3A%2F%2Fbfren.dev%2Fdocker%2Fpulls%2Fmariadb) ![Docker Image Size](https://img.shields.io/endpoint?url=https%3A%2F%2Fbfren.dev%2Fdocker%2Fsize%2Fmariadb)<br/>
-![GitHub Workflow Status](https://img.shields.io/github/workflow/status/bfren/docker-mariadb/dev-10_4?label=10.4) ![GitHub Workflow Status](https://img.shields.io/github/workflow/status/bfren/docker-mariadb/dev-10_5?label=10.5) ![GitHub Workflow Status](https://img.shields.io/github/workflow/status/bfren/docker-mariadb/dev-10_6?label=10.6) ![GitHub Workflow Status](https://img.shields.io/github/workflow/status/bfren/docker-mariadb/dev-10_7?label=10.7) ![GitHub Workflow Status](https://img.shields.io/github/workflow/status/bfren/docker-mariadb/dev-10_8?label=10.8) ![GitHub Workflow Status](https://img.shields.io/github/workflow/status/bfren/docker-mariadb/dev-10_9?label=10.9)
+![GitHub Workflow Status](https://img.shields.io/github/workflow/status/bfren/docker-mariadb/dev-10_4?label=10.4) ![GitHub Workflow Status](https://img.shields.io/github/workflow/status/bfren/docker-mariadb/dev-10_5?label=10.5) ![GitHub Workflow Status](https://img.shields.io/github/workflow/status/bfren/docker-mariadb/dev-10_6?label=10.6) ![GitHub Workflow Status](https://img.shields.io/github/workflow/status/bfren/docker-mariadb/dev-10_7?label=10.7) ![GitHub Workflow Status](https://img.shields.io/github/workflow/status/bfren/docker-mariadb/dev-10_8?label=10.8) ![GitHub Workflow Status](https://img.shields.io/github/workflow/status/bfren/docker-mariadb/dev-10_9?label=10.9) ![GitHub Workflow Status](https://img.shields.io/github/workflow/status/bfren/docker-mariadb/dev-10_10?label=10.10+)
 
 [Docker Repository](https://hub.docker.com/r/bfren/mariadb) - [bfren ecosystem](https://github.com/bfren/docker)
 
-[MariaDB](https://mariadb.org/) comes pre-installed (10.4, 10.5, 10.6, 10.7, 10.8, and 10.9) with automatic backups built-in.
+[MariaDB](https://mariadb.org/) comes pre-installed (10.4, 10.5, 10.6, 10.7, 10.8, 10.9 and 10.10) with automatic backups built-in.
 
 ## Contents
 
