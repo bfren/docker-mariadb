@@ -1,4 +1,4 @@
-FROM bfren/debian-s6:buster-1.1.3
+FROM bfren/debian-s6:buster-1.1.4
 
 ARG BF_IMAGE
 ARG BF_VERSION
