@@ -1,0 +1,14 @@
+#!/bin/bash
+
+set -euo pipefail
+export BF_E=`basename ${0}`
+
+
+#======================================================================================================================
+# Install additional dependencies.
+#======================================================================================================================
+
+bf-echo "Installing additional dependencies..."
+DEBIAN_FRONTEND=noninteractive apt update && apt install -y --no-install-recommends \
+    libreadline5
+bf-done
