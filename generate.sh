@@ -11,7 +11,7 @@ MARIADB_VERSIONS="10.4 10.5 10.6 10.7 10.8 10.9 10.10"
 for V in ${MARIADB_VERSIONS} ; do
 
     echo "MariaDB ${V}"
-    DEBIAN_VERSION=`cat ./${V}/DEBIAN_VERSION`
+    DEBIAN_NAME=`cat ./${V}/DEBIAN_NAME`
 
     DOCKERFILE=$(docker run \
         -v ${PWD}:/ws \
@@ -19,7 +19,7 @@ for V in ${MARIADB_VERSIONS} ; do
         bfren/alpine esh \
         "/ws/Dockerfile.esh" \
         BASE_REVISION=${BASE_REVISION} \
-        DEBIAN_VERSION=${DEBIAN_VERSION} \
+        DEBIAN_NAME=${DEBIAN_NAME} \
         MARIADB_MINOR=${V}
     )
 
@@ -30,7 +30,7 @@ for V in ${MARIADB_VERSIONS} ; do
         -e BF_DEBUG=0 \
         bfren/alpine esh \
         "/ws/mariadb.list.esh" \
-        DEBIAN_VERSION=${DEBIAN_VERSION} \
+        DEBIAN_NAME=${DEBIAN_NAME} \
         MARIADB_MINOR=${V}
     )
 

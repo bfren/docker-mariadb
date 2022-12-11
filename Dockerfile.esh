@@ -1,4 +1,4 @@
-FROM bfren/debian-s6:<%= ${DEBIAN_VERSION} %>-<%= ${BASE_REVISION} %>
+FROM bfren/debian-s6:<%= ${DEBIAN_NAME} %>-<%= ${BASE_REVISION} %>
 
 ARG BF_IMAGE
 ARG BF_VERSION
