@@ -25,11 +25,6 @@ bf-echo "MariaDB version ${VERSION}."
 # Install MariaDB and dependencies.
 #======================================================================================================================
 
-INSTALL_DEPS=./install-deps
-if [ -f ${INSTALL_DEPS} ] ; then
-    chmod +x ${INSTALL_DEPS} && ${INSTALL_DEPS}
-fi
-
 bf-echo "Installing MariaDB v${VERSION}..."
 bf-ch -m 0644 /etc/apt/trusted.gpg.d/mariadb_release_signing_key.asc
 DEBIAN_FRONTEND=noninteractive apt update && apt install -y --no-install-recommends \
