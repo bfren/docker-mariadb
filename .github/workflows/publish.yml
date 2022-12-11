@@ -1,4 +1,4 @@
-name: publish-10_8
+name: publish
 
 on:
   release:
@@ -6,7 +6,10 @@ on:
   workflow_dispatch:
 
 jobs:
-  publish-10_8:
+  publish:
+    strategy:
+      matrix:
+        mariadb: [ "10.5", "10.6", "10.7", "10.8", "10.9", "10.10" ]
     runs-on: ubuntu-latest
     steps:
       -
@@ -20,7 +23,7 @@ jobs:
         name: Read MariaDB version - revision
         uses: bfren/read-file@v2
         with:
-          file: ./10.8/overlay/tmp/MARIADB_REVISION
+          file: ./${{ matrix.mariadb }}/overlay/tmp/MARIADB_REVISION
         id: mariadb_revision
       -
         name: Read image version
@@ -65,23 +68,23 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           context: .
-          file: ./10.8/Dockerfile
+          file: ./${{ matrix.mariadb }}/Dockerfile
           build-args: |
             BF_IMAGE=${{ env.REPOSITORY_NAME }}
             BF_VERSION=${{ steps.version.outputs.contents }}
           push: true
           platforms: linux/amd64,linux/arm64
           tags: |
-            bfren/mariadb:mariadb10.8
-            bfren/mariadb:mariadb10.8-${{ steps.version_major.outputs.contents }}
-            bfren/mariadb:mariadb10.8-${{ steps.version_minor.outputs.contents }}
-            bfren/mariadb:mariadb10.8-${{ steps.version.outputs.contents }}
+            bfren/mariadb:mariadb${{ matrix.mariadb }}
+            bfren/mariadb:mariadb${{ matrix.mariadb }}-${{ steps.version_major.outputs.contents }}
+            bfren/mariadb:mariadb${{ matrix.mariadb }}-${{ steps.version_minor.outputs.contents }}
+            bfren/mariadb:mariadb${{ matrix.mariadb }}-${{ steps.version.outputs.contents }}
             bfren/mariadb:mariadb${{ steps.mariadb_revision.outputs.contents }}
             bfren/mariadb:mariadb${{ steps.mariadb_revision.outputs.contents }}-${{ steps.version.outputs.contents }}
-            ghcr.io/bfren/mariadb:mariadb10.8
-            ghcr.io/bfren/mariadb:mariadb10.8-${{ steps.version_major.outputs.contents }}
-            ghcr.io/bfren/mariadb:mariadb10.8-${{ steps.version_minor.outputs.contents }}
-            ghcr.io/bfren/mariadb:mariadb10.8-${{ steps.version.outputs.contents }}
+            ghcr.io/bfren/mariadb:mariadb${{ matrix.mariadb }}
+            ghcr.io/bfren/mariadb:mariadb${{ matrix.mariadb }}-${{ steps.version_major.outputs.contents }}
+            ghcr.io/bfren/mariadb:mariadb${{ matrix.mariadb }}-${{ steps.version_minor.outputs.contents }}
+            ghcr.io/bfren/mariadb:mariadb${{ matrix.mariadb }}-${{ steps.version.outputs.contents }}
             ghcr.io/bfren/mariadb:mariadb${{ steps.mariadb_revision.outputs.contents }}
             ghcr.io/bfren/mariadb:mariadb${{ steps.mariadb_revision.outputs.contents }}-${{ steps.version.outputs.contents }}
       -

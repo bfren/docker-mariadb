@@ -1,4 +1,4 @@
-FROM bfren/debian-s6:bullseye-1.1.4
+FROM bfren/debian-s6:bullseye-1.1.6
 
 ARG BF_IMAGE
 ARG BF_VERSION
