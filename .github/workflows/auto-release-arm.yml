@@ -15,4 +15,4 @@ jobs:
       with:
         branch: arm
         token: ${{ secrets.PAT }}
-        make_latest: legacy
+        latest: legacy
