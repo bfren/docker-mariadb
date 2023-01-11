@@ -1,4 +1,4 @@
-name: publish-10_4-arm
+name: publish-arm
 
 on:
   release:
@@ -6,7 +6,10 @@ on:
   workflow_dispatch:
 
 jobs:
-  publish-10_4-arm:
+  publish-arm:
+    strategy:
+      matrix:
+        mariadb: [ "10.4", "10.5", "10.6" ]
     runs-on: ubuntu-latest
     steps:
       -
@@ -20,7 +23,7 @@ jobs:
         name: Read MariaDB version - revision
         uses: bfren/read-file@v2
         with:
-          file: ./10.4/overlay/tmp/MARIADB_REVISION
+          file: ./${{ matrix.mariadb }}/overlay/tmp/MARIADB_REVISION
         id: mariadb_revision
       -
         name: Read image version
@@ -65,21 +68,25 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           context: .
-          file: ./10.4/Dockerfile
+          file: ./${{ matrix.mariadb }}/Dockerfile
           build-args: |
             BF_IMAGE=${{ env.REPOSITORY_NAME }}
             BF_VERSION=${{ steps.version.outputs.contents }}
           push: true
           platforms: linux/arm/v7
           tags: |
-            bfren/mariadb:mariadb10.4-${{ steps.version_major.outputs.contents }}
-            bfren/mariadb:mariadb10.4-${{ steps.version_minor.outputs.contents }}
-            bfren/mariadb:mariadb10.4-${{ steps.version.outputs.contents }}
-            bfren/mariadb:mariadb${{ steps.mariadb_revision.outputs.contents }}-${{ steps.version.outputs.contents }}
-            ghcr.io/bfren/mariadb:mariadb10.4-${{ steps.version_major.outputs.contents }}
-            ghcr.io/bfren/mariadb:mariadb10.4-${{ steps.version_minor.outputs.contents }}
-            ghcr.io/bfren/mariadb:mariadb${{ steps.mariadb_revision.outputs.contents }}
-            ghcr.io/bfren/mariadb:mariadb${{ steps.mariadb_revision.outputs.contents }}-${{ steps.version.outputs.contents }}
+            bfren/mariadb:mariadb${{ matrix.mariadb }}-arm
+            bfren/mariadb:mariadb${{ matrix.mariadb }}-arm-${{ steps.version_major.outputs.contents }}
+            bfren/mariadb:mariadb${{ matrix.mariadb }}-arm-${{ steps.version_minor.outputs.contents }}
+            bfren/mariadb:mariadb${{ matrix.mariadb }}-arm-${{ steps.version.outputs.contents }}
+            bfren/mariadb:mariadb${{ steps.mariadb_revision.outputs.contents }}-arm
+            bfren/mariadb:mariadb${{ steps.mariadb_revision.outputs.contents }}-arm-${{ steps.version.outputs.contents }}
+            ghcr.io/bfren/mariadb:mariadb${{ matrix.mariadb }}-arm
+            ghcr.io/bfren/mariadb:mariadb${{ matrix.mariadb }}-arm-${{ steps.version_major.outputs.contents }}
+            ghcr.io/bfren/mariadb:mariadb${{ matrix.mariadb }}-arm-${{ steps.version_minor.outputs.contents }}
+            ghcr.io/bfren/mariadb:mariadb${{ matrix.mariadb }}-arm-${{ steps.version.outputs.contents }}
+            ghcr.io/bfren/mariadb:mariadb${{ steps.mariadb_revision.outputs.contents }}-arm
+            ghcr.io/bfren/mariadb:mariadb${{ steps.mariadb_revision.outputs.contents }}-arm-${{ steps.version.outputs.contents }}
       -
         name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}

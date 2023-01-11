@@ -1,4 +1,4 @@
-name: dev-10_4-arm
+name: dev-arm
 
 on:
   push:
@@ -7,13 +7,16 @@ on:
   workflow_dispatch:
 
 jobs:
-  test-10_4-arm:
+  test-arm:
     runs-on: ubuntu-latest
     steps:
       -
         name: Checkout code
         uses: actions/checkout@v3
-  build-10_4-arm:
+  build-arm:
+    strategy:
+      matrix:
+        mariadb: [ "10.4", "10.5", "10.6" ]
     runs-on: ubuntu-latest
     steps:
       -
@@ -54,15 +57,17 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           context: .
-          file: ./10.4/Dockerfile
+          file: ./${{ matrix.mariadb }}/Dockerfile
           build-args: |
             BF_IMAGE=${{ env.REPOSITORY_NAME }}
             BF_VERSION=${{ steps.version.outputs.contents }}
           push: ${{ startsWith(github.ref, 'refs/heads/') }}
           platforms: linux/arm/v7
           tags: |
-            bfren/mariadb:mariadb10.4-${{ steps.version.outputs.contents }}-beta
-            ghcr.io/bfren/mariadb:mariadb10.4-${{ steps.version.outputs.contents }}-beta
+            bfren/mariadb:mariadb${{ matrix.mariadb }}-arm-dev
+            bfren/mariadb:mariadb${{ matrix.mariadb }}-arm-${{ steps.version.outputs.contents }}-beta
+            ghcr.io/bfren/mariadb:mariadb${{ matrix.mariadb }}-arm-dev
+            ghcr.io/bfren/mariadb:mariadb${{ matrix.mariadb }}-arm-${{ steps.version.outputs.contents }}-beta
       -
         name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
