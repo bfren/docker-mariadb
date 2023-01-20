@@ -8,9 +8,9 @@ on:
 jobs:
   publish:
     strategy:
+      fail-fast: false
       matrix:
         mariadb: [ "10.4", "10.5", "10.6", "10.7", "10.8", "10.9", "10.10" ]
-      fail-fast: false
     runs-on: ubuntu-latest
     steps:
       -
