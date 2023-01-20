@@ -1,2 +1,2 @@
 # MariaDB Server
-deb https://mirrors.xtom.nl/mariadb/repo/<%= ${MARIADB_MINOR} %>/debian <%= ${DEBIAN_NAME} %> main
+deb https://mariadb.starbursthosting.co.uk/repo/<%= ${MARIADB_MINOR} %>/debian <%= ${DEBIAN_NAME} %> main
