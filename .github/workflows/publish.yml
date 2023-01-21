@@ -82,12 +82,6 @@ jobs:
             bfren/mariadb:mariadb${{ matrix.mariadb }}-${{ steps.version.outputs.contents }}
             bfren/mariadb:mariadb${{ steps.mariadb_revision.outputs.contents }}
             bfren/mariadb:mariadb${{ steps.mariadb_revision.outputs.contents }}-${{ steps.version.outputs.contents }}
-            ghcr.io/bfren/mariadb:mariadb${{ matrix.mariadb }}
-            ghcr.io/bfren/mariadb:mariadb${{ matrix.mariadb }}-${{ steps.version_major.outputs.contents }}
-            ghcr.io/bfren/mariadb:mariadb${{ matrix.mariadb }}-${{ steps.version_minor.outputs.contents }}
-            ghcr.io/bfren/mariadb:mariadb${{ matrix.mariadb }}-${{ steps.version.outputs.contents }}
-            ghcr.io/bfren/mariadb:mariadb${{ steps.mariadb_revision.outputs.contents }}
-            ghcr.io/bfren/mariadb:mariadb${{ steps.mariadb_revision.outputs.contents }}-${{ steps.version.outputs.contents }}
       -
         name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
