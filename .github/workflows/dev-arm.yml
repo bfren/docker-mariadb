@@ -67,8 +67,6 @@ jobs:
           tags: |
             bfren/mariadb:mariadb${{ matrix.mariadb }}-arm-dev
             bfren/mariadb:mariadb${{ matrix.mariadb }}-arm-${{ steps.version.outputs.contents }}-beta
-            ghcr.io/bfren/mariadb:mariadb${{ matrix.mariadb }}-arm-dev
-            ghcr.io/bfren/mariadb:mariadb${{ matrix.mariadb }}-arm-${{ steps.version.outputs.contents }}-beta
       -
         name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
