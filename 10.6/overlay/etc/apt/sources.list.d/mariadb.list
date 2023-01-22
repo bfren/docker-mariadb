@@ -1,2 +1,2 @@
 # MariaDB Server
-deb https://mariadb.starbursthosting.co.uk/repo/10.6/debian bullseye main
+deb https://mirrors.xtom.nl/mariadb/repo/10.6/debian bullseye main
