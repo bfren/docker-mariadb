@@ -31,7 +31,7 @@ ENV \
 EXPOSE 3306
 
 COPY ./overlay /
-COPY ./10.9/overlay /
+COPY ./10.11/overlay /
 
 RUN bf-install
 
