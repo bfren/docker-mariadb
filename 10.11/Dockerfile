@@ -1,4 +1,4 @@
-FROM bfren/alpine-s6:alpine3.14-4.4.14
+FROM bfren/alpine-s6:alpineedge-4.4.14
 
 ARG BF_IMAGE
 ARG BF_VERSION
@@ -28,7 +28,7 @@ ENV \
 EXPOSE 3306
 
 COPY ./overlay /
-COPY ./10.5/overlay /
+COPY ./10.11/overlay /
 
 RUN bf-install
 

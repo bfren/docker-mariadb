@@ -4,10 +4,10 @@ set -euo pipefail
 
 docker pull bfren/alpine
 
-BASE_REVISION="4.4.13"
+BASE_REVISION="4.4.14"
 echo "Base: ${BASE_REVISION}"
 
-MARIADB_VERSIONS="10.4 10.5 10.6"
+MARIADB_VERSIONS="10.4 10.5 10.6 10.11"
 for V in ${MARIADB_VERSIONS} ; do
 
     echo "MariaDB ${V}"
