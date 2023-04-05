@@ -58,8 +58,7 @@ mkdir /ssl
 
 
 #======================================================================================================================
-# Add backup executable to main cron.
+# Store default crontab as a template.
 #======================================================================================================================
 
-bf-echo "Adding db-backup to cron."
-echo "0 */8 * * * db-backup" >> /etc/crontabs/root
+cp /etc/crontabs/root /etc/bf/templates/crontab.esh
