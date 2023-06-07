@@ -1,10 +1,3 @@
-# MariaDB Server 10.11 repository list
+# MariaDB 10.11 repository list
 # https://mariadb.org/download/
-X-Repolib-Name: MariaDB
-Types: deb
-# deb.mariadb.org is a dynamic mirror if your preferred mirror goes offline. See https://mariadb.org/mirrorbits/ for details.
-# URIs: https://deb.mariadb.org/10.11/debian
-URIs: https://mariadb.gb.ssimn.org/repo/10.11/debian
-Suites: bullseye
-Components: main
-Signed-By: /etc/apt/keyrings/mariadb-keyring.pgp
+deb [signed-by=/etc/apt/keyrings/mariadb-keyring.pgp] https://mariadb.gb.ssimn.org/repo/10.11/debian bullseye main

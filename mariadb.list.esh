@@ -1,10 +1,3 @@
-# MariaDB Server <%= ${MARIADB_MINOR} %> repository list
+# MariaDB <%= ${MARIADB_MINOR} %> repository list
 # https://mariadb.org/download/
-X-Repolib-Name: MariaDB
-Types: deb
-# deb.mariadb.org is a dynamic mirror if your preferred mirror goes offline. See https://mariadb.org/mirrorbits/ for details.
-# URIs: https://deb.mariadb.org/<%= ${MARIADB_MINOR} %>/debian
-URIs: https://mariadb.gb.ssimn.org/repo/<%= ${MARIADB_MINOR} %>/debian
-Suites: <%= ${DEBIAN_NAME} %>
-Components: main
-Signed-By: /etc/apt/keyrings/mariadb-keyring.pgp
+deb [signed-by=/etc/apt/keyrings/mariadb-keyring.pgp] https://mariadb.gb.ssimn.org/repo/<%= ${MARIADB_MINOR} %>/debian <%= ${DEBIAN_NAME} %> main
