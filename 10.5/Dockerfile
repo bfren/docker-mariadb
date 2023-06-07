@@ -3,7 +3,7 @@ FROM bfren/debian-s6:bullseye-1.2.7
 ARG BF_IMAGE
 ARG BF_VERSION
 
-RUN DEBIAN_FRONTEND=noninteractive apt update && apt install -y --no-install-recommends ca-certificates
+RUN DEBIAN_FRONTEND=noninteractive apt update && apt install -y --no-install-recommends apt-transport-https ca-certificates
 ADD https://mariadb.org/mariadb_release_signing_key.pgp /etc/apt/keyrings/mariadb-keyring.pgp
 
 ENV \
