@@ -33,6 +33,8 @@ DEBIAN_FRONTEND=noninteractive apt update && apt install -y --no-install-recomme
     openssl
 bf-done
 
+[[ -f /usr/bin/mariadbd-safe ]] || bf-error "MariaDB was not installed."
+
 bf-ch -o dbadm:dbadm -m 0644 /var/log/mariadb/error.log
 
 
