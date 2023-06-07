@@ -26,7 +26,7 @@ bf-echo "MariaDB version ${VERSION}."
 #======================================================================================================================
 
 bf-echo "Installing MariaDB v${VERSION}..."
-bf-ch -m 0644 /etc/apt/trusted.gpg.d/mariadb_release_signing_key.asc
+bf-ch -m 0644 /etc/apt/keyrings/mariadb-keyring.pgp
 DEBIAN_FRONTEND=noninteractive apt update && apt install -y --no-install-recommends \
     mariadb-server=1:${VERSION}* \
     mariadb-client=1:${VERSION}* \
