@@ -1,3 +1,3 @@
 # MariaDB <%= ${MARIADB_MINOR} %> repository list
 # https://mariadb.org/download/
-deb [signed-by=/etc/apt/keyrings/mariadb-keyring.pgp] https://mirrors.xtom.nl/mariadb/repo/<%= ${MARIADB_MINOR} %>/debian <%= ${DEBIAN_NAME} %> main
+deb [signed-by=/etc/apt/keyrings/mariadb-keyring.pgp] https://deb.mariadb.org/<%= ${MARIADB_MINOR} %>/debian <%= ${DEBIAN_NAME} %> main
