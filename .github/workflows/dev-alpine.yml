@@ -1,4 +1,4 @@
-name: dev
+name: dev-alpine
 
 on:
   push:
