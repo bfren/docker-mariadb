@@ -1,10 +1,7 @@
-FROM bfren/debian-s6:bullseye-1.2.7
+FROM bfren/alpine-s6:alpine3.17-4.5.2
 
 ARG BF_IMAGE
 ARG BF_VERSION
-
-RUN DEBIAN_FRONTEND=noninteractive apt update && apt install -y --no-install-recommends apt-transport-https ca-certificates
-ADD https://mariadb.org/mariadb_release_signing_key.pgp /etc/apt/keyrings/mariadb-keyring.pgp
 
 ENV \
     # set to "1" to compress backup sql files
@@ -31,7 +28,8 @@ ENV \
 EXPOSE 3306
 
 COPY ./overlay /
-COPY ./10.7/overlay /
+COPY ./overlay-alpine /
+COPY ./alpine3.17/overlay /
 
 RUN bf-install
 

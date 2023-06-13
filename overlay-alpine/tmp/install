@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 set -euo pipefail
 export BF_E=`basename ${0}`
@@ -17,7 +17,7 @@ bf-adduser dbadm
 
 cd /tmp
 
-VERSION=$(cat MARIADB_REVISION)
+VERSION=$(cat MARIADB_BUILD)
 bf-echo "MariaDB version ${VERSION}."
 
 
@@ -26,14 +26,13 @@ bf-echo "MariaDB version ${VERSION}."
 #======================================================================================================================
 
 bf-echo "Installing MariaDB v${VERSION}..."
-bf-ch -m 0644 /etc/apt/keyrings/mariadb-keyring.pgp
-DEBIAN_FRONTEND=noninteractive apt update && apt install -y \
-    mariadb-server=1:${VERSION}* \
-    mariadb-client=1:${VERSION}* \
-    openssl
+apk add --no-cache \
+    bash \
+    openssl \
+    mariadb=${VERSION} \
+    mariadb-client=${VERSION} \
+    mariadb-server-utils=${VERSION}
 bf-done
-
-[[ -f /usr/bin/mariadbd-safe ]] || bf-error "MariaDB was not installed."
 
 bf-ch -o dbadm:dbadm -m 0644 /var/log/mariadb/error.log
 

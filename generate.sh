@@ -4,10 +4,10 @@ set -euo pipefail
 
 docker pull bfren/alpine
 
-BASE_REVISION="1.2.7"
-echo "Base: ${BASE_REVISION}"
+DEBIAN_BASE_REVISION="1.3.0"
+echo "Debian Base: ${DEBIAN_BASE_REVISION}"
 
-MARIADB_VERSIONS="10.5 10.6 10.7 10.8 10.9 10.10 10.11 11.0 11.1"
+MARIADB_VERSIONS="10.5 10.6 10.9 10.10 10.11 11.0 11.1"
 for V in ${MARIADB_VERSIONS} ; do
 
     echo "MariaDB ${V}"
@@ -17,8 +17,8 @@ for V in ${MARIADB_VERSIONS} ; do
         -v ${PWD}:/ws \
         -e BF_DEBUG=0 \
         bfren/alpine esh \
-        "/ws/Dockerfile.esh" \
-        BASE_REVISION=${BASE_REVISION} \
+        "/ws/Dockerfile-debian.esh" \
+        BASE_REVISION=${DEBIAN_BASE_REVISION} \
         DEBIAN_NAME=${DEBIAN_NAME} \
         MARIADB_MINOR=${V}
     )
@@ -35,6 +35,27 @@ for V in ${MARIADB_VERSIONS} ; do
     )
 
     echo "${LIST}" > ./${V}/overlay/etc/apt/sources.list.d/mariadb.list
+
+done
+
+ALPINE_BASE_REVISION="4.5.2"
+echo "Alpine Base: ${ALPINE_BASE_REVISION}"
+
+ALPINE_VERSIONS="3.17 3.18"
+for V in ${ALPINE_VERSIONS} ; do
+
+    echo "Alpine ${V}"
+
+    DOCKERFILE=$(docker run \
+        -v ${PWD}:/ws \
+        -e BF_DEBUG=0 \
+        bfren/alpine esh \
+        "/ws/Dockerfile-alpine.esh" \
+        BASE_REVISION=${ALPINE_BASE_REVISION} \
+        ALPINE_REVISION=${V}
+    )
+
+    echo "${DOCKERFILE}" > ./alpine${V}/Dockerfile
 
 done
 

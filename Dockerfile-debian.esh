@@ -1,4 +1,4 @@
-FROM bfren/debian-s6:bullseye-1.3.0
+FROM bfren/debian-s6:<%= ${DEBIAN_NAME} %>-<%= ${BASE_REVISION} %>
 
 ARG BF_IMAGE
 ARG BF_VERSION
@@ -30,7 +30,7 @@ ENV \
 EXPOSE 3306
 
 COPY ./overlay /
-COPY ./10.10/overlay /
+COPY ./<%= ${MARIADB_MINOR} %>/overlay /
 
 RUN bf-install
 

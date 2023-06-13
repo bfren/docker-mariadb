@@ -1,3 +1,0 @@
-# MariaDB 10.8 repository list
-# https://mariadb.org/download/
-deb [signed-by=/etc/apt/keyrings/mariadb-keyring.pgp] https://deb.mariadb.org/10.8/debian bullseye main

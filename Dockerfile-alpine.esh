@@ -1,10 +1,7 @@
-FROM bfren/debian-s6:<%= ${DEBIAN_NAME} %>-<%= ${BASE_REVISION} %>
+FROM bfren/alpine-s6:alpine<%= ${ALPINE_REVISION} %>-<%= ${BASE_REVISION} %>
 
 ARG BF_IMAGE
 ARG BF_VERSION
-
-RUN DEBIAN_FRONTEND=noninteractive apt update && apt install -y --no-install-recommends apt-transport-https ca-certificates
-ADD https://mariadb.org/mariadb_release_signing_key.pgp /etc/apt/keyrings/mariadb-keyring.pgp
 
 ENV \
     # set to "1" to compress backup sql files
@@ -31,7 +28,8 @@ ENV \
 EXPOSE 3306
 
 COPY ./overlay /
-COPY ./<%= ${MARIADB_MINOR} %>/overlay /
+COPY ./overlay-alpine /
+COPY ./alpine<%= ${ALPINE_REVISION} %>/overlay /
 
 RUN bf-install
 

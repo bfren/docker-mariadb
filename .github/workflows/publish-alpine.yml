@@ -1,4 +1,4 @@
-name: publish
+name: publish-alpine
 
 on:
   release:
@@ -10,7 +10,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        mariadb: [ "10.5", "10.6", "10.9", "10.10", "10.11", "11.0", "11.1" ]
+        alpine: [ "3.17", "3.18" ]
     runs-on: ubuntu-latest
     steps:
       -
@@ -21,10 +21,16 @@ jobs:
         run: echo "REPOSITORY_NAME=$(echo '${{ github.repository }}' | awk -F '/' '{print $2}')" >> $GITHUB_ENV
         shell: bash
       -
+        name: Read MariaDB version - minor
+        uses: bfren/read-file@v2
+        with:
+          file: ./alpine${{ matrix.alpine }}/overlay/tmp/MARIADB_MINOR
+        id: mariadb_minor
+      -
         name: Read MariaDB version - revision
         uses: bfren/read-file@v2
         with:
-          file: ./${{ matrix.mariadb }}/overlay/tmp/MARIADB_REVISION
+          file: ./alpine${{ matrix.alpine }}/overlay/tmp/MARIADB_REVISION
         id: mariadb_revision
       -
         name: Read image version
@@ -62,19 +68,19 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           context: .
-          file: ./${{ matrix.mariadb }}/Dockerfile
+          file: ./alpine${{ matrix.alpine }}/Dockerfile
           build-args: |
             BF_IMAGE=${{ env.REPOSITORY_NAME }}
             BF_VERSION=${{ steps.version.outputs.contents }}
           push: true
-          platforms: linux/amd64,linux/arm64
+          platforms: linux/amd64,linux/arm/v7,linux/arm64
           tags: |
-            bfren/mariadb:mariadb${{ matrix.mariadb }}
-            bfren/mariadb:mariadb${{ matrix.mariadb }}-${{ steps.version_major.outputs.contents }}
-            bfren/mariadb:mariadb${{ matrix.mariadb }}-${{ steps.version_minor.outputs.contents }}
-            bfren/mariadb:mariadb${{ matrix.mariadb }}-${{ steps.version.outputs.contents }}
-            bfren/mariadb:mariadb${{ steps.mariadb_revision.outputs.contents }}
-            bfren/mariadb:mariadb${{ steps.mariadb_revision.outputs.contents }}-${{ steps.version.outputs.contents }}
+            bfren/mariadb:mariadb${{ steps.mariadb_minor.outputs.contents }}-alpine
+            bfren/mariadb:mariadb${{ steps.mariadb_minor.outputs.contents }}-${{ steps.version_major.outputs.contents }}-alpine
+            bfren/mariadb:mariadb${{ steps.mariadb_minor.outputs.contents }}-${{ steps.version_minor.outputs.contents }}-alpine
+            bfren/mariadb:mariadb${{ steps.mariadb_minor.outputs.contents }}-${{ steps.version.outputs.contents }}-alpine
+            bfren/mariadb:mariadb${{ steps.mariadb_revision.outputs.contents }}-alpine
+            bfren/mariadb:mariadb${{ steps.mariadb_revision.outputs.contents }}-${{ steps.version.outputs.contents }}-alpine
       -
         name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
