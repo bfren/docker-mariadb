@@ -11,7 +11,7 @@ MARIADB_VERSIONS="10.5 10.6 10.9 10.10 10.11 11.0 11.1"
 for V in ${MARIADB_VERSIONS} ; do
 
     echo "MariaDB ${V}"
-    DEBIAN_NAME="bullseye"
+    DEBIAN_NAME=`cat ./${V}/DEBIAN_NAME | xargs`
 
     DOCKERFILE=$(docker run \
         -v ${PWD}:/ws \
