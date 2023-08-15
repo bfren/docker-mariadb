@@ -30,7 +30,7 @@ bf-ch -m 0644 /etc/apt/keyrings/mariadb-keyring.pgp
 DEBIAN_FRONTEND=noninteractive apt update && apt install -y \
     mariadb-server=1:${VERSION}* \
     mariadb-client=1:${VERSION}* \
-    openssl
+    openssl3
 bf-done
 
 [[ -f /usr/bin/mariadbd-safe ]] || bf-error "MariaDB was not installed."
