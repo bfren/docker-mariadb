@@ -11,13 +11,7 @@ MARIADB_VERSIONS="10.5 10.6 10.9 10.10 10.11 11.0 11.1"
 for V in ${MARIADB_VERSIONS} ; do
 
     echo "MariaDB ${V}"
-
-    DEBIAN_NAME_FILE=./${V}/DEBIAN_NAME
-    if [ -f "${DEBIAN_NAME_FILE}" ] ; then
-        DEBIAN_NAME=`cat ${DEBIAN_NAME_FILE} | xargs`
-    else
-        DEBIAN_NAME="bookworm"
-    fi
+    DEBIAN_NAME=`cat ./${V}/DEBIAN_NAME | xargs`
 
     DOCKERFILE=$(docker run \
         -v ${PWD}:/ws \
