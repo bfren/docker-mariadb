@@ -4,14 +4,14 @@ set -euo pipefail
 
 docker pull bfren/alpine
 
-DEBIAN_BASE_REVISION="1.3.2"
+DEBIAN_BASE_REVISION="1.3.3"
 echo "Debian Base: ${DEBIAN_BASE_REVISION}"
 
 MARIADB_VERSIONS="10.5 10.6 10.9 10.10 10.11 11.0 11.1 11.2"
 for V in ${MARIADB_VERSIONS} ; do
 
     echo "MariaDB ${V}"
-    DEBIAN_NAME=`cat ./${V}/DEBIAN_NAME | xargs`
+    DEBIAN_NAME=`cat ./${V}/DEBIAN_NAME`
 
     DOCKERFILE=$(docker run \
         -v ${PWD}:/ws \
