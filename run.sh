@@ -4,6 +4,7 @@ IMAGE=`cat VERSION`
 MARIADB=${1:-11.1}
 
 docker buildx build \
+    --load \
     --build-arg BF_IMAGE=mariadb \
     --build-arg BF_VERSION=${IMAGE} \
     -f ${MARIADB}/Dockerfile \
