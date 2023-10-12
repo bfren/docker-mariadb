@@ -1,4 +1,4 @@
-FROM bfren/debian-s6:bookworm-1.3.7
+FROM bfren/debian-s6:bookworm-1.3.8
 
 ARG BF_IMAGE
 ARG BF_VERSION
