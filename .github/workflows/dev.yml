@@ -59,7 +59,7 @@ jobs:
           platforms: linux/amd64,linux/arm64
           tags: |
             bfren/mariadb:mariadb${{ matrix.mariadb }}-dev
-            bfren/mariadb:mariadb${{ matrix.mariadb }}-${{ steps.version.outputs.contents }}-beta
+            bfren/mariadb:mariadb${{ matrix.mariadb }}-${{ steps.version.outputs.contents }}-dev
       -
         name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}

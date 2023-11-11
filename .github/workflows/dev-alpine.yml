@@ -65,7 +65,7 @@ jobs:
           platforms: linux/amd64,linux/arm/v7,linux/arm64
           tags: |
             bfren/mariadb:mariadb${{ steps.mariadb_minor.outputs.contents }}-dev-alpine
-            bfren/mariadb:mariadb${{ steps.mariadb_minor.outputs.contents }}-${{ steps.version.outputs.contents }}-beta-alpine
+            bfren/mariadb:mariadb${{ steps.mariadb_minor.outputs.contents }}-${{ steps.version.outputs.contents }}-dev-alpine
       -
         name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
