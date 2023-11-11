@@ -18,7 +18,7 @@ for V in ${MARIADB_VERSIONS} ; do
         -e BF_DEBUG=0 \
         bfren/alpine esh \
         "/ws/Dockerfile-debian.esh" \
-        BASE_REVISION=${DEBIAN_BASE_REVISION} \
+        BASE_VERSION=${DEBIAN_BASE_REVISION} \
         DEBIAN_NAME=${DEBIAN_NAME} \
         MARIADB_MINOR=${V}
     )
@@ -41,8 +41,8 @@ done
 ALPINE_BASE_REVISION="4.5.9"
 echo "Alpine Base: ${ALPINE_BASE_REVISION}"
 
-ALPINE_VERSIONS="3.17 3.18"
-for V in ${ALPINE_VERSIONS} ; do
+ALPINE_EDITIONS="3.17 3.18"
+for V in ${ALPINE_EDITIONS} ; do
 
     echo "Alpine ${V}"
 
@@ -51,8 +51,8 @@ for V in ${ALPINE_VERSIONS} ; do
         -e BF_DEBUG=0 \
         bfren/alpine esh \
         "/ws/Dockerfile-alpine.esh" \
-        BASE_REVISION=${ALPINE_BASE_REVISION} \
-        ALPINE_REVISION=${V}
+        BASE_VERSION=${ALPINE_BASE_REVISION} \
+        ALPINE_VERSION=${V}
     )
 
     echo "${DOCKERFILE}" > ./alpine${V}/Dockerfile

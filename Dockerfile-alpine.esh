@@ -1,4 +1,4 @@
-FROM bfren/alpine-s6:alpine<%= ${ALPINE_REVISION} %>-<%= ${BASE_REVISION} %>
+FROM bfren/alpine-s6:alpine<%= ${ALPINE_VERSION} %>-<%= ${BASE_VERSION} %>
 
 ARG BF_IMAGE
 ARG BF_VERSION
@@ -29,7 +29,7 @@ EXPOSE 3306
 
 COPY ./overlay /
 COPY ./overlay-alpine /
-COPY ./alpine<%= ${ALPINE_REVISION} %>/overlay /
+COPY ./alpine<%= ${ALPINE_VERSION} %>/overlay /
 
 RUN bf-install
 
