@@ -47,7 +47,7 @@ echo "# Database initialisation script" > ${INIT_FILE}
 
 # update root user with password and ensure full access
 bf-debug " .. alter root user"
-echo "ALTER USER 'root'@'localhost' IDENTIFIED BY '${MARIADB_ROOT_PASSWORD}';" >> ${INIT_FILE}
+echo "ALTER USER 'root'@'localhost' IDENTIFIED BY '${BF_DB_ROOT_PASSWORD}';" >> ${INIT_FILE}
 echo "GRANT ALL ON *.* TO 'root'@'localhost' WITH GRANT OPTION;" >> ${INIT_FILE}
 echo "FLUSH PRIVILEGES;" >> ${INIT_FILE}
 
@@ -60,21 +60,21 @@ bf-debug " .. delete test database."
 echo "DROP DATABASE IF EXISTS test;" >> ${INIT_FILE}
 
 # if database(s) specified, create (each) database and grant user permissions
-if [ ! -z "${MARIADB_DATABASE-}" ] ; then
+if [ ! -z "${BF_DB_DATABASE-}" ] ; then
 
     bf-debug " .. add application databases:"
-    DATABASES=$(echo ${MARIADB_DATABASE} | tr "," "\n")
+    DATABASES=$(echo ${BF_DB_DATABASE} | tr "," "\n")
 
     for DATABASE in ${DATABASES} ; do
         bf-debug " .. ${DATABASE}."
-        create_database "${DATABASE}" "${MARIADB_USERNAME}" "${MARIADB_PASSWORD}"
+        create_database "${DATABASE}" "${BF_DB_USERNAME}" "${BF_DB_PASSWORD}"
     done
 
 # no database specified so use username as database name
 else
 
-    bf-debug " .. add application database: ${MARIADB_USERNAME}."
-    create_database "${MARIADB_USERNAME}" "${MARIADB_USERNAME}" "${MARIADB_PASSWORD}"
+    bf-debug " .. add application database: ${BF_DB_USERNAME}."
+    create_database "${BF_DB_USERNAME}" "${BF_DB_USERNAME}" "${BF_DB_PASSWORD}"
 
 fi
 

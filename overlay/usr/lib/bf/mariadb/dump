@@ -19,13 +19,13 @@ DUMP_FILE=${2}
 # Dump database to file.
 #======================================================================================================================
 
-mariadb-dump --add-drop-database --user=root --password=${MARIADB_ROOT_PASSWORD} --databases "${DATABASE}" > "${DUMP_FILE}"
+mariadb-dump --add-drop-database --user=root --password=${BF_DB_ROOT_PASSWORD} --databases "${DATABASE}" > "${DUMP_FILE}"
 
 
 #======================================================================================================================
 # Compress file.
 #======================================================================================================================
 
-if [ "${MARIADB_BACKUP_COMPRESS_FILES}" = "1" ] ; then
+if [ "${BF_DB_BACKUP_COMPRESS_FILES}" = "1" ] ; then
     bzip2 -9 ${DUMP_FILE}
 fi

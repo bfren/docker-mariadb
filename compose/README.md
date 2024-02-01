@@ -7,7 +7,7 @@
 3. Create a `docker-compose.yml` file on your host machine and copy the contents from one of the various `.yml` template files in this folder.  (Descriptions of each can be found below.)
 4. Run the following: `docker-compose up`.  This will download the image, and run the database installation routine.
 
-The `MARIADB_USERNAME` environment variable is important because the container will automatically create a database of that name when it starts for the first time.
+The `BF_DB_USERNAME` environment variable is important because the container will automatically create a database of that name when it starts for the first time.
 
 Backups will be created automatically every 8 hours and stored in `./v/backup`.
 
@@ -24,11 +24,11 @@ Backups will be created automatically every 8 hours and stored in `./v/backup`.
 The `.env` file is a convenient way of grouping and defining variables for use in your `docker-compose.yml` file.  The default file looks like this:
 
 ```bash
-MARIADB_VERSION=10.11.4 # NB this is the MariaDB version, not the image version
-MARIADB_PORT=3306 # you will access the database over this port
-MARIADB_ROOT_PASSWORD=root_password
-MARIADB_USERNAME=application_name # a database with this name will be created automatically
-MARIADB_PASSWORD=another_password
+BF_DB_VERSION=10.11.4 # NB this is the MariaDB version, not the image version
+BF_DB_PORT=3306 # you will access the database over this port
+BF_DB_ROOT_PASSWORD=root_password
+BF_DB_USERNAME=application_name # a database with this name will be created automatically
+BF_DB_PASSWORD=another_password
 ```
 
 ## Access from app
@@ -41,7 +41,7 @@ This is the most common way to use a Docker database image: create one per app. 
 
 **Suggested use: local development machine.**
 
-If you want a single database container that multiple apps can access, or that you can access directly from your container host OS, use `access-from-host.yml`.  This maps `MARIADB_PORT` from localhost to the database container.
+If you want a single database container that multiple apps can access, or that you can access directly from your container host OS, use `access-from-host.yml`.  This maps `BF_DB_PORT` from localhost to the database container.
 
 This is how I have a test / dev server setup on my development machine.  I have also used this config while migrating native apps to their Docker alternatives.
 
@@ -49,9 +49,9 @@ This is how I have a test / dev server setup on my development machine.  I have 
 
 **Suggested use: here be dragons!**
 
-If you want to share a database server over a network - or, God forbid, the internet - you need `access-from-external.yml`.  This will map `MARIADB_PORT` to the **host** port (which means you need to allow access through your firewall / NAT).
+If you want to share a database server over a network - or, God forbid, the internet - you need `access-from-external.yml`.  This will map `BF_DB_PORT` to the **host** port (which means you need to allow access through your firewall / NAT).
 
-You will notice that the template file includes `MARIADB_SSL_ENABLE=1` - this is strongly recommended if you are accessing a database over a network as it will ensure that traffic is secured.  Setting `MARIADB_SSL_ENABLE` to `1` will enable SSL support in your container, but you still have work to do on your client machine to make it work.
+You will notice that the template file includes `BF_DB_SSL_ENABLE=1` - this is strongly recommended if you are accessing a database over a network as it will ensure that traffic is secured.  Setting `BF_DB_SSL_ENABLE` to `1` will enable SSL support in your container, but you still have work to do on your client machine to make it work.
 
 You will also notice that it has an additional volume mapped: `/ssl`.  The SSL keys and certificates will be automatically generated on startup, and added to this directory.  You will need to add these to your client machine / application to be able to access data over SSL.
 
@@ -73,7 +73,7 @@ For example, if you copy the three files created by the container in the host `.
 3. Connect to your database server using the details in `.env`:
 
     ```bash
-    $ mariadb --host=127.0.0.1 --user=MARIADB_USERNAME --password
+    $ mariadb --host=127.0.0.1 --user=BF_DB_USERNAME --password
     Enter password: # enter your password
     Welcome to the MariaDB monitor.  Commands end with ; or \g.
     Your MariaDB connection id is 5

@@ -8,4 +8,4 @@ export BF_E="${PWD##*/}/$(basename ${0})"
 # Forward MariaDB log to Docker.
 #======================================================================================================================
 
-bf-forward mariadb-log ${MARIADB_ERROR_LOG}
+bf-forward mariadb-log ${BF_DB_ERROR_LOG}

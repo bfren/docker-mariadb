@@ -8,8 +8,8 @@ export BF_E=`basename ${0}`
 # Remove upgrade info file so the upgrade runs.
 #======================================================================================================================
 
-bf-debug "Removing ${MARIADB_UPGRADE_INFO}."
-rm -f ${MARIADB_UPGRADE_INFO}
+bf-debug "Removing ${BF_DB_UPGRADE_INFO}."
+rm -f ${BF_DB_UPGRADE_INFO}
 
 
 #======================================================================================================================

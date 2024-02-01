@@ -8,7 +8,7 @@ export BF_E=`basename ${0}`
 # Run library backup executable.
 #======================================================================================================================
 
-s6-setuidgid dbadm ${MARIADB_LIB}/backup
+s6-setuidgid dbadm ${BF_DB_LIB}/backup
 
 bf-ch -o dbadm:dbadm -m 0440 -t f /var/lib/backup
 bf-ch -o dbadm:dbadm -m 0750 -t d /var/lib/backup

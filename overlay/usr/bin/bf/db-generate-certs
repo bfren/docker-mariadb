@@ -64,10 +64,10 @@ sign-cert() {
 
     openssl x509 \
         -req \
-        -days ${MARIADB_SSL_DAYS} \
+        -days ${BF_DB_SSL_DAYS} \
         -in ${1} \
-        -CA ${MARIADB_SSL_CA_CERT} \
-        -CAkey ${MARIADB_SSL_CA_KEY} \
+        -CA ${BF_DB_SSL_CA_CERT} \
+        -CAkey ${BF_DB_SSL_CA_KEY} \
         -set_serial 01 \
         -out ${2}
 
@@ -86,7 +86,7 @@ sign-cert() {
 # Ensure SSL directory exists.
 #======================================================================================================================
 
-[[ ! -d ${MARIADB_SSL_CNF_D} ]] && mkdir -p ${MARIADB_SSL_CNF_D}
+[[ ! -d ${BF_DB_SSL_CNF_D} ]] && mkdir -p ${BF_DB_SSL_CNF_D}
 
 
 #======================================================================================================================
@@ -94,18 +94,18 @@ sign-cert() {
 #======================================================================================================================
 
 # generate CA key
-bf-echo "Generating CA key ${MARIADB_SSL_CA_KEY}..."
-openssl genrsa ${MARIADB_SSL_CA_KEY_BITS} > ${MARIADB_SSL_CA_KEY}
+bf-echo "Generating CA key ${BF_DB_SSL_CA_KEY}..."
+openssl genrsa ${BF_DB_SSL_CA_KEY_BITS} > ${BF_DB_SSL_CA_KEY}
 bf-done
 
 # generate CA certificate
-bf-echo "Generating CA certificate ${MARIADB_SSL_CA_CERT}..."
+bf-echo "Generating CA certificate ${BF_DB_SSL_CA_CERT}..."
 openssl req \
     -x509 \
     -nodes \
-    -days ${MARIADB_SSL_DAYS} \
-    -key ${MARIADB_SSL_CA_KEY} \
-    -out ${MARIADB_SSL_CA_CERT} \
+    -days ${BF_DB_SSL_DAYS} \
+    -key ${BF_DB_SSL_CA_KEY} \
+    -out ${BF_DB_SSL_CA_CERT} \
     -subj "/C=NA/ST=NA/L=NA/O=NA/OU=NA/CN=MariaDB Admin"
 bf-done
 
@@ -116,17 +116,17 @@ bf-done
 
 # generate server key and request
 bf-echo "Generating server key and request..."
-generate-request "Server" ${MARIADB_SSL_SERVER_KEY_TMP} "${MARIADB_SSL_SERVER_KEY_BITS}" ${MARIADB_SSL_SERVER_REQ}
+generate-request "Server" ${BF_DB_SSL_SERVER_KEY_TMP} "${BF_DB_SSL_SERVER_KEY_BITS}" ${BF_DB_SSL_SERVER_REQ}
 bf-done
 
 # process server key
 bf-echo "Processing server key..."
-process-key ${MARIADB_SSL_SERVER_KEY_TMP} ${MARIADB_SSL_SERVER_KEY}
+process-key ${BF_DB_SSL_SERVER_KEY_TMP} ${BF_DB_SSL_SERVER_KEY}
 bf-done
 
 # sign the server certificate
 bf-echo "Signing server certificate..."
-sign-cert ${MARIADB_SSL_SERVER_REQ} ${MARIADB_SSL_SERVER_CERT}
+sign-cert ${BF_DB_SSL_SERVER_REQ} ${BF_DB_SSL_SERVER_CERT}
 bf-done
 
 
@@ -136,17 +136,17 @@ bf-done
 
 # generate client key and request
 bf-echo "Generating client key and request..."
-generate-request "Client" ${MARIADB_SSL_CLIENT_KEY_TMP} "${MARIADB_SSL_CLIENT_KEY_BITS}" ${MARIADB_SSL_CLIENT_REQ}
+generate-request "Client" ${BF_DB_SSL_CLIENT_KEY_TMP} "${BF_DB_SSL_CLIENT_KEY_BITS}" ${BF_DB_SSL_CLIENT_REQ}
 bf-done
 
 # process client key
 bf-echo "Processing client key..."
-process-key ${MARIADB_SSL_CLIENT_KEY_TMP} ${MARIADB_SSL_CLIENT_KEY}
+process-key ${BF_DB_SSL_CLIENT_KEY_TMP} ${BF_DB_SSL_CLIENT_KEY}
 bf-done
 
 # sign the server certificate
 bf-echo "Signing client certificate..."
-sign-cert ${MARIADB_SSL_CLIENT_REQ} ${MARIADB_SSL_CLIENT_CERT}
+sign-cert ${BF_DB_SSL_CLIENT_REQ} ${BF_DB_SSL_CLIENT_CERT}
 bf-done
 
 
@@ -155,7 +155,7 @@ bf-done
 #======================================================================================================================
 
 bf-echo "Verifying certificates..."
-if openssl verify -CAfile ${MARIADB_SSL_CA_CERT} ${MARIADB_SSL_SERVER_CERT} ${MARIADB_SSL_CLIENT_CERT} ; then
+if openssl verify -CAfile ${BF_DB_SSL_CA_CERT} ${BF_DB_SSL_SERVER_CERT} ${BF_DB_SSL_CLIENT_CERT} ; then
     bf-done
     exit 0
 fi
@@ -166,5 +166,5 @@ fi
 #======================================================================================================================
 
 bf-error "Unable to verify SSL certificates, clearing SSL directory..."
-rm -rf "${MARIADB_SSL_CNF_D}/*"
+rm -rf "${BF_DB_SSL_CNF_D}/*"
 bf-done

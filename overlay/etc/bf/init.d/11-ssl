@@ -8,14 +8,14 @@ export BF_E=`basename ${0}`
 # If SSL is not enabled, exit script gracefully.
 #======================================================================================================================
 
-[[ "${MARIADB_SSL_ENABLE}" != "1" ]] && bf-echo "SSL is not enabled." && exit 0
+[[ "${BF_DB_SSL_ENABLE}" != "1" ]] && bf-echo "SSL is not enabled." && exit 0
 
 
 #======================================================================================================================
 # If server certificate exists, exit script.
 #======================================================================================================================
 
-if [ -f ${MARIADB_SSL_CLIENT_CERT} ] ; then
+if [ -f ${BF_DB_SSL_CLIENT_CERT} ] ; then
     bf-ok "Using existing SSL certificates."
     exit 0
 fi
@@ -32,7 +32,7 @@ db-generate-certs
 # Copy client certificates to /ssl and make publicly readable.
 #======================================================================================================================
 
-cp -f ${MARIADB_SSL_CA_CERT} ${MARIADB_SSL}
-cp -f ${MARIADB_SSL_CLIENT_KEY} ${MARIADB_SSL}
-cp -f ${MARIADB_SSL_CLIENT_CERT} ${MARIADB_SSL}
+cp -f ${BF_DB_SSL_CA_CERT} ${BF_DB_SSL}
+cp -f ${BF_DB_SSL_CLIENT_KEY} ${BF_DB_SSL}
+cp -f ${BF_DB_SSL_CLIENT_CERT} ${BF_DB_SSL}
 bf-ch-apply ${BF_CH_D}/11-ssl

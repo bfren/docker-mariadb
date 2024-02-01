@@ -8,4 +8,4 @@ export BF_E=`basename ${0}`
 # Run library export executable.
 #======================================================================================================================
 
-s6-setuidgid dbadm ${MARIADB_LIB}/export "${1-}"
+s6-setuidgid dbadm ${BF_DB_LIB}/export "${1-}"

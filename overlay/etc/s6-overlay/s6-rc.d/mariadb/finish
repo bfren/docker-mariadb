@@ -9,8 +9,8 @@ export BF_E="${PWD##*/}/$(basename ${0})"
 #======================================================================================================================
 
 bf-echo "Clearing temporary files and old process IDs..."
-rm -f ${MARIADB_DATA}/*.err
-rm -f ${MARIADB_DATA}/*.pid
+rm -f ${BF_DB_DATA}/*.err
+rm -f ${BF_DB_DATA}/*.pid
 bf-done
 
 
