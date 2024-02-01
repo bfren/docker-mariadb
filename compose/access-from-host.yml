@@ -2,15 +2,14 @@ version: "3.8"
 
 services:
   db:
-    image: bfren/mariadb:mariadb${BF_DB_VERSION}
+    image: bfren/mariadb:mariadb${VERSION}
     container_name: db
     restart: unless-stopped
     ports:
-      - "127.0.0.1:${BF_DB_PORT}:3306"
+      - "127.0.0.1:${PORT}:3306"
     environment:
-      - BF_DB_ROOT_PASSWORD=${BF_DB_ROOT_PASSWORD}
-      - BF_DB_USERNAME=${BF_DB_USERNAME}
-      - BF_DB_PASSWORD=${BF_DB_PASSWORD}
+      - BF_DB_ROOT_PASSWORD=${ROOT_PASSWORD}
+      - BF_DB_APPLICATION=${APPLICATION}
     volumes:
-      - ./v/data:/var/lib/mysql
-      - ./v/backup:/var/lib/backup
+      - ./v/data:/data
+      - ./v/backup:/backup
