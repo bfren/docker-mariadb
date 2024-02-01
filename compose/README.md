@@ -24,11 +24,13 @@ Backups will be created automatically every 8 hours and stored in `./v/backup`.
 The `.env` file is a convenient way of grouping and defining variables for use in your `docker-compose.yml` file.  The default file looks like this:
 
 ```bash
-BF_DB_VERSION=10.11.4 # NB this is the MariaDB version, not the image version
-BF_DB_PORT=3306 # you will access the database over this port
-BF_DB_ROOT_PASSWORD=root_password
-BF_DB_USERNAME=application_name # a database with this name will be created automatically
-BF_DB_PASSWORD=another_password
+VERSION=11.2.2          # NB this is the MariaDB version, not the image version
+PORT=3306               # you will access the database over this port
+ROOT_PASSWORD=changeme
+APPLICATION=app_name    # a database and user will be created with this name, and it will be used for the password too
+DATABASE=database_name  # otherwise you can set the name of the database manually (separate multiple database names with a comma)
+USERNAME=changme        # - if you do this then you need to set the username and password manually
+PASSWORD=changme        #   this is *strongly* recommended if you are accessing the host remotely
 ```
 
 ## Access from app
@@ -41,7 +43,7 @@ This is the most common way to use a Docker database image: create one per app. 
 
 **Suggested use: local development machine.**
 
-If you want a single database container that multiple apps can access, or that you can access directly from your container host OS, use `access-from-host.yml`.  This maps `BF_DB_PORT` from localhost to the database container.
+If you want a single database container that multiple apps can access, or that you can access directly from your container host OS, use `access-from-host.yml`.  This maps `PORT` from localhost to the database container.
 
 This is how I have a test / dev server setup on my development machine.  I have also used this config while migrating native apps to their Docker alternatives.
 
@@ -49,7 +51,7 @@ This is how I have a test / dev server setup on my development machine.  I have 
 
 **Suggested use: here be dragons!**
 
-If you want to share a database server over a network - or, God forbid, the internet - you need `access-from-external.yml`.  This will map `BF_DB_PORT` to the **host** port (which means you need to allow access through your firewall / NAT).
+If you want to share a database server over a network - or, God forbid, the internet - you need `access-from-external.yml`.  This will map `PORT` to the **host** port (which means you need to allow access through your firewall / NAT).
 
 You will notice that the template file includes `BF_DB_SSL_ENABLE=1` - this is strongly recommended if you are accessing a database over a network as it will ensure that traffic is secured.  Setting `BF_DB_SSL_ENABLE` to `1` will enable SSL support in your container, but you still have work to do on your client machine to make it work.
 
@@ -73,11 +75,11 @@ For example, if you copy the three files created by the container in the host `.
 3. Connect to your database server using the details in `.env`:
 
     ```bash
-    $ mariadb --host=127.0.0.1 --user=BF_DB_USERNAME --password
+    $ mariadb --host=127.0.0.1 --user=<<USERNAME>> --password
     Enter password: # enter your password
     Welcome to the MariaDB monitor.  Commands end with ; or \g.
     Your MariaDB connection id is 5
-    Server version: 10.9.2-MariaDB-1:10.9.2+maria~deb11 mariadb.org binary distribution
+    Server version: 11.2.2-MariaDB-1:11.2.2+maria~deb11 mariadb.org binary distribution
 
     Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
 

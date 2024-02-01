@@ -9,6 +9,7 @@ services:
       - "0.0.0.0:${PORT}:3306"
     environment:
       - BF_DB_ROOT_PASSWORD=${ROOT_PASSWORD}
+      - BF_DB_DATABASE=${DATABASE}
       - BF_DB_USERNAME=${USERNAME}
       - BF_DB_PASSWORD=${PASSWORD}
       - BF_DB_SSL_ENABLE=1
