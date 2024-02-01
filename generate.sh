@@ -4,10 +4,11 @@ set -euo pipefail
 
 docker pull bfren/alpine
 
-DEBIAN_BASE_REVISION="1.3.8"
-echo "Debian Base: ${DEBIAN_BASE_REVISION}"
+DEBIAN_BASE_REVISION="2.0.8"
+ALPINE_BASE_REVISION="5.1.3"
 
-MARIADB_VERSIONS="10.4 10.5 10.6 10.9 10.10 10.11 11.0 11.1 11.2"
+echo "Debian Base: ${DEBIAN_BASE_REVISION}"
+MARIADB_VERSIONS="10.4 10.5 10.6 10.10 10.11 11.0 11.1 11.2 11.3"
 for V in ${MARIADB_VERSIONS} ; do
 
     echo "MariaDB ${V}"
@@ -38,10 +39,8 @@ for V in ${MARIADB_VERSIONS} ; do
 
 done
 
-ALPINE_BASE_REVISION="4.5.9"
 echo "Alpine Base: ${ALPINE_BASE_REVISION}"
-
-ALPINE_EDITIONS="3.17 3.18"
+ALPINE_EDITIONS="3.17 3.19"
 for V in ${ALPINE_EDITIONS} ; do
 
     echo "Alpine ${V}"
@@ -52,7 +51,7 @@ for V in ${ALPINE_EDITIONS} ; do
         bfren/alpine esh \
         "/ws/Dockerfile-alpine.esh" \
         BASE_VERSION=${ALPINE_BASE_REVISION} \
-        ALPINE_VERSION=${V}
+        ALPINE_EDITION=${V}
     )
 
     echo "${DOCKERFILE}" > ./alpine${V}/Dockerfile

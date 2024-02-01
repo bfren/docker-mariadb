@@ -17,7 +17,7 @@ bf-adduser dbadm
 
 cd /tmp
 
-VERSION=$(cat MARIADB_BUILD)
+VERSION=$(cat BF_DB_BUILD)
 bf-echo "MariaDB version ${VERSION}."
 
 

@@ -1,7 +1,7 @@
 #!/bin/sh
 
 IMAGE=`cat VERSION`
-MARIADB=${1:-11.1}
+MARIADB=${1:-11.2}
 
 docker buildx build \
     --load \
@@ -11,4 +11,4 @@ docker buildx build \
     -t mariadb${MARIADB}-dev \
     . \
     && \
-    docker run -it -e MARIADB_USERNAME=test -e MARIADB_ROOT_PASSWORD=test -e MARIADB_BACKUP_COMPRESS_FILES=1 mariadb${MARIADB}-dev sh
+    docker run -it -e BF_DB_USERNAME=test -e BF_DB_ROOT_PASSWORD=test -e BF_DB_BACKUP_COMPRESS_FILES=1 mariadb${MARIADB}-dev sh
