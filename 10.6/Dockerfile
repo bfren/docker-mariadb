@@ -9,9 +9,6 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update && apt-get install -y apt-tran
 ADD https://mariadb.org/mariadb_release_signing_key.pgp /etc/apt/keyrings/mariadb-keyring.pgp
 RUN chmod 0444 /etc/apt/keyrings/mariadb-keyring.pgp
 
-COPY ./overlay /
-COPY ./10.6/overlay /
-
 ENV \
     # set to "1" to compress backup sql files
     BF_DB_BACKUP_COMPRESS_FILES=0 \
@@ -20,7 +17,7 @@ ENV \
     # set to "1" to enable SSL support
     BF_DB_SSL_ENABLE=0 \
     # the period of time before self-generated SSL certificates will expire (Nu duration)
-    BF_DB_SSL_EXPIRY=3650day \
+    BF_DB_SSL_EXPIRY=36500day \
     # the size in bits of the CA SSL private key
     BF_DB_SSL_CA_KEY_BITS=4096 \
     # the size in bits of the server SSL private key
@@ -34,6 +31,10 @@ ENV \
     # see https://mariadb.com/kb/en/server-system-variables/#log_warnings
     BF_DB_LOG_WARNINGS=3
 
+COPY ./overlay-debian /
+COPY ./10.6/overlay /
 RUN bf-install
+
+COPY ./overlay /
 
 VOLUME [ "/backup", "/data", "/ssl" ]

@@ -25,4 +25,4 @@ tls_version=TLSv1.2,TLSv1.3
 symbolic-links=0
 
 # include all files from the config directory
-!includedir <% bf-env DB_CNF_D %>
+!includedir <% bf-env DB_CONF_D %>

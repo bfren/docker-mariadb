@@ -5,10 +5,6 @@ ARG BF_VERSION
 
 EXPOSE 3306
 
-COPY ./overlay /
-COPY ./overlay-alpine /
-COPY ./alpine<%= ${ALPINE_EDITION} %>/overlay /
-
 ENV \
     # set to "1" to compress backup sql files
     BF_DB_BACKUP_COMPRESS_FILES="0" \
@@ -31,6 +27,10 @@ ENV \
     # see https://mariadb.com/kb/en/server-system-variables/#log_warnings
     BF_DB_LOG_WARNINGS="3"
 
+COPY ./overlay-alpine /
+COPY ./alpine<%= ${ALPINE_EDITION} %>/overlay /
 RUN bf-install
+
+COPY ./overlay /
 
 VOLUME [ "/backup", "/data", "/ssl" ]

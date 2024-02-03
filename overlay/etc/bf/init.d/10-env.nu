@@ -42,19 +42,17 @@ def main [] {
 
     # SSL certificate paths
     let ssl = "/ssl"
-    let ssl_tmp = "/tmp/ssl"
     bf env set DB_SSL $ssl
-    bf env set DB_SSL_TMP $ssl_tmp
-    bf env set DB_SSL_CA_CERT $"($ssl_tmp)/ca-cert.pem"
-    bf env set DB_SSL_CA_KEY $"($ssl_tmp)/ca-key.pem"
-    bf env set DB_SSL_CLIENT_CERT $"($ssl_tmp)/client-cert.pem"
-    bf env set DB_SSL_CLIENT_KEY $"($ssl_tmp)/client-key.pem"
-    bf env set DB_SSL_CLIENT_KEY_TMP $"($ssl_tmp)/client-key.tmp"
-    bf env set DB_SSL_CLIENT_REQ $"($ssl_tmp)/client-req.pem"
-    bf env set DB_SSL_SERVER_CERT $"($ssl_tmp)/server-cert.pem"
-    bf env set DB_SSL_SERVER_KEY $"($ssl_tmp)/server-key.pem"
-    bf env set DB_SSL_SERVER_KEY_TMP $"($ssl_tmp)/server-key.tmp"
-    bf env set DB_SSL_SERVER_REQ $"($ssl_tmp)/server-req.pem"
+    bf env set DB_SSL_CA_CERT $"($ssl)/ca-cert.pem"
+    bf env set DB_SSL_CA_KEY $"($ssl)/ca-key.pem"
+    bf env set DB_SSL_CLIENT_CERT $"($ssl)/client-cert.pem"
+    bf env set DB_SSL_CLIENT_KEY $"($ssl)/client-key.pem"
+    bf env set DB_SSL_CLIENT_KEY_TMP $"($ssl)/client-key.tmp"
+    bf env set DB_SSL_CLIENT_REQ $"($ssl)/client-req.pem"
+    bf env set DB_SSL_SERVER_CERT $"($ssl)/server-cert.pem"
+    bf env set DB_SSL_SERVER_KEY $"($ssl)/server-key.pem"
+    bf env set DB_SSL_SERVER_KEY_TMP $"($ssl)/server-key.tmp"
+    bf env set DB_SSL_SERVER_REQ $"($ssl)/server-req.pem"
 
     # return nothing
     return
