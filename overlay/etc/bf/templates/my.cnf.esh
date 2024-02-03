@@ -4,19 +4,19 @@
 
 # This group is read by the server
 [mariadb]
-datadir=<%= ${BF_DB_DATA} %>
+datadir=<% bf-env DB_DATA %>
 
-log_error=<%= ${BF_DB_ERROR_LOG} %>
-log_warnings=<%= ${BF_DB_LOG_WARNINGS} %>
+log_error=<% bf-env DB_ERROR_LOG %>
+log_warnings=<% bf-env DB_LOG_WARNINGS %>
 
-character_set_server=<%= ${BF_DB_CHARACTER_SET} %>
-collation_server=<%= ${BF_DB_COLLATION} %>
+character_set_server=<% bf-env DB_CHARACTER_SET %>
+collation_server=<% bf-env DB_COLLATION %>
 
-<% if [ "${BF_DB_SSL_ENABLE}" = "1" ] && [ -f ${BF_DB_SSL_CLIENT_CERT} ] ; then -%>
+<% if bf-env-check DB_SSL_ENABLE ; then -%>
 # SSL paths
-ssl-ca=<%= ${BF_DB_SSL_CA_CERT} %>
-ssl-cert=<%= ${BF_DB_SSL_SERVER_CERT} %>
-ssl-key=<%= ${BF_DB_SSL_SERVER_KEY} %>
+ssl-ca=<% bf-env DB_SSL_CA_CERT %>
+ssl-cert=<% bf-env DB_SSL_SERVER_CERT %>
+ssl-key=<% bf-env DB_SSL_SERVER_KEY %>
 # Don't use old TLS versions
 tls_version=TLSv1.2,TLSv1.3
 <% fi -%>
@@ -25,4 +25,4 @@ tls_version=TLSv1.2,TLSv1.3
 symbolic-links=0
 
 # include all files from the config directory
-!includedir <%= ${BF_DB_CNF_D} %>
+!includedir <% bf-env DB_CNF_D %>

@@ -1,0 +1,8 @@
+# MariaDB <%= ${MARIADB_MINOR} %> repository list
+# https://mariadb.org/download/
+X-Repolib-Name: MariaDB
+Types: deb
+URIs: https://mariadb.gb.ssimn.org/mariadb-<%= ${MARIADB_REVISION} %>/repo/debian
+Suites: <%= ${DEBIAN_NAME} %>
+Components: main
+Signed-By: <%= ${MARIADB_KEYRING} %>

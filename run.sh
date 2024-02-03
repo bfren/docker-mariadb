@@ -11,4 +11,4 @@ docker buildx build \
     -t mariadb${MARIADB}-dev \
     . \
     && \
-    docker run -it -e BF_DB_USERNAME=test -e BF_DB_ROOT_PASSWORD=test -e BF_DB_BACKUP_COMPRESS_FILES=1 mariadb${MARIADB}-dev sh
+    docker run -it -v `pwd`/ssl:/ssl -e BF_DEBUG=1 -e BF_DB_APPLICATION=test -e BF_DB_ROOT_PASSWORD=test -e BF_DB_SSL_ENABLE=1 mariadb${MARIADB}-dev sh

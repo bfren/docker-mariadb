@@ -1,65 +1,32 @@
-#!/bin/bash
+#!/usr/bin/nu
 
-set -euo pipefail
-export BF_E=`basename ${0}`
+use bf
 
+# Setup and install MariaDB
+def main [] {
+    # add MariaDB user
+    bf user add dbadm
 
-#======================================================================================================================
-# Add dbadm user.
-#======================================================================================================================
+    # get MariaDB version and install
+    cd /tmp
+    let version = bf fs read MARIADB_REVISION
+    let major = $version | split row "." | first 2 | str join "."
+    bf write $"Installing MariaDB v($version)."
+    bf pkg install [$"mariadb-server=1:($version)*"]
 
-bf-adduser dbadm
+    if ("/usr/bin/mariadbd-safe" | bf fs is_not_file) { bf write error "MariaDB was not installed." }
 
+    # save MariaDB version to build log
+    bf build add MariaDB $version
 
-#======================================================================================================================
-# Get MariaDB version.
-#======================================================================================================================
+    # ensure error log is writeable
+    bf write "Making error log writeable."
+    bf ch --mode 0644 --owner dbadm:dbadm /var/log/mariadb/error.log
 
-cd /tmp
+    # cleanup default files
+    bf write "Cleaning up MariaDB directory contents."
+    rm --force --recursive /etc/my.cnf* /etc/mysql /var/lib/mysql/*
 
-VERSION=$(cat BF_DB_REVISION)
-bf-echo "MariaDB version ${VERSION}."
-
-
-#======================================================================================================================
-# Install MariaDB and dependencies.
-#======================================================================================================================
-
-bf-echo "Installing MariaDB v${VERSION}..."
-bf-ch -m 0644 /etc/apt/keyrings/mariadb-keyring.pgp
-DEBIAN_FRONTEND=noninteractive apt update && apt install -y \
-    mariadb-server=1:${VERSION}* \
-    mariadb-client=1:${VERSION}* \
-    openssl
-bf-done
-
-[[ -f /usr/bin/mariadbd-safe ]] || bf-error "MariaDB was not installed."
-
-bf-ch -o dbadm:dbadm -m 0644 /var/log/mariadb/error.log
-
-
-#======================================================================================================================
-# Cleanup.
-#======================================================================================================================
-
-bf-echo "Cleaning up default database config and files."
-rm -rf /etc/my.cnf* /etc/mysql /var/lib/mysql/*
-
-
-#======================================================================================================================
-# Create MariaDB directories.
-#======================================================================================================================
-
-bf-echo "Creating MariaDB directories."
-
-mkdir -p /var/lib/backup
-
-mkdir -p /etc/my.cnf.d/ssl
-mkdir /ssl
-
-
-#======================================================================================================================
-# Store default crontab as a template.
-#======================================================================================================================
-
-cp /etc/crontabs/root /etc/bf/templates/crontab.esh
+    # add bf-db module to config
+    bf config use bf-db
+}
