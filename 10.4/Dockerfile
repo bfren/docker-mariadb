@@ -1,6 +1,7 @@
-FROM bfren/debian-s6:buster-2.0.10
+FROM bfren/debian-s6:buster-2.1.0
 
 ARG BF_IMAGE
+ARG BF_PUBLISHING
 ARG BF_VERSION
 
 EXPOSE 3306

@@ -1,6 +1,7 @@
-FROM bfren/alpine-s6:alpine3.17-5.1.4
+FROM bfren/alpine-s6:alpine3.17-5.2.0
 
 ARG BF_IMAGE
+ARG BF_PUBLISHING
 ARG BF_VERSION
 
 EXPOSE 3306
