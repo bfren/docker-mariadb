@@ -2,7 +2,7 @@
 # https://mariadb.org/download/
 X-Repolib-Name: MariaDB
 Types: deb
-URIs: https://mariadb.gb.ssimn.org/mariadb-10.5.23/repo/debian
+URIs: https://mariadb.gb.ssimn.org/mariadb-10.5.24/repo/debian
 Suites: bullseye
 Components: main
 Signed-By: /etc/apt/keyrings/mariadb-keyring.pgp
