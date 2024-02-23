@@ -1,8 +1,0 @@
-# MariaDB 10.4 repository list
-# https://mariadb.org/download/
-X-Repolib-Name: MariaDB
-Types: deb
-URIs: https://mariadb.gb.ssimn.org/mariadb-10.4.33/repo/debian
-Suites: buster
-Components: main
-Signed-By: /etc/apt/keyrings/mariadb-keyring.pgp
