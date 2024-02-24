@@ -32,10 +32,8 @@ ENV \
     # see https://mariadb.com/kb/en/server-system-variables/#log_warnings
     BF_DB_LOG_WARNINGS=3
 
-COPY ./overlay-debian /
+COPY ./overlay /
 COPY ./10.6/overlay /
 RUN bf-install
-
-COPY ./overlay /
 
 VOLUME [ "/backup", "/data", "/ssl" ]

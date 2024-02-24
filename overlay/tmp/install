@@ -1,6 +1,7 @@
 #!/usr/bin/nu
 
 use bf
+use bf-db
 
 # Setup and install MariaDB
 def main [] {
@@ -9,10 +10,10 @@ def main [] {
 
     # get MariaDB version and install
     cd /tmp
-    let version = bf fs read MARIADB_REVISION
+    let version = bf fs read MARIADB_BUILD
     let major = $version | split row "." | first 2 | str join "."
     bf write $"Installing MariaDB v($version)."
-    bf pkg install [$"mariadb-server=1:($version)*"]
+    bf-db install packages $version
 
     if ("/usr/bin/mariadbd-safe" | bf fs is_not_file) { bf write error "MariaDB was not installed." }
 

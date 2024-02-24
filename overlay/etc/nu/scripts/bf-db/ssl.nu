@@ -26,13 +26,13 @@ export def generate_certs [] {
 
     # generate server key and certificate
     bf write "Generating server key and certificate."
-    generate_request "Server" (bf env DB_SSL_SERVER_KEY_TMP) (bf env DB_SSL_SERVER_KEY_BITS) (bf env DB_SSL_SERVER_REQ)
+    generate_request "Server" (bf env DB_SSL_SERVER_KEY_TMP) (bf env DB_SSL_SERVER_KEY_BITS | into int) (bf env DB_SSL_SERVER_REQ)
     process_key (bf env DB_SSL_SERVER_KEY_TMP) (bf env DB_SSL_SERVER_KEY)
     sign_cert (bf env DB_SSL_SERVER_REQ) (bf env DB_SSL_SERVER_CERT)
 
     # generate client key and certificate
     bf write "Generating client key and certificate."
-    generate_request "Client" (bf env DB_SSL_CLIENT_KEY_TMP) (bf env DB_SSL_CLIENT_KEY_BITS) (bf env DB_SSL_CLIENT_REQ)
+    generate_request "Client" (bf env DB_SSL_CLIENT_KEY_TMP) (bf env DB_SSL_CLIENT_KEY_BITS | into int) (bf env DB_SSL_CLIENT_REQ)
     process_key (bf env DB_SSL_CLIENT_KEY_TMP) (bf env DB_SSL_CLIENT_KEY)
     sign_cert (bf env DB_SSL_CLIENT_REQ) (bf env DB_SSL_CLIENT_CERT)
 
@@ -56,10 +56,10 @@ export def generate_certs [] {
 def dbg_openssl [
     text: string
     cmd: string
-    args: list<string>
+    args: list<any>
     script: string
 ] {
-    bf write debug $"($text): openssl ($cmd) ($args | str join ' ')" $script
+    bf write debug $"($text): openssl ($cmd) ($args | into string | str join ' ')" $script
 }
 
 # Use openssl to make a certificate request

@@ -13,7 +13,7 @@ for V in ${MARIADB_VERSIONS} ; do
 
     echo "MariaDB ${V}"
     DEBIAN_NAME=`cat ./${V}/DEBIAN_NAME`
-    MARIADB_REVISION=`cat ./${V}/overlay/tmp/MARIADB_REVISION`
+    MARIADB_VERSION=`cat ./${V}/overlay/tmp/MARIADB_BUILD`
     MARIADB_KEYRING=/etc/apt/keyrings/mariadb-keyring.pgp
 
     DOCKERFILE=$(docker run \
@@ -36,7 +36,7 @@ for V in ${MARIADB_VERSIONS} ; do
         "/ws/mariadb.sources.esh" \
         DEBIAN_NAME=${DEBIAN_NAME} \
         MARIADB_MINOR=${V} \
-        MARIADB_REVISION=${MARIADB_REVISION} \
+        MARIADB_VERSION=${MARIADB_VERSION} \
         MARIADB_KEYRING=${MARIADB_KEYRING}
     )
 
