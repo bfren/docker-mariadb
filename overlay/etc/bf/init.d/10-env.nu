@@ -27,6 +27,8 @@ def main [] {
 
     bf env set DB_ERROR_LOG "/var/log/mariadb/error.log"
 
+    bf env set DB_INIT_FILE "/tmp/init.sql"
+
     # backup paths
     let backup = "/backup"
     let backup_basename = "dump"

@@ -1,5 +1,6 @@
 use bf
 
+# Install required packages for MariaDB
 export def packages [
     version: string
 ] {
