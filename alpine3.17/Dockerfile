@@ -1,4 +1,4 @@
-FROM bfren/alpine-s6:alpine3.17-5.2.2
+FROM bfren/alpine-s6:alpine3.17-5.2.3
 
 ARG BF_IMAGE
 ARG BF_PUBLISHING
