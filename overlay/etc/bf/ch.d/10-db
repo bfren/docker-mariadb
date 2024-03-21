@@ -1,0 +1,2 @@
+/backup dbadm:dbadm 0600 0700
+/data dbadm:dbadm 0600 0700

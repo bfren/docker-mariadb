@@ -17,7 +17,7 @@ bf-debug "Backup: ${DATE}."
 
 EXCLUDE="mysql|information_schema|performance_schema|sys"
 bf-debug "Exclude ${EXCLUDE}."
-DATABASES=$(mariadb --user=root --password=${MARIADB_ROOT_PASSWORD} -e 'SHOW DATABASES;' | sed 1d | grep -v -E "(${EXCLUDE})")
+DATABASES=$(mariadb --user=root --password=${BF_DB_ROOT_PASSWORD} -e 'SHOW DATABASES;' | sed 1d | grep -v -E "(${EXCLUDE})")
 [[ -z "${DATABASES}" ]] && bf-error "No databases found to backup."
 
 
@@ -36,7 +36,7 @@ for DATABASE in ${DATABASES} ; do
 
     # dump database and continue on failure
     bf-echo " .. ${DATABASE}"
-    ${MARIADB_LIB}/dump "${DATABASE}" "${DUMP_FILE}" || true
+    ${BF_DB_LIB}/dump "${DATABASE}" "${DUMP_FILE}" || true
 
 done
 bf-done
@@ -46,7 +46,7 @@ bf-done
 # Move backups to backup directory and set permissions.
 #======================================================================================================================
 
-BACKUP_PATH=${MARIADB_BACKUP}/${DATE}
+BACKUP_PATH=${BF_DB_BACKUP}/${DATE}
 bf-echo "Moving backups to ${BACKUP_PATH}..."
 mv ${TEMP_BACKUP_PATH} ${BACKUP_PATH}
 bf-done
@@ -56,11 +56,11 @@ bf-done
 # Remove old backups.
 #======================================================================================================================
 
-if [ "${MARIADB_BACKUP_KEEP_FOR_DAYS}" -gt 0 ] ; then
+if [ "${BF_DB_BACKUP_KEEP_FOR_DAYS}" -gt 0 ] ; then
 
-    bf-echo "Deleting backups older than ${MARIADB_BACKUP_KEEP_FOR_DAYS} days..."
-    MMIN=$((60*24*${MARIADB_BACKUP_KEEP_FOR_DAYS}))
-    find ${MARIADB_BACKUP}/* -type d -mmin +${MMIN} | xargs rm -rf
+    bf-echo "Deleting backups older than ${BF_DB_BACKUP_KEEP_FOR_DAYS} days..."
+    MMIN=$((60*24*${BF_DB_BACKUP_KEEP_FOR_DAYS}))
+    find ${BF_DB_BACKUP}/* -type d -mmin +${MMIN} | xargs rm -rf
     bf-done
 
 fi

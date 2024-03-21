@@ -9,7 +9,7 @@ export BF_E="${PWD##*/}/$(basename ${0})"
 # First, wait until the database service is running.
 #======================================================================================================================
 
-if [ -d ${MARIADB_DATA}/mysql ] && [ ! -z "$(pidof mariadbd)" ]; then
+if [ -d ${BF_DB_DATA}/mysql ] && [ ! -z "$(pidof mariadbd)" ]; then
 
     # run upgrade executable
     db-upgrade

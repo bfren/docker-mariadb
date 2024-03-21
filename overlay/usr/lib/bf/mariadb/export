@@ -10,7 +10,7 @@ set -euo pipefail
 
 [[ -z "${1-}" ]] && bf-error "You must provide the name of the database to export."
 DATABASE=${1}
-EXPORT_FILE="${MARIADB_BACKUP}/${1}.sql"
+EXPORT_FILE="${BF_DB_BACKUP}/${1}.sql"
 
 
 #======================================================================================================================
@@ -18,5 +18,5 @@ EXPORT_FILE="${MARIADB_BACKUP}/${1}.sql"
 #======================================================================================================================
 
 bf-echo "Exporting database '${DATABASE}' to ${EXPORT_FILE}..."
-${MARIADB_LIB}/dump "${DATABASE}" "${EXPORT_FILE}" || bf-error " .. unable to export database '${DATABASE}'."
+${BF_DB_LIB}/dump "${DATABASE}" "${EXPORT_FILE}" || bf-error " .. unable to export database '${DATABASE}'."
 bf-done
