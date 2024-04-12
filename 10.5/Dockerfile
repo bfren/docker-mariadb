@@ -1,4 +1,4 @@
-FROM bfren/debian-s6:bullseye-2.1.2
+FROM bfren/debian-s6:bullseye-2.1.3
 
 ARG BF_IMAGE
 ARG BF_PUBLISHING
