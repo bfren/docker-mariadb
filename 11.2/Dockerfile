@@ -1,4 +1,4 @@
-FROM bfren/debian-s6:bookworm-2.1.4
+FROM bfren/debian-s6:bookworm-2.1.5
 
 ARG BF_IMAGE
 ARG BF_PUBLISHING

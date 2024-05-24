@@ -1,4 +1,4 @@
-FROM bfren/alpine-s6:alpine3.19-5.2.6
+FROM bfren/alpine-s6:alpine3.20-5.3.0
 
 ARG BF_IMAGE
 ARG BF_PUBLISHING
@@ -30,7 +30,7 @@ ENV \
 
 COPY ./overlay /
 COPY ./overlay-alpine /
-COPY ./alpine3.19/overlay /
+COPY ./alpine3.20/overlay /
 RUN bf-install
 
 
