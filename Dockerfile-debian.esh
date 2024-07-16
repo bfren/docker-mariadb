@@ -1,4 +1,4 @@
-FROM bfren/debian-s6:<%= ${DEBIAN_NAME} %>-<%= ${BASE_VERSION} %>
+FROM ghcr.io/bfren/debian-s6:<%= ${DEBIAN_NAME} %>-<%= ${BASE_VERSION} %>
 
 ARG BF_IMAGE
 ARG BF_PUBLISHING
