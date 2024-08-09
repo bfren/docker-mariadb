@@ -11,7 +11,13 @@ export def main [] {
     bf write $"Dumping all databases." dump
     let dump_file = $"($temp_dir)/(bf env DB_DUMP_BASENAME).sql"
     bf write debug $" .. to ($dump_file)" dump
-    { ^db mariadb-dump --add-drop-database --all-databases } | bf handle -s {|x| $x | save --force $dump_file } dump
+    let args = [
+        "--user=root"
+        $"--password=(bf env DB_ROOT_PASSWORD)"
+        "--add-drop-database"
+        "--all-databases"
+    ]
+    { ^mariadb-dump ...$args } | bf handle -s {|x| $x | save --force $dump_file } dump
 
     # compress dump file
     if (bf env check DB_BACKUP_COMPRESS_FILES) {

@@ -12,7 +12,7 @@ export def main []: string -> nothing {
 
     # ensure the database exists
     bf write $"Importing database ($name) from sql file." import
-    { open --raw $import_file | ^db mariadb } | bf handle import
+    { open --raw $import_file | ^mariadb } | bf handle import
 
     # if we get here there have been no errors
     bf write ok "Done."

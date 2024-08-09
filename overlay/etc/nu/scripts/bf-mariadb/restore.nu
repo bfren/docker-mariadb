@@ -11,7 +11,7 @@ def main [] {
 
     # run restore
     bf write "Restoring data from dump file." restore
-    { open --raw $dump_file.path | ^db mariadb } | bf handle restore
+    { open --raw $dump_file.path | ^mariadb } | bf handle restore
 
     # delete dump file
     bf del force $dump_file.path
