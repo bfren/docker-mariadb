@@ -47,7 +47,7 @@ export def main [] {
 
     # cleanup old backup files
     bf write debug " .. removing expired backup files" dump
-    bf del old --type d (bf env DB_BACKUP) (bf env DB_BACKUP_KEEP_FOR | into duration)
+    bf del old --live --type d (bf env DB_BACKUP) (bf env DB_BACKUP_KEEP_FOR | into duration)
 
     # if we get here there have been no errors
     bf write ok "Done." dump
