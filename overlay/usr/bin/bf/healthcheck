@@ -1,20 +1,12 @@
-#!/command/with-contenv bash
+#!/usr/bin/nu
 
-set -euo pipefail
-export BF_E=`basename ${0}`
+use bf
+use bf-mariadb db
+bf env load -x
 
-
-#======================================================================================================================
-# Copyright (c) 2015 Thomas Boerger <https://webhippie.de>
-# Originally from https://github.com/dockhippie/mariadb/blob/master/latest/overlay/etc/s6/mariadb/run
-#
-# Modifications copyright (c) 2024 bfren
-#======================================================================================================================
-
-USERNAME=`bf-env DB_USERNAME root`
-PASSWORD=`bf-env DB_PASSWORD `bf-env DB_ROOT_PASSWORD``
-
-CHECK="$(echo 'SELECT 1;' | mariadb --host=127.0.0.1 --user=${USERNAME} --password=${PASSWORD} 2>/dev/null | head -n1)"
-
-[[ "${CHECK}" == "1" ]] && exit 0
-exit 1
+# Attempt to execute a simple SQL query
+export def main [] {
+    let check = { echo "SELECT 1;" | ^mariadb ...(db root) | ^head -n1 } | bf handle -i
+    if $check == "1" { exit 0 }
+    exit 1
+}

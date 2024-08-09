@@ -1,8 +1,0 @@
-#!/usr/bin/nu
-
-use bf
-use bf-mariadb
-bf env load -x
-
-# Run mariadb upgrade executable
-export def main []: nothing -> nothing { bf-mariadb upgrade }
