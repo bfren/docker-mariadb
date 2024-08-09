@@ -12,7 +12,7 @@ def main [] {
     bf env set DB_USERNAME (bf env DB_USERNAME $application)
     bf env set DB_PASSWORD (bf env DB_PASSWORD $application)
 
-    if (bf env empty DB_DATABASE) and (bf env empty DB_USERNAME) and (bf env empty DB_PASSWORD) {
+    if (bf env empty DB_DATABASE) or (bf env empty DB_USERNAME) or (bf env empty DB_PASSWORD) {
         bf write error "You must define BF_DB_APPLICATION, or BF_DB_DATABASE, BF_DB_USERNAME and BF_DB_PASSWORD individually."
     }
 
