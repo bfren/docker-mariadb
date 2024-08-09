@@ -14,6 +14,4 @@ source /usr/lib/bf/preflight.sh mariadb-upgrade
 # Run upgrade executable.
 #======================================================================================================================
 
-ROOT_PASSWORD=`bf-env DB_ROOT_PASSWORD`
-bf-write-debug "Root password: ${ROOT_PASSWORD}"
-mariadb-upgrade --user=root --password=${ROOT_PASSWORD} --force
+db-upgrade

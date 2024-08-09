@@ -1,15 +1,15 @@
-#!/command/with-contenv bash
+#!/bin/withenv sh
 
 set -euo pipefail
-export BF_E=`basename ${0}`
 
 
 #======================================================================================================================
-# Remove upgrade info file so the upgrade runs.
+# Remove upgrade info files so the upgrade runs.
 #======================================================================================================================
 
-bf-debug "Removing ${BF_DB_UPGRADE_INFO}."
-rm -f ${BF_DB_UPGRADE_INFO}
+bf-write-debug "Removing version files."
+rm -rf `bf-env DB_DATA_VERSION_FILE_OLD`
+rm -rf `bf-env DB_DATA_VERSION_FILE_NEW`
 
 
 #======================================================================================================================
