@@ -10,43 +10,43 @@ export def main [] {
     # dump all databases and save to dump file
     bf write $"Dumping all databases." dump
     let dump_file = $"($temp_dir)/(bf env DB_DUMP_BASENAME).sql"
-    bf write debug $" .. to ($dump_file)" dump
+    bf write $" .. to ($dump_file)" dump
     { ^mariadb-dump ...(db root) --add-drop-database --all-databases } | bf handle -s {|x| $x | save --force $dump_file } dump
 
     # compress dump file
     if (bf env check DB_BACKUP_COMPRESS_FILES) {
-        bf write debug " .. compressing dump file" dump
+        bf write " .. compressing dump file" dump
         { ^bzip2 $dump_file } | bf handle dump
     }
 
     # get list of individual databases and back them up
     db get_all | each {|x|
         # dump database to backup file
-        bf write debug $" .. backing up database ($x)" dump
+        bf write $" .. backing up database ($x)" dump
         let backup_file = $"($temp_dir)/($x).sql"
         db dump $x $backup_file
 
         # compress backup file
         if (bf env check DB_BACKUP_COMPRESS_FILES) {
-            bf write debug "    compressing backup file" dump
+            bf write "    compressing backup file" dump
             { ^bzip2 $backup_file } | bf handle dump
         }
     }
 
     # move files to backup directory
-    bf write debug $" .. moving files to ($backup_dir)" dump
+    bf write $" .. moving files to ($backup_dir)" dump
     echo $"($temp_dir)/*" | into glob | mv $in $backup_dir
 
     # set correct permissions
-    bf write debug $" .. applying correct permissions" dump
+    bf write $" .. applying correct permissions" dump
     bf ch apply_file "10-backup"
 
     # delete temporary directory
-    bf write debug $" .. deleting ($temp_dir)" dump
+    bf write $" .. deleting ($temp_dir)" dump
     bf del force $temp_dir
 
     # cleanup old backup files
-    bf write debug " .. removing expired backup files" dump
+    bf write " .. removing expired backup files" dump
     bf del old --live --type d (bf env DB_BACKUP) (bf env DB_BACKUP_KEEP_FOR | into duration)
 
     # if we get here there have been no errors
