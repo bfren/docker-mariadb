@@ -1,4 +1,5 @@
 use bf
+use db.nu
 
 # Restore the data from a dump file
 def main [] {
@@ -11,7 +12,7 @@ def main [] {
 
     # run restore
     bf write "Restoring data from dump file." restore
-    { open --raw $dump_file.path | ^mariadb } | bf handle restore
+    { open --raw $dump_file.path | ^mariadb ...(db root) } | bf handle restore
 
     # delete dump file
     bf del force $dump_file.path
