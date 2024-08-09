@@ -1,5 +1,5 @@
 use bf
-use bf-db
+use bf-mariadb
 bf env load
 
 # If SSL is enabled, generate certificates
@@ -17,5 +17,5 @@ def main [] {
     }
 
     # generate certificates
-    bf-db ssl generate_certs
+    bf-mariadb ssl generate_certs
 }

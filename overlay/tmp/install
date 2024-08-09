@@ -1,7 +1,7 @@
 #!/usr/bin/nu
 
 use bf
-use bf-db
+use bf-mariadb
 
 # Setup and install MariaDB
 def main [] {
@@ -13,7 +13,7 @@ def main [] {
     let version = bf fs read MARIADB_BUILD
     let major = $version | split row "." | first 2 | str join "."
     bf write $"Installing MariaDB v($version)."
-    bf-db install packages $version
+    echo $version | bf-mariadb install packages
 
     if ("/usr/bin/mariadbd-safe" | bf fs is_not_file) { bf write error "MariaDB was not installed." }
 
@@ -26,8 +26,8 @@ def main [] {
 
     # cleanup default files
     bf write "Cleaning up MariaDB directory contents."
-    rm --force --recursive /etc/my.cnf* /etc/mysql /var/lib/mysql/*
+    rm --force --recursive /etc/my.cnf.d/* /etc/mysql /var/lib/mysql/*
 
     # add bf-db module to config
-    bf config use bf-db
+    bf config use bf-mariadb
 }

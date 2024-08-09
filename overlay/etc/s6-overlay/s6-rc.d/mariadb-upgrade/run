@@ -1,28 +1,19 @@
-#!/command/with-contenv bash
+#!/bin/withenv sh
 
 set -euo pipefail
-export BF_E="${PWD##*/}/$(basename ${0})"
 
 
 #======================================================================================================================
-# Run upgrade executable and then disable the service.
-# First, wait until the database service is running.
+# Run preflight checks
 #======================================================================================================================
 
-if [ -d ${BF_DB_DATA}/mysql ] && [ ! -z "$(pidof mariadbd)" ]; then
+source /usr/lib/bf/preflight.sh mariadb-upgrade
 
-    # run upgrade executable
-    db-upgrade
 
-    # disable the upgrade service
-    db-upgrade-disable
+#======================================================================================================================
+# Run upgrade executable.
+#======================================================================================================================
 
-else
-
-    # wait 2s before exiting the service - S6 will keep restarting it until MariaDB comes online
-    # on first run, the mariadb service will disable this upgrade service itself
-    SLEEP=2
-    bf-debug "Waiting ${SLEEP}s for MariaDB to come online..."
-    sleep ${SLEEP}
-
-fi
+ROOT_PASSWORD=`bf-env DB_ROOT_PASSWORD`
+bf-write-debug "Root password: ${ROOT_PASSWORD}"
+mariadb-upgrade --user=root --password=${ROOT_PASSWORD} --force

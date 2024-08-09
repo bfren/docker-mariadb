@@ -1,21 +1,23 @@
-#!/command/with-contenv bash
+#!/usr/bin/nu
 
-set -euo pipefail
-export BF_E="${PWD##*/}/$(basename ${0})"
+use bf
+use bf-mariadb
+use bf-s6
+bf env load -x mariadb
 
+# Stop server and terminate container, unless we are restoring from a backup
+def main [...args] {
+    # check whether or not we are restoring from a backup
+    if (bf-mariadb restore is_restoring) {
+        bf write debug "A restore operation is running: do not stop MariaDB or terminate the container."
+        exit 0
+    }
 
-#======================================================================================================================
-# Old PIDs clog up the mysql directory
-#======================================================================================================================
+    # old PIDs clog up the mysql directory
+    bf write "Clearing temporary files and old process IDs."
+    rm --force $"(bf env DB_DATA)/*.err"
+    rm --force $"(bf env DB_DATA)/*.pid"
 
-bf-echo "Clearing temporary files and old process IDs..."
-rm -f ${BF_DB_DATA}/*.err
-rm -f ${BF_DB_DATA}/*.pid
-bf-done
-
-
-#======================================================================================================================
-# Show helpful log message.
-#======================================================================================================================
-
-bf-svc-finish -t
+    # terminate container
+    bf-s6 svc finish --terminate
+}
