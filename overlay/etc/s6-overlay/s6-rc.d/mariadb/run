@@ -14,12 +14,11 @@ source /usr/lib/bf/preflight.sh mariadb
 # If an init file exists, use it.
 #======================================================================================================================
 
-INIT_FILE=`bf-env DB_INIT_FILE`
-if [ -f ${INIT_FILE} ] ; then
+if [ -f "${BF_DB_INIT_FILE}" ] ; then
 
     # start server with temporary init file
     bf-write "Starting mariadbd-safe with initialisation file."
-    mariadbd-safe --user=dbadm --init-file=${INIT_FILE}
+    mariadbd-safe --user=dbadm --init-file=${BF_DB_INIT_FILE}
 
 else
 
