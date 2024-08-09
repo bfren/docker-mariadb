@@ -21,4 +21,6 @@ def read_version [
 }
 
 # Return the MariaDB version of the installed server
-export def get_server_version []: nothing -> string { ^mariadb -V | parse --regex '.*(?P<version>\s\d+\.\d+\.\d+)-MariaDB.*' | get version | str trim | first }
+export def get_server_version []: nothing -> string {
+    ^mariadb -V | parse --regex '.*(?P<version>\s\d+\.\d+\.\d+)-MariaDB.*' | get version | str trim | first
+}

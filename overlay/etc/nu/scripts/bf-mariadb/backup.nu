@@ -2,7 +2,7 @@ use bf
 use db.nu
 
 # Backup the cluster to a dump file, compressing if required
-export def main [] {
+export def main []: nothing -> nothing {
     # create backup directories
     let backup_dir = create_backup_dir
     let temp_dir = bf fs make_temp_dir
@@ -54,7 +54,7 @@ export def main [] {
 }
 
 # Create a backup directory
-def create_backup_dir [] {
+def create_backup_dir []: nothing -> string {
     # create temporary directory
     let date = date now | format date "%Y%m%d%H%M"
     let dir = $"(bf env DB_BACKUP)/($date)"

@@ -2,7 +2,7 @@ use bf
 use db.nu
 
 # Restore the data from a dump file
-def main [] {
+def main []: nothing -> nothing {
     # if dump file does not exist, return
     let dump_file = check_dump_file
     if not $dump_file.exists {
@@ -24,7 +24,7 @@ def main [] {
 # Get details of a dump file - returns a record with the following values, having decompressed the file if required
 #  - exists: bool   Whether or not a dump file exists
 #  - path: string   Absolute path to the dump file if it exists, or null
-def check_dump_file [] {
+def check_dump_file []: nothing -> bool {
     # get file paths
     let file = bf env DB_DUMP_FILE_WITHOUT_EXT
     let compressed_file = $"($file).bz2"
@@ -49,7 +49,7 @@ def check_dump_file [] {
 # Restore data from a backup dump file
 export def from [
     backup: string    # Restore the dump file from this backup directory
-] {
+]: nothing -> nothing {
     # ensure requested backup directory exists
     let backup_dir = $"(bf env DB_BACKUP)/($backup)"
     if ($backup_dir | bf fs is_not_dir) { bf write error $"Backup directory ($backup_dir) does not exist." restore/from }
