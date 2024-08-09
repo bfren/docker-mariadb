@@ -2,9 +2,11 @@
 
 IMAGE=`cat VERSION`
 MARIADB=${1:-11.5}
+VOL_BACKUP=`pwd`/backup
 VOL_DATA=`pwd`/data
 VOL_SSL=`pwd`/ssl
 
+rm -rf ${VOL_BACKUP}
 rm -rf ${VOL_DATA}
 rm -rf ${VOL_SSL}
 
@@ -17,6 +19,7 @@ docker buildx build \
     . \
     && \
     docker run -it \
+        -v ${VOL_BACKUP}:/backup \
         -v ${VOL_DATA}:/data \
         -v ${VOL_SSL}:/ssl \
         -e BF_DEBUG=1 \
