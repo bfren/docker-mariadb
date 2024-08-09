@@ -21,8 +21,8 @@ docker buildx build \
         -v ${VOL_DATA}:/data \
         -v ${VOL_SSL}:/ssl \
         -e BF_DEBUG=1 \
-        -e BF_DB_APPLICATION=test \
-        -e BF_DB_ROOT_PASSWORD=test \
+        -e BF_DB_APPLICATION=bfren \
+        -e BF_DB_ROOT_PASSWORD=bfren \
         -e BF_DB_SSL_ENABLE=1 \
         mariadb${MARIADB_OLD}-dev \
         sh
@@ -39,8 +39,8 @@ docker buildx build \
         -v ${VOL_DATA}:/data \
         -v ${VOL_SSL}:/ssl \
         -e BF_DEBUG=1 \
-        -e BF_DB_APPLICATION=test \
-        -e BF_DB_ROOT_PASSWORD=test \
+        -e BF_DB_APPLICATION=bfren \
+        -e BF_DB_ROOT_PASSWORD=bfren \
         -e BF_DB_SSL_ENABLE=1 \
         mariadb${MARIADB_NEW}-dev \
         sh
