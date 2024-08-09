@@ -5,14 +5,8 @@ use bf-mariadb
 use bf-s6
 bf env load -x mariadb
 
-# Stop server and terminate container, unless we are restoring from a backup
+# Stop server and terminate container
 def main [...args] {
-    # check whether or not we are restoring from a backup
-    if (bf-mariadb restore is_restoring) {
-        bf write debug "A restore operation is running: do not stop MariaDB or terminate the container."
-        exit 0
-    }
-
     # old PIDs clog up the mysql directory
     bf write "Clearing temporary files and old process IDs."
     rm --force $"(bf env DB_DATA)/*.err"

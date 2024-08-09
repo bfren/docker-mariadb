@@ -49,7 +49,7 @@ export def generate_certs []: nothing -> nothing {
     }
 
     # set permissions
-    bf ch apply_file "11-ssl"
+    bf ch apply_file "12-ssl"
 }
 
 # Debug openssl commands

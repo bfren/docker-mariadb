@@ -2,6 +2,7 @@
 
 use bf
 use bf-mariadb
+bf env load -x
 
 # Export a database as a sql dump file in backup volume
 export def main [

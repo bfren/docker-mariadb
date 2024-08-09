@@ -1,1 +1,2 @@
+/etc/my.cnf dbadm:dbadm 0400
 /etc/my.cnf.d dbadm:dbadm 0400 0500

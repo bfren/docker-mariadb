@@ -1,6 +1,6 @@
+export module backup.nu
 export module checks.nu
 export module db.nu
-export module dump.nu
 export module export.nu
 export module import.nu
 export module init.nu
