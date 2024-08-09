@@ -26,6 +26,7 @@ export def get_all []: nothing -> list<string> {
         "information_schema"
         "performance_schema"
         "sys"
+        "test"
     ]
 
     # execute SQL and process response
