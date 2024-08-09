@@ -1,11 +1,8 @@
-#!/command/with-contenv bash
+#!/usr/bin/nu
 
-set -euo pipefail
-export BF_E="${PWD##*/}/$(basename ${0})"
+use bf
+use bf-s6
+bf env load -x mariadb-log
 
-
-#======================================================================================================================
-# Forward MariaDB log to Docker.
-#======================================================================================================================
-
-bf-forward mariadb-log ${BF_DB_ERROR_LOG}
+# Forward MariaDB log to Docker
+def main [...args] { bf-s6 log forward mariadb-log (bf env DB_ERROR_LOG) }
