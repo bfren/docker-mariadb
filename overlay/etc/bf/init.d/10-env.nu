@@ -19,6 +19,7 @@ def main [] {
     # data and configuration paths
     let data = "/data"
     bf env set DB_DATA $data
+    bf env set DB_DATA_VERSION_FILE $"($data)/mysql_upgrade_info"
 
     let my_cnf = "/etc/my.cnf"
     let my_cnf_d = $"($my_cnf).d"
@@ -35,12 +36,6 @@ def main [] {
     bf env set DB_BACKUP $backup
     bf env set DB_DUMP_BASENAME $backup_basename
     bf env set DB_DUMP_FILE_WITHOUT_EXT $"($backup)/($backup_basename)"
-
-    # data and server versions
-    let data_version_file = $"($data)/mysql_upgrade_info"
-    bf env set DB_DATA_VERSION_FILE $data_version_file
-    bf env set DB_DATA_VERSION (bf fs read --quiet $data_version_file | str replace "-MariaDB" "")
-    bf env set DB_SERVER_VERSION (^mariadb -V | parse --regex '.*(?P<version>\s\d+\.\d+\.\d+)-MariaDB.*' | get version | str trim)
 
     # SSL certificate paths
     let ssl = "/ssl"
