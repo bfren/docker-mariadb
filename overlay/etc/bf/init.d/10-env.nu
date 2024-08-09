@@ -19,7 +19,8 @@ def main [] {
     # data and configuration paths
     let data = "/data"
     bf env set DB_DATA $data
-    bf env set DB_DATA_VERSION_FILE $"($data)/mysql_upgrade_info"
+    bf env set DB_DATA_VERSION_FILE_OLD $"($data)/mysql_upgrade_info"
+    bf env set DB_DATA_VERSION_FILE_NEW $"($data)/mariadb_upgrade_info"
 
     let my_cnf = "/etc/my.cnf"
     let my_cnf_d = $"($my_cnf).d"
