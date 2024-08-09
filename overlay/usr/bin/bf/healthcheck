@@ -8,11 +8,11 @@ export BF_E=`basename ${0}`
 # Copyright (c) 2015 Thomas Boerger <https://webhippie.de>
 # Originally from https://github.com/dockhippie/mariadb/blob/master/latest/overlay/etc/s6/mariadb/run
 #
-# Modifications copyright (c) 2021 bfren
+# Modifications copyright (c) 2024 bfren
 #======================================================================================================================
 
-USERNAME=${BF_DB_USERNAME:-root}
-PASSWORD=${BF_DB_PASSWORD:-${BF_DB_ROOT_PASSWORD}}
+USERNAME=`bf-env DB_USERNAME root`
+PASSWORD=`bf-env DB_PASSWORD `bf-env DB_ROOT_PASSWORD``
 
 CHECK="$(echo 'SELECT 1;' | mariadb --host=127.0.0.1 --user=${USERNAME} --password=${PASSWORD} 2>/dev/null | head -n1)"
 
