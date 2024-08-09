@@ -1,16 +1,18 @@
-#!/usr/bin/nu
+#!/bin/withenv sh
 
-use bf
-use bf-mariadb
-bf env load -x
+set -euo pipefail
 
-# Remove upgrade files and execute
-export def main [] {
-    # once version files are removed, upgrade script will always run
-    bf write debug "Removing version files."
-    rm -rf (bf env DB_DATA_VERSION_FILE_OLD)
-    rm -rf (bf env DB_DATA_VERSION_FILE_NEW)
 
-    # execute upgrade
-    bf-mariadb upgrade
-}
+#======================================================================================================================
+# Remove version files.
+#======================================================================================================================
+
+rm -rf ${BF_DB_DATA_VERSION_FILE_OLD}
+rm -rf ${BF_DB_DATA_VERSION_FILE_NEW}
+
+
+#======================================================================================================================
+# Run upgrade executable.
+#======================================================================================================================
+
+db-upgrade
