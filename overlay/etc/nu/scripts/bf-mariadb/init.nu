@@ -56,5 +56,5 @@ export def generate []: nothing -> nothing {
 # Append an input value to the init script file
 def append_to_init []: string -> nothing {
     let init_file = bf env DB_INIT_FILE
-    echo $in | save --append $init_file
+    echo $"($in)\n" | save --append $init_file
 }
