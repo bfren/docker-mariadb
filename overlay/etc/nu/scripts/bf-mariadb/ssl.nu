@@ -2,7 +2,7 @@ use bf
 
 # Generate certificate and key files to enable MariaDB SSL access
 # see https://www.cyberciti.biz/faq/how-to-setup-mariadb-ssl-and-secure-connections-from-clients/
-export def generate_certs [] {
+export def generate_certs []: nothing -> nothing {
     # generate CA key
     bf write "Generating CA key." ssl/generate_certs
     let ca_key_args = [
@@ -19,7 +19,7 @@ export def generate_certs [] {
         -days (bf env DB_SSL_EXPIRY | into duration | $in / 1day)
         -key (bf env DB_SSL_CA_KEY)
         -out (bf env DB_SSL_CA_CERT)
-        -subj "\"/C=NA/ST=NA/L=NA/O=NA/OU=NA/CN=Admin\""
+        -subj "/C=NA/ST=NA/L=NA/O=NA/OU=NA/CN=Admin"
     ]
     dbg_openssl "Generating CA certificate" req $ca_cert_args ssl/generate_certs
     { ^openssl req ...$ca_cert_args } | bf handle
@@ -58,7 +58,7 @@ def dbg_openssl [
     cmd: string
     args: list<any>
     script: string
-] {
+]: nothing -> nothing {
     bf write debug $"($text): openssl ($cmd) ($args | into string | str join ' ')" $script
 }
 
@@ -68,14 +68,14 @@ def generate_request [
     key_file: string    # Path to key file
     key_bits: int       # Key bits
     cert_file: string   # Path to certificate file
-] {
+]: nothing -> nothing {
     # use openssl to generate request
     let args = [
         -nodes
         -keyout $key_file
         -newkey $"rsa:($key_bits)"
         -out $cert_file
-        -subj $"\"/C=NA/ST=NA/L=NA/O=NA/OU=NA/CN=($name)\""
+        -subj $"/C=NA/ST=NA/L=NA/O=NA/OU=NA/CN=($name)"
     ]
     dbg_openssl "Generating certificate request" req $args ssl/generate_request
     { ^openssl req ...$args } | bf handle
@@ -85,7 +85,7 @@ def generate_request [
 def process_key [
     input: string   # Path to input key
     output: string  # Path to output key
-] {
+]: nothing -> nothing {
     # use openssl to process key
     let args = [
         -in $input
@@ -103,7 +103,7 @@ def process_key [
 def sign_cert [
     input: string   # Path to certificate request
     output: string  # Path to certificate
-] {
+]: nothing -> nothing {
     # use openssl to sign the certificate
     let args = [
         -req

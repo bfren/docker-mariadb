@@ -1,7 +1,7 @@
 use bf
 
 # Run default mariadb installation executable
-export def install [] {
+export def install []: nothing -> nothing {
     # run server installation
     bf write debug "Running mariadb-install-db."
     let install_args = [
@@ -16,7 +16,7 @@ export def install [] {
 }
 
 # Generate the database initialisation script
-export def generate [] {
+export def generate []: nothing -> nothing {
     # get variables
     let root_password = bf env DB_ROOT_PASSWORD
     let database = bf env DB_DATABASE
@@ -54,7 +54,7 @@ export def generate [] {
 }
 
 # Append an input value to the init script file
-def append_to_init [] {
+def append_to_init []: string -> nothing {
     let init_file = bf env DB_INIT_FILE
     echo $in | save --append $init_file
 }
