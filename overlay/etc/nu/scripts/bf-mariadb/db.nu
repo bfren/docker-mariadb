@@ -4,7 +4,7 @@ use bf
 export def exists []: string -> bool { $in in (get_all) }
 
 # Returns root login arguments
-export def root []: nothing -> list<string> { ["--host=127.0.0.1" "--user=root" $"--password=(bf env DB_ROOT_PASSWORD)"] }
+export def root []: nothing -> list<string> { ["--user=root" $"--password=(bf env DB_ROOT_PASSWORD)"] }
 
 # Dump a database
 export def dump [
