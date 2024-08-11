@@ -53,7 +53,7 @@ See [For Backups](#for-backups) for configuration variables.
 | Variable                      | Values                                                                    | Description                                                               | Default   |
 | ----------------------------- | ------------------------------------------------------------------------- | ------------------------------------------------------------------------- | --------- |
 | `BF_DB_SSL_ENABLE`            | 0 or 1                                                                    | Set to "1" to enable SSL support.                                         | 0         |
-| `BF_DB_SSL_EXPIRY`            | [Nu duration](https://www.nushell.sh/book/types_of_data.html#durations)   | The period of time before self-generated SSL certificates will expire.    | 3650day   |
+| `BF_DB_SSL_EXPIRY`            | [Nu duration](https://www.nushell.sh/book/types_of_data.html#durations)   | The period of time before self-generated SSL certificates will expire.    | 36500day  |
 | `BF_DB_SSL_CA_KEY_BITS`       | integer                                                                   | The size in bits of the CA SSL private key.                               | 4096      |
 | `BF_DB_SSL_SERVER_KEY_BITS`   | integer                                                                   | The size in bits of the server SSL private key.                           | 4096      |
 | `BF_DB_SSL_CLIENT_KEY_BITS`   | integer                                                                   | The size in bits of the client SSL private key.                           | 4096      |
