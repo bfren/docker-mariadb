@@ -14,7 +14,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        mariadb: [ "10.5", "10.6", "11.1", "11.2", "11.4", "11.5", "11.6" ]
+        mariadb: [ "10.5", "10.6", "11.1", "11.2", "11.4", "11.5" ]
     runs-on: ubuntu-latest
     steps:
       -
