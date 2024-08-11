@@ -27,7 +27,7 @@ def main []: nothing -> nothing {
 def check_dump_file []: nothing -> bool {
     # get file paths
     let file = bf env DB_DUMP_FILE_WITHOUT_EXT
-    let compressed_file = $"($file).bz2"
+    let compressed_file = $"($file).sql.bz2"
     let sql_file = $"($file).sql"
 
     # if there is a compressed file, decompress it
