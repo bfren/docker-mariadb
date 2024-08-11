@@ -4,7 +4,7 @@
 
 [Docker Repository](https://hub.docker.com/r/bfren/mariadb) - [bfren ecosystem](https://github.com/bfren/docker)
 
-[MariaDB](https://mariadb.org/) comes pre-installed (10.4, 10.5, 10.6 LTS, 10.9, 10.10, 10.11 LTS, 11.0, 11.1 and 11.2) with automatic backups built-in.
+[MariaDB](https://mariadb.org/) comes pre-installed (10.5, 10.6 LTS, 11.1, 11.2, 11.4 (LTS) and 11.5) with automatic backups built-in.
 
 ## Contents
 
