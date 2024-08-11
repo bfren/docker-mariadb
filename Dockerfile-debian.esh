@@ -11,6 +11,9 @@ ADD https://mariadb.org/mariadb_release_signing_key.pgp <%= ${MARIADB_KEYRING} %
 RUN chmod 0444 <%= ${MARIADB_KEYRING} %>
 
 ENV \
+    # set to "1" to give the application user permission to access all databases and manage users
+    # should NOT be used in production, but is extremely useful for a dev server
+    BF_DB_USER_SUPER=0 \
     # set to "1" to compress backup sql files
     BF_DB_BACKUP_COMPRESS_FILES=0 \
     # the period of time to keep backups before auto-deleting them (Nu duration)

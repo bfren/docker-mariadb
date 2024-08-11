@@ -7,6 +7,9 @@ ARG BF_VERSION
 EXPOSE 3306
 
 ENV \
+    # set to "1" to give the application user permission to access all databases and manage users
+    # should NOT be used in production, but is extremely useful for a dev server
+    BF_DB_USER_SUPER=0 \
     # set to "1" to compress backup sql files
     BF_DB_BACKUP_COMPRESS_FILES=0 \
     # the period of time to keep backups before auto-deleting them (Nu duration)

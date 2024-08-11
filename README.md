@@ -60,16 +60,17 @@ See [For Backups](#for-backups) for configuration variables.
 
 ### For Database
 
-| Variable              | Values | Description                                                                                                      | Default               |
-| --------------------- | ------ | ---------------------------------------------------------------------------------------------------------------- | --------------------- |
-| `BF_DB_ROOT`          | string | Password for root user.                                                                                          | *None* - **required** |
-| `BF_DB_APPLICATION`   | string | Application name - will be used as `BF_DB_DATABASE`, `BF_DB_PASSWORD` and `BF_DB_USERNAME` if they are not set.  | *None*                |
-| `BF_DB_DATABASE`      | string | Database name(s) - multiple databases can be separated by a comma.                                               | *None*                |
-| `BF_DB_USERNAME`      | string | Application username - required if `BF_DB_APPLICATION` is not used.                                              | *None*                |
-| `BF_DB_PASSWORD`      | string | Application password - required if `BF_DB_APPLICATION` is not used.                                              | *None*                |
-| `BF_DB_CHARACTER_SET` | string | Sets [character_set_server](https://mariadb.com/kb/en/server-system-variables/#character_set_server).            | utf8                  |
-| `BF_DB_COLLATION`     | string | Sets [collation_server](https://mariadb.com/kb/en/server-system-variables/#collation_server).                    | utf8_general_ci       |
-| `BF_DB_LOG_WARNINGS`  | string | Sets [log_warnings](https://mariadb.com/kb/en/server-system-variables/#log_warnings).                            | 2                     |
+| Variable              | Values    | Description                                                                                                       | Default               |
+| --------------------- | --------- | ----------------------------------------------------------------------------------------------------------------- | --------------------- |
+| `BF_DB_ROOT_PASSWORD` | string    | Password for root user.                                                                                           | *None* - **required** |
+| `BF_DB_APPLICATION`   | string    | Application name - will be used as `BF_DB_DATABASE`, `BF_DB_PASSWORD` and `BF_DB_USERNAME` if they are not set.   | *None*                |
+| `BF_DB_DATABASE`      | string    | Database name(s) - multiple databases can be separated by a comma.                                                | *None*                |
+| `BF_DB_USERNAME`      | string    | Application username - required if `BF_DB_APPLICATION` is not used.                                               | *None*                |
+| `BF_DB_PASSWORD`      | string    | Application password - required if `BF_DB_APPLICATION` is not used.                                               | *None*                |
+| `BF_DB_SUPER_USER`    | 0 or 1    | Grants the application user permission to **all** databases plus user management - **not** for production.        | 0                     |
+| `BF_DB_CHARACTER_SET` | string    | Sets [character_set_server](https://mariadb.com/kb/en/server-system-variables/#character_set_server).             | utf8                  |
+| `BF_DB_COLLATION`     | string    | Sets [collation_server](https://mariadb.com/kb/en/server-system-variables/#collation_server).                     | utf8_general_ci       |
+| `BF_DB_LOG_WARNINGS`  | string    | Sets [log_warnings](https://mariadb.com/kb/en/server-system-variables/#log_warnings).                             | 2                     |
 
 ## Helper Functions
 

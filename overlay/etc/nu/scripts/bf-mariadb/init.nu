@@ -45,8 +45,16 @@ export def generate []: nothing -> nothing {
     $database | split row " " | each {|name|
         bf write debug $" .. adding database ($name)"
         $"CREATE DATABASE IF NOT EXISTS `($name)`;" | append_to_init
-        $"GRANT ALL PRIVILEGES ON `($name)`.* TO '($user)'@'localhost' IDENTIFIED BY '($pass)'';" | append_to_init
-        $"GRANT ALL PRIVILEGES ON `($name)`.* TO '($user)'@'%' IDENTIFIED BY '($pass)';" | append_to_init
+
+        if not (bf env check DB_SUPER_USER) {
+            $"GRANT ALL PRIVILEGES ON `($name)`.* TO '($user)'@'localhost' IDENTIFIED BY '($pass)';" | append_to_init
+            $"GRANT ALL PRIVILEGES ON `($name)`.* TO '($user)'@'%' IDENTIFIED BY '($pass)';" | append_to_init
+        }
+    }
+
+    # give user super permissions
+    if (bf env check DB_SUPER_USER) {
+        $"GRANT ALL PRIVILEGES ON *.* TO '($user)'@'%' IDENTIFIED BY '($pass)' WITH GRANT OPTION;" | append_to_init
     }
 
     # flush privileges
