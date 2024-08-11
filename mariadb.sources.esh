@@ -2,7 +2,7 @@
 # https://mariadb.org/download/
 X-Repolib-Name: MariaDB
 Types: deb
-URIs: https://deb.mariadb.org/<%= ${MARIADB_MINOR} %>/debian https://mariadb.gb.ssimn.org/mariadb-<%= ${MARIADB_VERSION} %>/repo/debian
+URIs: https://deb.mariadb.org/<%= ${MARIADB_VERSION} %>/debian https://mariadb.gb.ssimn.org/mariadb-<%= ${MARIADB_VERSION} %>/repo/debian
 Suites: <%= ${DEBIAN_NAME} %>
 Components: main
 Signed-By: <%= ${MARIADB_KEYRING} %>
