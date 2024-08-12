@@ -19,6 +19,7 @@ docker buildx build \
     . \
     && \
     docker run -it \
+        -p "3306:3306" \
         -v ${VOL_BACKUP}:/backup \
         -v ${VOL_DATA}:/data \
         -v ${VOL_SSL}:/ssl \
