@@ -74,13 +74,15 @@ See [For Backups](#for-backups) for configuration variables.
 
 ## Helper Functions
 
-| Function      | Arguments         | Purpose                                                                               | Usage                                                 |
-| ------------- | ----------------- | ------------------------------------------------------------------------------------- | ----------------------------------------------------- |
-| `db-backup`   | *None*            | Run backup manually.                                                                  | `docker exec <<CONTAINER>> db-backup`                 |
-| `db-export`   | 1: Database name  | Dumps the specified database as a SQL file to the root of the `/backup` volume.       | `docker exec <<CONTAINER>> db-export <<DB_NAME>>`     |
-| `db-import`   | 1: Database name  | Executes all files in the root of the `/backup` volume.                               | `docker exec <<CONTAINER>> db-import <<DB_NAME>>`     |
-| `db-restore`  | 1: Backup set     | Deletes all files in `/data` volume, then restores from the specified backup dump.    | `docker exec <<CONTAINER>> db-restore 202107180500`   |
-| `db-upgrade`  | *None*            | Run `mariadb-upgrade` manually - normally not necessary but performs various checks.  | `docker exec <<CONTAINER>> db-upgrade`                |
+| Function                  | Arguments         | Purpose                                                                               | Usage                                                 |
+| ------------------------- | ----------------- | ------------------------------------------------------------------------------------- | ----------------------------------------------------- |
+| `db-backup`               | *None*            | Run backup manually.                                                                  | `docker exec <<CONTAINER>> db-backup`                 |
+| `db-export`               | 1: Database name  | Dumps the specified database as a SQL file to the root of the `/backup` volume.       | `docker exec <<CONTAINER>> db-export <<DB_NAME>>`     |
+| `db-import`               | 1: Database name  | Executes all files in the root of the `/backup` volume.                               | `docker exec <<CONTAINER>> db-import <<DB_NAME>>`     |
+| `db-restore`              | 1: Backup set     | Deletes all files in `/data` volume, then restores from the specified backup dump.    | `docker exec <<CONTAINER>> db-restore 202107180500`   |
+| `db-upgrade`              | *None*            | Run `mariadb-upgrade` manually - normally not necessary but performs various checks.  | `docker exec <<CONTAINER>> db-upgrade`                |
+| `db-enable-super-user`    | *None*            | Give the application user permission to access all database and manage users.         | `docker exec <<CONTAINER>> db-enable-super-user`      |
+| `db-disable-super-user`   | *None*            | Give the application user permission only to access application databases.            | `docker exec <<CONTAINER>> db-disable-super-user`     |
 
 ## Licence
 
