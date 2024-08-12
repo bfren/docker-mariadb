@@ -1,0 +1,7 @@
+#!/usr/bin/nu
+
+use bf-mariadb db root
+bf env load -x
+
+# Connect to MariaDB as root
+export def main []: nothing -> nothing { ^mariadb ...(root) }

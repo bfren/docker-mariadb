@@ -6,6 +6,9 @@ export def exists []: string -> bool { $in in (get_all) }
 # Returns root login arguments
 export def root []: nothing -> list<string> { ["--user=root" $"--password=(bf env DB_ROOT_PASSWORD)"] }
 
+# Returns user login arguments
+export def user []: nothing -> list<string> { [$"--user=(bf env DB_USERNAME)" $"--password=(bf env DB_PASSWORD)"] }
+
 # Dump a database
 export def dump [
     name: string    # The name of the database to dump
