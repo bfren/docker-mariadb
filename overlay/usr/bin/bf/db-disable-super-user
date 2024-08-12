@@ -21,4 +21,4 @@ def drop_user []: nothing -> list<string> {
 }
 
 # Grant user permissions to application databases
-def grant_user []: nothing -> list<string> { bf env DB_DATABASE | split row " " | each {|db| $db | init sql_grant_user | str join " " } }
+def grant_user []: nothing -> list<string> { bf env DB_DATABASE | split row " " | each {|db| $db | init sql_grant_user } | flatten }
