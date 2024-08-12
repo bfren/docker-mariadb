@@ -23,7 +23,7 @@ export def generate []: nothing -> nothing {
 
     # update root user with password and ensure full access
     bf write debug " .. alter root user privileges"
-    sql_alter_root_privileges | append_to_init
+    sql_alter_root_privileges | str join "\n" | append_to_init
 
     # cleanup unneeded user and database
     bf write debug " .. drop dbadm user"
@@ -35,7 +35,7 @@ export def generate []: nothing -> nothing {
     bf env DB_DATABASE | split row " " | each {|db|
         bf write debug $" .. adding database ($db)"
         $db | sql_create_db | append_to_init
-        $db | sql_grant_user | append_to_init
+        $db | sql_grant_user | str join "\n" | append_to_init
     }
 
     # enable super user
@@ -45,18 +45,15 @@ export def generate []: nothing -> nothing {
     sql_flush_privileges | append_to_init
 }
 
-# Append an input value to the init script file
-def append_to_init []: string -> nothing {
-    let init_file = bf env DB_INIT_FILE
-    echo $"($in)\n" | save --append $init_file
-}
+# Append an input value to the init script file, followed by a new line
+def append_to_init []: string -> nothing { echo $"($in)\n" | save --append (bf env DB_INIT_FILE) }
 
 # Ensure root password is correct and only local access is permitted
-def sql_alter_root_privileges []: nothing -> string {
+def sql_alter_root_privileges []: nothing -> list<string> {
     [
         $"ALTER USER 'root'@'localhost' IDENTIFIED BY '(bf env DB_ROOT_PASSWORD)';"
         "GRANT ALL ON *.* TO 'root'@'localhost' WITH GRANT OPTION;"
-    ] | str join ""
+    ]
 }
 
 # Drop dbadm user (created on startup)
@@ -68,12 +65,15 @@ def sql_drop_test_database []: nothing -> string { "DROP DATABASE IF EXISTS `tes
 # Create application database
 def sql_create_db []: string -> string { $"CREATE DATABASE IF NOT EXISTS `($in)`;" }
 
-# Grant application user all permissions for database
-export def sql_grant_user []: string -> string {
-    let name = $in
+# Grant application user all permissions for database, from any host
+export def sql_grant_user []: string -> list<string> {
+    let db = $in
     let user = bf env DB_USERNAME
     let pass = bf env DB_PASSWORD
-    $"GRANT ALL PRIVILEGES ON `($name)`.* TO '($user)'@'%' IDENTIFIED BY '($pass)';"
+    [
+        $"GRANT ALL PRIVILEGES ON `($in)`.* TO '($user)'@'localhost' IDENTIFIED BY '($pass)';"
+        $"GRANT ALL PRIVILEGES ON `($in)`.* TO '($user)'@'%' IDENTIFIED BY '($pass)';"
+    ]
 }
 
 # Grant application user permission to:
