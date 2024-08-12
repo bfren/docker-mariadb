@@ -5,7 +5,4 @@ use bf-mariadb
 bf env load -x
 
 # Healthcheck will fail if the server is not online
-export def main [] {
-    if (bf-mariadb checks server_is_online) == "1" { exit 0 }
-    exit 1
-}
+export def main [] { if not (bf-mariadb checks server_is_online) { exit 1 } }
