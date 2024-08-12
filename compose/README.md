@@ -24,7 +24,7 @@ Backups will be created automatically every 8 hours and stored in `./v/backup`.
 The `.env` file is a convenient way of grouping and defining variables for use in your `docker-compose.yml` file.  The default file looks like this:
 
 ```bash
-VERSION=11.2.2          # NB this is the MariaDB version, not the image version
+VERSION=11.4            # NB this is the MariaDB version, not the image version
 PORT=3306               # you will access the database over this port
 ROOT_PASSWORD=changeme
 APPLICATION=app_name    # a database and user will be created with this name, and it will be used for the password too
