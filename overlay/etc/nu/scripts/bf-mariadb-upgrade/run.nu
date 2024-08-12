@@ -13,9 +13,15 @@ export def preflight []: nothing -> nothing {
     # sleep duration if not ready
     let sleep_for = 2sec
 
-    # exit if the server is not yet online - S6 will automatically restart the service
-    if (bf-mariadb checks server_is_not_installed) or (bf-mariadb checks service_is_not_running) {
-        "MariaDB server is not yet online" | bf-s6 svc exit_preflight --sleep $sleep_for mariadb-upgrade
+    # exit if any of the checks fail - S6 will automatically restart the service
+    if (bf-mariadb checks server_is_not_initialised) {
+        "MariaDB server is not initialised" | bf-s6 svc exit_preflight --sleep $sleep_for mariadb-upgrade
+    }
+    else if (bf-mariadb checks service_is_not_running) {
+        "MariaDB service is not running" | bf-s6 svc exit_preflight --sleep $sleep_for mariadb-upgrade
+    }
+    else if not (bf-mariadb checks server_is_online) {
+        "MariaDB server is not online" | bf-s6 svc exit_preflight --sleep $sleep_for mariadb-upgrade
     }
 
     # get versions

@@ -1,12 +1,11 @@
 #!/usr/bin/nu
 
 use bf
-use bf-mariadb db
+use bf-mariadb
 bf env load -x
 
-# Attempt to execute a simple SQL query
+# Healthcheck will fail if the server is not online
 export def main [] {
-    let check = { echo "SELECT 1;" | ^mariadb ...(db root) | ^head -n1 } | bf handle -i
-    if $check == "1" { exit 0 }
+    if (bf-mariadb checks server_is_online) == "1" { exit 0 }
     exit 1
 }
