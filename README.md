@@ -6,7 +6,7 @@
 
 [MariaDB](https://mariadb.org/) comes pre-installed (10.5 LTS, 10.6 LTS, 10.11 LTS, 11.1, 11.2, 11.4 LTS and 11.5) with automatic backups built-in.
 
-**If you are upgrade to 7.x please read [this page](UPGRADE_FROM_6x_TO_7x.md).**
+**If you are upgrading to 7.x please read [this page](UPGRADE_FROM_6x_TO_7x.md).**
 
 ## Contents
 
