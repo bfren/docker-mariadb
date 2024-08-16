@@ -24,7 +24,7 @@ jobs:
         name: Read MariaDB version - revision
         uses: bfren/read-file@v2
         with:
-          file: ./${{ matrix.mariadb }}/overlay/tmp/MARIADB_REVISION
+          file: ./${{ matrix.mariadb }}/overlay/tmp/MARIADB_BUILD
         id: mariadb_revision
       -
         name: Read image version
