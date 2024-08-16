@@ -10,7 +10,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        mariadb: [ "10.4", "10.5", "10.6", "10.9", "10.10", "10.11", "11.0", "11.1", "11.2" ]
+        mariadb: [ "10.5", "10.6", "10.11", "11.1", "11.2", "11.4", "11.5", "11.6" ]
     runs-on: ubuntu-latest
     steps:
       -
@@ -57,14 +57,22 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       -
+        name: Login to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      -
         name: Build and push
         id: docker_build
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v6
         with:
           context: .
           file: ./${{ matrix.mariadb }}/Dockerfile
           build-args: |
             BF_IMAGE=${{ env.REPOSITORY_NAME }}
+            BF_PUBLISHING=1
             BF_VERSION=${{ steps.version.outputs.contents }}
           push: true
           platforms: linux/amd64,linux/arm64
@@ -75,6 +83,12 @@ jobs:
             bfren/mariadb:mariadb${{ matrix.mariadb }}-${{ steps.version.outputs.contents }}
             bfren/mariadb:mariadb${{ steps.mariadb_revision.outputs.contents }}
             bfren/mariadb:mariadb${{ steps.mariadb_revision.outputs.contents }}-${{ steps.version.outputs.contents }}
+            ghcr.io/bfren/mariadb:mariadb${{ matrix.mariadb }}
+            ghcr.io/bfren/mariadb:mariadb${{ matrix.mariadb }}-${{ steps.version_major.outputs.contents }}
+            ghcr.io/bfren/mariadb:mariadb${{ matrix.mariadb }}-${{ steps.version_minor.outputs.contents }}
+            ghcr.io/bfren/mariadb:mariadb${{ matrix.mariadb }}-${{ steps.version.outputs.contents }}
+            ghcr.io/bfren/mariadb:mariadb${{ steps.mariadb_revision.outputs.contents }}
+            ghcr.io/bfren/mariadb:mariadb${{ steps.mariadb_revision.outputs.contents }}-${{ steps.version.outputs.contents }}
       -
         name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}

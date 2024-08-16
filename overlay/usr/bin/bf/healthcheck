@@ -1,20 +1,8 @@
-#!/command/with-contenv bash
+#!/usr/bin/nu
 
-set -euo pipefail
-export BF_E=`basename ${0}`
+use bf
+use bf-mariadb
+bf env load -x
 
-
-#======================================================================================================================
-# Copyright (c) 2015 Thomas Boerger <https://webhippie.de>
-# Originally from https://github.com/dockhippie/mariadb/blob/master/latest/overlay/etc/s6/mariadb/run
-#
-# Modifications copyright (c) 2021 bfren
-#======================================================================================================================
-
-USERNAME=${MARIADB_USERNAME:-root}
-PASSWORD=${MARIADB_PASSWORD:-${MARIADB_ROOT_PASSWORD}}
-
-CHECK="$(echo 'SELECT 1;' | mariadb --host=127.0.0.1 --user=${USERNAME} --password=${PASSWORD} 2>/dev/null | head -n1)"
-
-[[ "${CHECK}" == "1" ]] && exit 0
-exit 1
+# Healthcheck will fail if the server is not online
+export def main [] { if not (bf-mariadb checks server_is_online) { exit 1 } }

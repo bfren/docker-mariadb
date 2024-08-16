@@ -1,0 +1,8 @@
+# MariaDB 10.6 repository list
+# https://mariadb.org/download/
+X-Repolib-Name: MariaDB
+Types: deb
+URIs: https://deb.mariadb.org/10.6.19/debian
+Suites: bullseye
+Components: main
+Signed-By: /etc/apt/keyrings/mariadb-keyring.pgp

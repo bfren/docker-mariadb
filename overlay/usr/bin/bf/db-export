@@ -1,11 +1,12 @@
-#!/command/with-contenv bash
+#!/usr/bin/nu
 
-set -euo pipefail
-export BF_E=`basename ${0}`
+use bf
+use bf-mariadb
+bf env load -x
 
-
-#======================================================================================================================
-# Run library export executable.
-#======================================================================================================================
-
-s6-setuidgid dbadm ${MARIADB_LIB}/export "${1-}"
+# Export a database as a sql dump file in backup volume
+export def main [
+    database: string    # The name of the database to export
+]: nothing -> nothing {
+    echo $database | bf-mariadb export
+}

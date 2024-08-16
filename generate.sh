@@ -4,22 +4,26 @@ set -euo pipefail
 
 docker pull bfren/alpine
 
-DEBIAN_BASE_REVISION="1.3.8"
-echo "Debian Base: ${DEBIAN_BASE_REVISION}"
+DEBIAN_BASE_REVISION="2.2.6"
+ALPINE_BASE_REVISION="5.4.7"
 
-MARIADB_VERSIONS="10.4 10.5 10.6 10.9 10.10 10.11 11.0 11.1 11.2"
+echo "Debian Base: ${DEBIAN_BASE_REVISION}"
+MARIADB_VERSIONS="10.5 10.6 10.11 11.1 11.2 11.4 11.5 11.6"
 for V in ${MARIADB_VERSIONS} ; do
 
     echo "MariaDB ${V}"
     DEBIAN_NAME=`cat ./${V}/DEBIAN_NAME`
+    MARIADB_VERSION=`cat ./${V}/overlay/tmp/MARIADB_BUILD`
+    MARIADB_KEYRING=/etc/apt/keyrings/mariadb-keyring.pgp
 
     DOCKERFILE=$(docker run \
         -v ${PWD}:/ws \
         -e BF_DEBUG=0 \
         bfren/alpine esh \
         "/ws/Dockerfile-debian.esh" \
-        BASE_REVISION=${DEBIAN_BASE_REVISION} \
+        BASE_VERSION=${DEBIAN_BASE_REVISION} \
         DEBIAN_NAME=${DEBIAN_NAME} \
+        MARIADB_KEYRING=${MARIADB_KEYRING} \
         MARIADB_MINOR=${V}
     )
 
@@ -29,20 +33,20 @@ for V in ${MARIADB_VERSIONS} ; do
         -v ${PWD}:/ws \
         -e BF_DEBUG=0 \
         bfren/alpine esh \
-        "/ws/mariadb.list.esh" \
+        "/ws/mariadb.sources.esh" \
         DEBIAN_NAME=${DEBIAN_NAME} \
-        MARIADB_MINOR=${V}
+        MARIADB_MINOR=${V} \
+        MARIADB_VERSION=${MARIADB_VERSION} \
+        MARIADB_KEYRING=${MARIADB_KEYRING}
     )
 
-    echo "${LIST}" > ./${V}/overlay/etc/apt/sources.list.d/mariadb.list
+    echo "${LIST}" > ./${V}/overlay/etc/apt/sources.list.d/mariadb.sources
 
 done
 
-ALPINE_BASE_REVISION="4.5.9"
 echo "Alpine Base: ${ALPINE_BASE_REVISION}"
-
-ALPINE_VERSIONS="3.17 3.18"
-for V in ${ALPINE_VERSIONS} ; do
+ALPINE_EDITIONS="3.17 3.20"
+for V in ${ALPINE_EDITIONS} ; do
 
     echo "Alpine ${V}"
 
@@ -51,8 +55,8 @@ for V in ${ALPINE_VERSIONS} ; do
         -e BF_DEBUG=0 \
         bfren/alpine esh \
         "/ws/Dockerfile-alpine.esh" \
-        BASE_REVISION=${ALPINE_BASE_REVISION} \
-        ALPINE_REVISION=${V}
+        BASE_VERSION=${ALPINE_BASE_REVISION} \
+        ALPINE_EDITION=${V}
     )
 
     echo "${DOCKERFILE}" > ./alpine${V}/Dockerfile

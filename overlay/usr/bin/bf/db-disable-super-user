@@ -1,0 +1,24 @@
+#!/usr/bin/nu
+
+use bf
+use bf-mariadb db root
+use bf-mariadb init
+bf env load -x
+
+# Drop the application user and give permissions only for application databases
+export def main []: nothing -> nothing {
+    let sql = (drop_user) | append (grant_user) | append (init sql_flush_privileges) | str join " "
+    let on_success = {|| bf write ok $"(bf env DB_USERNAME) can only access application database\(s)." }
+    { echo $sql | ^mariadb ...(root) } | bf handle -s $on_success db-disable-super-user
+}
+
+# Drop user from localhost and %
+def drop_user []: nothing -> list<string> {
+    [
+        $"DROP USER IF EXISTS '(bf env DB_USERNAME)'@'localhost';"
+        $"DROP USER IF EXISTS '(bf env DB_USERNAME)'@'%';"
+    ]
+}
+
+# Grant user permissions to application databases
+def grant_user []: nothing -> list<string> { bf env DB_DATABASE | split row " " | each {|db| $db | init sql_grant_user } | flatten }

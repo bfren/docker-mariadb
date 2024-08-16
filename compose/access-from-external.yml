@@ -2,17 +2,18 @@ version: "3.8"
 
 services:
   db:
-    image: bfren/mariadb:mariadb${MARIADB_VERSION}
+    image: bfren/mariadb:mariadb${VERSION}
     container_name: db
     restart: unless-stopped
     ports:
-      - "0.0.0.0:${MARIADB_PORT}:3306"
+      - "0.0.0.0:${PORT}:3306"
     environment:
-      - MARIADB_ROOT_PASSWORD=${MARIADB_ROOT_PASSWORD}
-      - MARIADB_USERNAME=${MARIADB_USERNAME}
-      - MARIADB_PASSWORD=${MARIADB_PASSWORD}
-      - MARIADB_SSL_ENABLE=1
+      - BF_DB_ROOT_PASSWORD=${ROOT_PASSWORD}
+      - BF_DB_DATABASE=${DATABASE}
+      - BF_DB_USERNAME=${USERNAME}
+      - BF_DB_PASSWORD=${PASSWORD}
+      - BF_DB_SSL_ENABLE=1
     volumes:
-      - ./v/data:/var/lib/mysql
-      - ./v/backup:/var/lib/backup
+      - ./v/data:/data
+      - ./v/backup:/backup
       - ./v/ssl:/ssl

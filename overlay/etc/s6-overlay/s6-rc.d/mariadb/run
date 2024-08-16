@@ -1,61 +1,29 @@
-#!/command/with-contenv bash
+#!/bin/withenv sh
 
 set -euo pipefail
-export BF_E="${PWD##*/}/$(basename ${0})"
 
 
 #======================================================================================================================
-# If the configuration does not exist, something has gone wrong during initialisation.
+# Run preflight checks
 #======================================================================================================================
 
-[[ ! -f ${MARIADB_CNF} ]] && bf-error "Configuration file not found."
-
-
-#======================================================================================================================
-# If the mysql directory exists, the server has already been initialised.
-#======================================================================================================================
-
-if [ -d ${MARIADB_DATA}/mysql ] ; then
-
-    # start database
-    bf-echo "Starting mariadbd-safe."
-    mariadbd-safe --user=dbadm
+source /usr/lib/bf/preflight.sh mariadb
 
 
 #======================================================================================================================
-# Otherwise:
-#   - check for root password
-#   - check for application username
-#   - run server installation
-#   - generate initialisation file
-#   - run server using initialisation file
+# If an init file exists, use it.
 #======================================================================================================================
+
+if [ -f "${BF_DB_INIT_FILE}" ] ; then
+
+    # start server with temporary init file
+    bf-write "Starting mariadbd-safe with initialisation file."
+    mariadbd-safe --user=dbadm --init-file=${BF_DB_INIT_FILE}
 
 else
 
-    bf-debug "Database server not installed."
-
-    # check for root password
-    [[ -z "${MARIADB_ROOT_PASSWORD-}" ]] && bf-error "MARIADB_ROOT_PASSWORD must be set."
-
-    # check for application user
-    [[ -z "${MARIADB_USERNAME-}" ]] && bf-error "MARIADB_USERNAME must be set."
-
-    # run server installation
-    bf-debug "Running mariadb-install-db..."
-    mariadb-install-db --user=dbadm --datadir=${MARIADB_DATA}
-
-    # set server config permissions
-    bf-ch -o dbadm:dbadm -m 0440 -t f /etc/my.cnf*
-    bf-ch -o dbadm:dbadm -m 0750 -t d /etc/my.cnf*
-
-    # generate init file
-    INIT_FILE=/tmp/init.sql
-    bf-debug "Generating initialisation file ${INIT_FILE}..."
-    s6-setuidgid dbadm ${MARIADB_LIB}/generate-init-file "${INIT_FILE}"
-
-    # start server with temporary init file
-    bf-echo "Starting mariadbd-safe with initialisation file."
-    mariadbd-safe --user=dbadm --init-file=${INIT_FILE}
+    # start database
+    bf-write "Starting mariadbd-safe."
+    mariadbd-safe --user=dbadm
 
 fi

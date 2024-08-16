@@ -1,0 +1,13 @@
+#!/usr/bin/nu
+
+use bf
+use bf-mariadb db root
+use bf-mariadb init
+bf env load -x
+
+# Give the application user super permissions, to all databases and user management
+export def main []: nothing -> nothing {
+    let sql = (init sql_enable_super_user) | append (init sql_flush_privileges) | str join " "
+    let on_success = {|| bf write ok $"(bf env DB_USERNAME) has permission to access all databases and manage users." }
+    { echo $sql | ^mariadb ...(root) } | bf handle -s $on_success db-enable-super-user
+}

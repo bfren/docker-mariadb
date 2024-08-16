@@ -1,0 +1,12 @@
+#!/usr/bin/nu
+
+use bf
+use bf-mariadb
+bf env load -x
+
+# Restore data from a dump file
+export def main [
+    backup: string    # Restore the dump file this backup directory
+]: nothing -> nothing {
+    bf-mariadb restore from $backup
+}
