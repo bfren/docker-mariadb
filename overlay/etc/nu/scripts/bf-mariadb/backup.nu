@@ -43,7 +43,7 @@ export def main []: nothing -> nothing {
 
     # delete temporary directory
     bf write $" .. deleting ($temp_dir)" dump
-    bf del force $temp_dir
+    rm --force --recursive  $temp_dir
 
     # cleanup old backup files
     bf write " .. removing expired backup files" dump

@@ -15,7 +15,7 @@ def main []: nothing -> nothing {
     { open --raw $dump_file.path | ^mariadb ...(db root) } | bf handle restore
 
     # delete dump file
-    bf del force $dump_file.path
+    rm --force $dump_file.path
 
     # if we get here there have been no errors
     bf write ok "Done." restore

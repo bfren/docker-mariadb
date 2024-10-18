@@ -45,7 +45,7 @@ export def generate_certs []: nothing -> nothing {
     ]
     let result = { ^openssl verify ...$verify_args } | bf handle -d "Certificate verification" -f {||
         bf write notok "Certificate verification failed, removing all generated files."
-        bf del force $"(bf env SSL)/*" (bf env SSL_TMP)
+        $"(bf env SSL)/*" | into glob | rm --force --recursive $in (bf env SSL_TMP)
     }
 
     # set permissions
@@ -96,7 +96,7 @@ def process_key [
 
     # remove input key
     bf write debug $"Removing input key file ($input)." ssl/process_key
-    bf del force $input
+    rm --force $input
 }
 
 # Use openssl to sign a certificate
@@ -119,5 +119,5 @@ def sign_cert [
 
     # remove input certificate
     bf write debug $"Removing input certificate file ($input)." ssl/sign_cert
-    bf del force $input
+    rm --force $input
 }
