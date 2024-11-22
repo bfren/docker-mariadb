@@ -1,8 +1,8 @@
-# MariaDB 11.1 repository list
+# MariaDB 11.7 repository list
 # https://mariadb.org/download/
 X-Repolib-Name: MariaDB
 Types: deb
-URIs: https://mariadb.gb.ssimn.org/repo/11.1.6/debian
+URIs: https://mariadb.gb.ssimn.org/repo/11.7.1/debian
 Suites: bookworm
 Components: main
 Signed-By: /etc/apt/keyrings/mariadb-keyring.pgp

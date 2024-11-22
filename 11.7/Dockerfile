@@ -1,4 +1,4 @@
-FROM ghcr.io/bfren/debian-s6:bookworm-2.2.13
+FROM ghcr.io/bfren/debian-s6:bookworm-2.2.15
 
 ARG BF_IMAGE
 ARG BF_PUBLISHING
@@ -36,7 +36,7 @@ ENV \
     BF_DB_LOG_WARNINGS=3
 
 COPY ./overlay /
-COPY ./11.5/overlay /
+COPY ./11.7/overlay /
 RUN bf-install
 
 VOLUME [ "/backup", "/data", "/ssl" ]
