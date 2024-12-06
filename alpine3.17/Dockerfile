@@ -1,4 +1,4 @@
-FROM ghcr.io/bfren/alpine-s6:alpine3.17-5.4.15
+FROM ghcr.io/bfren/alpine-s6:alpine3.17-5.5.0
 
 ARG BF_IMAGE
 ARG BF_PUBLISHING
