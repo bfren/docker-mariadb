@@ -1,4 +1,4 @@
-FROM ghcr.io/bfren/alpine-s6:alpine3.20-5.4.15
+FROM ghcr.io/bfren/alpine-s6:alpine3.21-5.5.0
 
 ARG BF_IMAGE
 ARG BF_PUBLISHING
@@ -33,7 +33,7 @@ ENV \
 
 COPY ./overlay /
 COPY ./overlay-alpine /
-COPY ./alpine3.20/overlay /
+COPY ./alpine3.21/overlay /
 RUN bf-install
 
 
