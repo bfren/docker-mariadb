@@ -12,7 +12,7 @@ export def install []: nothing -> nothing {
 
     # set server config permissions
     bf write debug "Setting server config permissions."
-    ["/etc/my.cnf*" "dbadm:dbadm" 0440 0750] | bf ch apply
+    ["/etc/my.cnf*" "dbadm:dbadm" "0440" "0750"] | bf ch apply
 }
 
 # Generate the database initialisation script
