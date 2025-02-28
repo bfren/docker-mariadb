@@ -4,7 +4,7 @@ set -euo pipefail
 
 docker pull bfren/alpine
 
-DEBIAN_BASE_REVISION="3.0.2"
+DEBIAN_BASE_REVISION="3.0.1"
 ALPINE_BASE_REVISION="5.5.2"
 
 echo "Debian Base: ${DEBIAN_BASE_REVISION}"
