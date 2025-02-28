@@ -1,8 +1,8 @@
-# MariaDB 11.6 repository list
+# MariaDB 11.8 repository list
 # https://mariadb.org/download/
 X-Repolib-Name: MariaDB
 Types: deb
-URIs: https://https://mirror.mariadb.org/repo/11.6.2/debian
+URIs: https://https://mirror.mariadb.org/repo/11.8.1/debian
 Suites: bookworm
 Components: main
 Signed-By: /etc/apt/keyrings/mariadb-keyring.pgp
