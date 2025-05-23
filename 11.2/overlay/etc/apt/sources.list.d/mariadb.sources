@@ -1,8 +1,0 @@
-# MariaDB 11.2 repository list
-# https://mariadb.org/download/
-X-Repolib-Name: MariaDB
-Types: deb
-URIs: https://mirror.mariadb.org/repo/11.2.6/debian
-Suites: bookworm
-Components: main
-Signed-By: /etc/apt/keyrings/mariadb-keyring.pgp
