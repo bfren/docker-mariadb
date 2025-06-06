@@ -4,8 +4,8 @@ set -euo pipefail
 
 docker pull bfren/alpine
 
-DEBIAN_BASE_REVISION="3.1.0"
-ALPINE_BASE_REVISION="5.6.0"
+DEBIAN_BASE_REVISION="3.1.1"
+ALPINE_BASE_REVISION="5.6.1"
 
 echo "Debian Base: ${DEBIAN_BASE_REVISION}"
 MARIADB_VERSIONS="10.11 11.4 11.8 12.0"

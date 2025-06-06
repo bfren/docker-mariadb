@@ -1,4 +1,4 @@
-FROM ghcr.io/bfren/debian-s6:bookworm-3.1.0
+FROM ghcr.io/bfren/debian-s6:bookworm-3.1.1
 
 ARG BF_IMAGE
 ARG BF_PUBLISHING
