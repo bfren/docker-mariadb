@@ -2,7 +2,7 @@
 
 IMAGE=mariadb
 VERSION=`cat VERSION`
-MARIADB=${1:-11.7}
+MARIADB=${1:-12.0}
 TAG=${IMAGE}-test
 
 docker buildx build \
