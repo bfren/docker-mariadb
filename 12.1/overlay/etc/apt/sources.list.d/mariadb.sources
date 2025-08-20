@@ -3,6 +3,6 @@
 X-Repolib-Name: MariaDB
 Types: deb
 URIs: https://mirror.mariadb.org/repo/12.1.1/debian https://mirrors.xtom.nl/mariadb/repo/12.1.1/debian
-Suites: trixie
+Suites: bookworm
 Components: main
 Signed-By: /etc/apt/keyrings/mariadb-keyring.pgp
