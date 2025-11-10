@@ -1,4 +1,4 @@
-FROM ghcr.io/bfren/alpine-s6:alpine<%= ${ALPINE_EDITION} %>-<%= ${BASE_VERSION} %>
+FROM bfren/alpine-s6:alpine<%= ${ALPINE_EDITION} %>-<%= ${BASE_VERSION} %>
 
 ARG BF_IMAGE
 ARG BF_PUBLISHING
