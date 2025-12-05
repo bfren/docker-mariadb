@@ -1,4 +1,4 @@
-FROM quay.io/bfren/alpine-s6:alpine3.22-6.0.1
+FROM quay.io/bfren/alpine-s6:alpine3.23-6.1.0
 
 ARG BF_IMAGE
 ARG BF_PUBLISHING
@@ -33,7 +33,7 @@ ENV \
 
 COPY ./overlay /
 COPY ./overlay-alpine /
-COPY ./alpine3.22/overlay /
+COPY ./alpine3.23/overlay /
 RUN bf-install
 
 
