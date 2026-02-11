@@ -2,7 +2,7 @@
 # https://mariadb.org/download/
 X-Repolib-Name: MariaDB
 Types: deb
-URIs: https://mirror.mariadb.org/repo/11.4.9/debian https://mirrors.xtom.nl/mariadb/repo/11.4.9/debian
+URIs: https://mirror.mariadb.org/repo/11.4.10/debian https://mirrors.xtom.nl/mariadb/repo/11.4.10/debian
 Suites: bookworm
 Components: main
 Signed-By: /etc/apt/keyrings/mariadb-keyring.pgp
