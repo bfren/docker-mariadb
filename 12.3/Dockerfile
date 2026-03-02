@@ -1,4 +1,4 @@
-FROM quay.io/bfren/debian-s6:bookworm-4.0.6
+FROM quay.io/bfren/debian-s6:bookworm-4.0.7
 
 ARG BF_IMAGE
 ARG BF_PUBLISHING
@@ -36,7 +36,7 @@ ENV \
     BF_DB_LOG_WARNINGS=3
 
 COPY ./overlay /
-COPY ./12.1/overlay /
+COPY ./12.3/overlay /
 RUN bf-install
 
 VOLUME [ "/backup", "/data", "/ssl" ]
