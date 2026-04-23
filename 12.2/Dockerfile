@@ -1,4 +1,4 @@
-FROM quay.io/bfren/debian-s6:bookworm-4.0.9
+FROM quay.io/bfren/debian-s6:bookworm-4.0.10
 
 ARG BF_IMAGE
 ARG BF_PUBLISHING
