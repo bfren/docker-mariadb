@@ -18,6 +18,12 @@ ENV \
     BF_DB_BACKUP_COMPRESS_FILES=0 \
     # the period of time to keep backups before auto-deleting them (Nu duration)
     BF_DB_BACKUP_KEEP_FOR=28day \
+    # enable query cache
+    BF_DB_QUERY_CACHE_ENABLE=1 \
+    # define total cache size (256 MB)
+    BF_DB_QUERY_CACHE_SIZE_BYTES=268435456 \
+    # define cache limit per query (1 MB)
+    BF_DB_QUERY_CACHE_LIMIT_BYTES=1048576 \
     # set to "1" to enable SSL support
     BF_DB_SSL_ENABLE=0 \
     # the period of time before self-generated SSL certificates will expire (Nu duration)
