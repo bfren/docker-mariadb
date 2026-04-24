@@ -24,5 +24,11 @@ tls_version=TLSv1.2,TLSv1.3
 # Disabling symbolic-links is recommended to prevent assorted security risks
 symbolic-links=0
 
+<% if bf-env-check DB_QUERY_CACHE_ENABLE ; then -%>
+query_cache_type=1
+query_cache_size=<% bf-env DB_QUERY_CACHE_SIZE_BYTES %>
+query_cache_limit=<% bf-env DB_QUERY_CACHE_LIMIT_BYTES %>
+<% fi -%>
+
 # include all files from the config directory
 !includedir <% bf-env DB_CONF_D %>
