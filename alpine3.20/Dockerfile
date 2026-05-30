@@ -1,4 +1,4 @@
-FROM quay.io/bfren/alpine-s6:alpine3.20-6.1.8
+FROM quay.io/bfren/alpine-s6:alpine3.20-6.1.9
 
 ARG BF_IMAGE
 ARG BF_PUBLISHING
