@@ -42,7 +42,7 @@ ENV \
     BF_DB_LOG_WARNINGS=3
 
 COPY ./overlay /
-COPY ./12.2/overlay /
+COPY ./13.0/overlay /
 RUN bf-install
 
 VOLUME [ "/backup", "/data", "/ssl" ]
