@@ -4,8 +4,8 @@ set -euo pipefail
 
 docker pull bfren/alpine
 
-DEBIAN_BASE_REVISION="4.0.13"
-ALPINE_BASE_REVISION="6.1.9"
+DEBIAN_BASE_REVISION="4.0.14"
+ALPINE_BASE_REVISION="6.2.0"
 
 echo "Debian Base: ${DEBIAN_BASE_REVISION}"
 MARIADB_VERSIONS="10.11 11.4 11.8 12.3 13.0"
@@ -45,7 +45,7 @@ for V in ${MARIADB_VERSIONS} ; do
 done
 
 echo "Alpine Base: ${ALPINE_BASE_REVISION}"
-ALPINE_EDITIONS="3.17 3.20 3.23"
+ALPINE_EDITIONS="3.17 3.20 3.23 3.24"
 for V in ${ALPINE_EDITIONS} ; do
 
     echo "Alpine ${V}"
