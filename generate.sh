@@ -45,7 +45,7 @@ for V in ${MARIADB_VERSIONS} ; do
 done
 
 echo "Alpine Base: ${ALPINE_BASE_REVISION}"
-ALPINE_EDITIONS="3.17 3.20 3.23"
+ALPINE_EDITIONS="3.17 3.20 3.23 3.24"
 for V in ${ALPINE_EDITIONS} ; do
 
     echo "Alpine ${V}"
