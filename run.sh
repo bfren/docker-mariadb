@@ -1,7 +1,7 @@
 #!/bin/sh
 
 IMAGE=`cat VERSION`
-MARIADB=${1:-12.3}
+MARIADB=${1:-13.0}
 VOL_BACKUP=`pwd`/backup
 VOL_DATA=`pwd`/data
 VOL_SSL=`pwd`/ssl
