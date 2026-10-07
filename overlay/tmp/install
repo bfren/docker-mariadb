@@ -29,5 +29,5 @@ def main [] {
     rm --force --recursive /etc/my.cnf.d/* /etc/mysql /var/lib/mysql/*
 
     # add bf-db module to config
-    bf config use bf-mariadb
+    bf config use_mod bf-mariadb
 }
