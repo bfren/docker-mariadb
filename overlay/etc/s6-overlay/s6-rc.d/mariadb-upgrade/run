@@ -14,4 +14,4 @@ nu -c "use bf-mariadb-upgrade run ; run preflight"
 # Run upgrade executable.
 #======================================================================================================================
 
-db-upgrade
+exec db-upgrade

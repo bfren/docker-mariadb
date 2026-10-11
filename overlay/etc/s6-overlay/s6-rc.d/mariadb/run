@@ -18,12 +18,12 @@ if [ -f "${BF_DB_INIT_FILE}" ] ; then
 
     # start server with temporary init file
     bf-write "Starting mariadbd-safe with initialisation file."
-    mariadbd-safe --user=dbadm --init-file=${BF_DB_INIT_FILE}
+    exec mariadbd-safe --user=dbadm --init-file=${BF_DB_INIT_FILE}
 
 else
 
     # start database
     bf-write "Starting mariadbd-safe."
-    mariadbd-safe --user=dbadm
+    exec mariadbd-safe --user=dbadm
 
 fi
