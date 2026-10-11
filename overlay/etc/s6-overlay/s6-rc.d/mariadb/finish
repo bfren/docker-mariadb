@@ -9,9 +9,9 @@ bf env load -x mariadb
 def main [...args] {
     # old PIDs clog up the mysql directory
     bf write "Clearing temporary files and old process IDs."
-    rm --force $"(bf env DB_DATA)/*.err"
-    rm --force $"(bf env DB_DATA)/*.pid"
+    let data = bf env DB_DATA
+    [ $"($data)/*.err" $"($data)/*.pid" ] | into glob | rm --force ...$in
 
     # terminate container
-    bf-s6 svc finish --terminate
+    bf-s6 svc finish --terminate ...$args
 }
