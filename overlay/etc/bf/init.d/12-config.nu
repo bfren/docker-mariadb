@@ -5,6 +5,6 @@ bf env load
 def main [] {
     # generate configuration
     bf write "Generating MariaDB configuration."
-    bf esh template (bf env DB_CONF)
-    bf ch apply_file "13-conf"
+    bf-s6 esh template (bf env DB_CONF)
+    bf-s6 ch apply_file "13-conf"
 }

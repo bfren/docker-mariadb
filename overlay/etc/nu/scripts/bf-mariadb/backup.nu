@@ -1,5 +1,6 @@
 use bf
 use db.nu
+use bf-s6
 
 # Backup the cluster to a dump file, compressing if required
 export def main []: nothing -> nothing {
@@ -39,7 +40,7 @@ export def main []: nothing -> nothing {
 
     # set correct permissions
     bf write $" .. applying correct permissions" dump
-    bf ch apply_file "10-backup"
+    bf-s6 ch apply_file "10-backup"
 
     # delete temporary directory
     bf write $" .. deleting ($temp_dir)" dump
