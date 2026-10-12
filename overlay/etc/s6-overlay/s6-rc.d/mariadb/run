@@ -1,29 +1,34 @@
-#!/bin/withenv sh
+#!/usr/bin/nu
 
-set -euo pipefail
+use bf
+use bf-mariadb [checks init versions]
+use bf-s6
+bf env load
 
+# Start the MariaDB server
+def main [
+    name: string    # The service name, passed by s6-supervise
+] {
+    # set executable name - used to make log output more useful
+    bf env x_set --override run $name
 
-#======================================================================================================================
-# Run preflight checks
-#======================================================================================================================
+    # run checks before executing service
+    if (checks server_is_not_initialised) {
+        bf write debug "Server not initialised."
+        init install
+        init generate
+    }
 
-nu -c "use bf-mariadb run ; run preflight"
+    # use an initialisation file if one exists
+    let init_file = bf env DB_INIT_FILE
+    let init_args = if ($init_file | bf fs is_not_file) { [] } else { [$"--init-file=($init_file)"] }
 
-
-#======================================================================================================================
-# If an init file exists, use it.
-#======================================================================================================================
-
-if [ -f "${BF_DB_INIT_FILE}" ] ; then
-
-    # start server with temporary init file
-    bf-write "Starting mariadbd-safe with initialisation file."
-    exec mariadbd-safe --user=dbadm --init-file=${BF_DB_INIT_FILE}
-
-else
-
-    # start database
-    bf-write "Starting mariadbd-safe."
-    exec mariadbd-safe --user=dbadm
-
-fi
+    # launch MariaDB service
+    bf write $"Starting MariaDB (versions get_server_version)."
+    if ($init_args | is-not-empty) { bf write "Using initialisation file." }
+    let args = [
+        "--user=dbadm"
+        ...$init_args
+    ]
+    bf-s6 svc launch mariadbd-safe ...$args
+}

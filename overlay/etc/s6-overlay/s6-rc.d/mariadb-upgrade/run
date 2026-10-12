@@ -1,17 +1,39 @@
-#!/bin/withenv sh
+#!/usr/bin/nu
 
-set -euo pipefail
+use bf
+use bf-mariadb
+use bf-s6
+bf env load
 
+# Run mariadb-upgrade once the server is online, if the data and server versions differ
+def main [
+    name: string    # The service name, passed by s6-supervise
+] {
+    # set executable name - used to make log output more useful
+    bf env x_set --override run $name
 
-#======================================================================================================================
-# Run preflight checks
-#======================================================================================================================
+    # run checks before executing service
+    let sleep_for = 2sec    # if a check fails, wait before exiting - S6 will automatically restart the service
+    if (bf-mariadb checks server_is_not_initialised) {
+        "MariaDB server is not initialised" | bf-s6 svc exit_preflight --sleep $sleep_for mariadb-upgrade
+    }
+    if (bf-mariadb checks service_is_not_running) {
+        "MariaDB service is not running" | bf-s6 svc exit_preflight --sleep $sleep_for mariadb-upgrade
+    }
+    if not (bf-mariadb checks server_is_online) {
+        "MariaDB server is not online" | bf-s6 svc exit_preflight --sleep $sleep_for mariadb-upgrade
+    }
 
-nu -c "use bf-mariadb-upgrade run ; run preflight"
+    # disable service if versions match
+    let data_version = bf-mariadb versions get_data_version
+    let server_version = bf-mariadb versions get_server_version
+    bf write debug $"Data: ($data_version); Server: ($server_version)."
+    if $data_version == $server_version {
+        bf-s6 svc down $name
+        "Data and Server versions match, upgrade not necessary" | bf-s6 svc exit_preflight mariadb-upgrade
+    }
 
-
-#======================================================================================================================
-# Run upgrade executable.
-#======================================================================================================================
-
-exec db-upgrade
+    # launch MariaDB upgrade service
+    bf write "Executing upgrade."
+    bf-s6 svc launch db-upgrade
+}
