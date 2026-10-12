@@ -1,8 +1,8 @@
 #!/usr/bin/nu
 
 use bf
-use bf-mariadb db user
+use bf-mariadb [db]
 bf env load -x
 
 # Connect to MariaDB as user
-export def main []: nothing -> nothing { ^mariadb ...(user) }
+export def main []: nothing -> nothing { ^mariadb ...(db user) }

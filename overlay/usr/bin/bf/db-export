@@ -8,5 +8,5 @@ bf env load -x
 export def main [
     database: string    # The name of the database to export
 ]: nothing -> nothing {
-    echo $database | bf-mariadb export
+    echo $database | bf-mariadb export-db
 }
