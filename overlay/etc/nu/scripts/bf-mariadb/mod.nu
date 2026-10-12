@@ -1,7 +1,7 @@
 export use backup.nu
 export use checks.nu
 export use db.nu
-export use export_db.nu
+export use export-db.nu
 export use import.nu
 export use init.nu
 export use install.nu
