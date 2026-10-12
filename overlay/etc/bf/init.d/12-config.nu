@@ -1,4 +1,5 @@
 use bf
+use bf-s6
 bf env load
 
 # Generate MariaDB configuration file and apply permissions
