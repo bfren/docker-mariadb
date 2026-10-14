@@ -1,4 +1,5 @@
 use bf
+use bf-s6
 
 # Generate certificate and key files to enable MariaDB SSL access
 # see https://www.cyberciti.biz/faq/how-to-setup-mariadb-ssl-and-secure-connections-from-clients/
@@ -49,7 +50,7 @@ export def generate_certs []: nothing -> nothing {
     }
 
     # set permissions
-    bf ch apply_file "12-ssl"
+    bf-s6 ch apply_file "12-ssl"
 }
 
 # Debug openssl commands
