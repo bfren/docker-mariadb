@@ -6,7 +6,9 @@ ARG BF_VERSION
 
 EXPOSE 3306
 
-RUN DEBIAN_FRONTEND=noninteractive apt-get update && apt-get install -y apt-transport-https ca-certificates
+# openssl is used to generate SSL certificates (bf-mariadb ssl) - the CA bundle apt needs for the https MariaDB
+# repositories comes from the Debian base image
+RUN DEBIAN_FRONTEND=noninteractive apt-get update && apt-get install -y openssl
 ADD https://mariadb.org/mariadb_release_signing_key.pgp /etc/apt/keyrings/mariadb-keyring.pgp
 RUN chmod 0444 /etc/apt/keyrings/mariadb-keyring.pgp
 
