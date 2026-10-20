@@ -13,11 +13,11 @@ export def get_data_version []: nothing -> string {
     }
 }
 
-# Read the version of a data directory, stripping unnecessary data
+# Read the version (X.Y.Z) of a data directory - the file may also contain '-MariaDB' and a build suffix
 def read_version [
     path: string    # Absolute path to data version file
 ]: nothing -> string {
-    bf fs read --quiet $path | str replace "-MariaDB" "" | str trim
+    bf fs read --quiet $path | parse --regex '(?P<version>\d+\.\d+\.\d+)' | get --optional version.0 | default ""
 }
 
 # Return the MariaDB version of the installed server

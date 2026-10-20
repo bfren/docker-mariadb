@@ -31,6 +31,24 @@ jobs:
           file: ./VERSION
         id: version
       -
+        name: Read MariaDB version - revision
+        uses: bfren/read-file@v2
+        with:
+          file: ./${{ matrix.mariadb }}/overlay/tmp/MARIADB_BUILD
+        id: mariadb_revision
+      -
+        name: Read image version
+        uses: bfren/read-file@v2
+        with:
+          file: ./VERSION_MAJOR
+        id: version_major
+      -
+        name: Read image version
+        uses: bfren/read-file@v2
+        with:
+          file: ./VERSION_MINOR
+        id: version_minor
+      -
         name: Set up QEMU
         uses: docker/setup-qemu-action@v4
       -
@@ -79,9 +97,17 @@ jobs:
           platforms: linux/amd64,linux/arm64
           tags: |
             bfren/mariadb:mariadb${{ matrix.mariadb }}-dev
+            bfren/mariadb:mariadb${{ matrix.mariadb }}-${{ steps.version_major.outputs.contents }}-dev
+            bfren/mariadb:mariadb${{ matrix.mariadb }}-${{ steps.version_minor.outputs.contents }}-dev
             bfren/mariadb:mariadb${{ matrix.mariadb }}-${{ steps.version.outputs.contents }}-dev
+            bfren/mariadb:mariadb${{ steps.mariadb_revision.outputs.contents }}-dev
+            bfren/mariadb:mariadb${{ steps.mariadb_revision.outputs.contents }}-${{ steps.version.outputs.contents }}-dev
             quay.io/bfren/mariadb:mariadb${{ matrix.mariadb }}-dev
+            quay.io/bfren/mariadb:mariadb${{ matrix.mariadb }}-${{ steps.version_major.outputs.contents }}-dev
+            quay.io/bfren/mariadb:mariadb${{ matrix.mariadb }}-${{ steps.version_minor.outputs.contents }}-dev
             quay.io/bfren/mariadb:mariadb${{ matrix.mariadb }}-${{ steps.version.outputs.contents }}-dev
+            quay.io/bfren/mariadb:mariadb${{ steps.mariadb_revision.outputs.contents }}-dev
+            quay.io/bfren/mariadb:mariadb${{ steps.mariadb_revision.outputs.contents }}-${{ steps.version.outputs.contents }}-dev
       -
         name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}

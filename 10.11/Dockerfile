@@ -1,4 +1,4 @@
-FROM quay.io/bfren/debian-s6:bookworm-4.3.0
+FROM quay.io/bfren/debian-s6:bookworm-4.4.0
 
 ARG BF_IMAGE
 ARG BF_PUBLISHING
@@ -6,14 +6,16 @@ ARG BF_VERSION
 
 EXPOSE 3306
 
-RUN DEBIAN_FRONTEND=noninteractive apt-get update && apt-get install -y apt-transport-https ca-certificates
+# openssl is used to generate SSL certificates (bf-mariadb ssl) - the CA bundle apt needs for the https MariaDB
+# repositories comes from the Debian base image
+RUN DEBIAN_FRONTEND=noninteractive apt-get update && apt-get install -y openssl
 ADD https://mariadb.org/mariadb_release_signing_key.pgp /etc/apt/keyrings/mariadb-keyring.pgp
 RUN chmod 0444 /etc/apt/keyrings/mariadb-keyring.pgp
 
 ENV \
     # set to "1" to give the application user permission to access all databases and manage users
     # should NOT be used in production, but is extremely useful for a dev server
-    BF_DB_USER_SUPER=0 \
+    BF_DB_SUPER_USER=0 \
     # set to "1" to compress backup sql files
     BF_DB_BACKUP_COMPRESS_FILES=0 \
     # the period of time to keep backups before auto-deleting them (Nu duration)

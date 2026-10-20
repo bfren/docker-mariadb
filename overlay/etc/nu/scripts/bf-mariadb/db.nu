@@ -21,17 +21,18 @@ export def dump [
     { ^mariadb-dump ...(root) --add-drop-database --databases $name } | bf handle -s {|x| $x | save --force $file } db/dump
 }
 
+# System databases - these are not backed up individually
+export const system_databases = ["mysql" "information_schema" "performance_schema" "sys" "test"]
+
 # Get a list of databases, ignoring system databases
 export def get_all []: nothing -> list<string> {
-    # ignore these databases
-    let ignore = [
-        "mysql"
-        "information_schema"
-        "performance_schema"
-        "sys"
-        "test"
-    ]
+    { ^mariadb ...(root) --execute="SHOW DATABASES;" | ^tail -n+2 | ^xargs }
+        | bf handle -d "Selecting MariaDB databases" db/get_all
+        | split row " "
+        | without_system
+}
 
-    # execute SQL and process response
-    { ^mariadb ...(root) --execute="SHOW DATABASES;" | ^tail -n+2 | ^xargs } | bf handle -d "Selecting MariaDB databases" db/get_all | split row " " | where {|x| $x not-in $ignore } | compact
+# Remove system databases and empty values from a list of database names
+export def without_system []: list<string> -> list<string> {
+    where {|x| $x != "" and $x not-in $system_databases }
 }

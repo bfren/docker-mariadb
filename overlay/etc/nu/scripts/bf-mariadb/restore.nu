@@ -23,8 +23,8 @@ def main []: nothing -> nothing {
 
 # Get details of a dump file - returns a record with the following values, having decompressed the file if required
 #  - exists: bool   Whether or not a dump file exists
-#  - path: string   Absolute path to the dump file if it exists, or null
-def check_dump_file []: nothing -> bool {
+#  - path: string   Absolute path to the dump file (only set if it exists)
+export def check_dump_file []: nothing -> record {
     # get file paths
     let file = bf env DB_DUMP_FILE_WITHOUT_EXT
     let compressed_file = $"($file).sql.bz2"
@@ -55,7 +55,7 @@ export def from [
     if ($backup_dir | bf fs is_not_dir) { bf write error $"Backup directory ($backup_dir) does not exist." restore/from }
 
     # ensure a dump file exists within requested backup directory
-    let dump_file = glob $"/backup/($backup)/(bf env DB_DUMP_BASENAME).*" | str join
+    let dump_file = glob $"($backup_dir)/(bf env DB_DUMP_BASENAME).*" | str join
     if ($dump_file | bf fs is_not_file) { bf write error $"Cannot find a dump file in ($backup_dir)." restore/from }
 
     # copy dump file to backup root and run restore function
