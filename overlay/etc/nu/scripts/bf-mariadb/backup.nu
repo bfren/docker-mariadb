@@ -54,9 +54,8 @@ export def main []: nothing -> nothing {
     bf write ok "Done." dump
 }
 
-# Create a backup directory
-def create_backup_dir []: nothing -> string {
-    # create temporary directory
+# Create a backup directory named by date and time (yyyyMMddHHmm), and return its path
+export def create_backup_dir []: nothing -> string {
     let date = date now | format date "%Y%m%d%H%M"
     let dir = $"(bf env DB_BACKUP)/($date)"
     mkdir $dir

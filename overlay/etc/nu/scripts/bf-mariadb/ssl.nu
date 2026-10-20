@@ -1,9 +1,15 @@
 use bf
 use bf-s6
 
-# Generate certificate and key files to enable MariaDB SSL access
-# see https://www.cyberciti.biz/faq/how-to-setup-mariadb-ssl-and-secure-connections-from-clients/
+# Generate certificate and key files to enable MariaDB SSL access, and apply permissions
 export def generate_certs []: nothing -> nothing {
+    create_certs
+    bf-s6 ch apply_file "12-ssl"
+}
+
+# Create CA, server and client certificates and keys, using the paths set in BF_DB_SSL_*
+# see https://www.cyberciti.biz/faq/how-to-setup-mariadb-ssl-and-secure-connections-from-clients/
+export def create_certs []: nothing -> nothing {
     # generate CA key
     bf write "Generating CA key." ssl/generate_certs
     let ca_key_args = [
@@ -17,7 +23,7 @@ export def generate_certs []: nothing -> nothing {
     let ca_cert_args = [
         -x509
         -nodes
-        -days (bf env DB_SSL_EXPIRY | into duration | $in / 1day)
+        -days (bf env DB_SSL_EXPIRY | into duration | $in / 1day | into int)
         -key (bf env DB_SSL_CA_KEY)
         -out (bf env DB_SSL_CA_CERT)
         -subj "/C=NA/ST=NA/L=NA/O=NA/OU=NA/CN=Admin"
@@ -29,13 +35,13 @@ export def generate_certs []: nothing -> nothing {
     bf write "Generating server key and certificate."
     generate_request "Server" (bf env DB_SSL_SERVER_KEY_TMP) (bf env DB_SSL_SERVER_KEY_BITS | into int) (bf env DB_SSL_SERVER_REQ)
     process_key (bf env DB_SSL_SERVER_KEY_TMP) (bf env DB_SSL_SERVER_KEY)
-    sign_cert (bf env DB_SSL_SERVER_REQ) (bf env DB_SSL_SERVER_CERT)
+    sign_cert (bf env DB_SSL_SERVER_REQ) (bf env DB_SSL_SERVER_CERT) "01"
 
     # generate client key and certificate
     bf write "Generating client key and certificate."
     generate_request "Client" (bf env DB_SSL_CLIENT_KEY_TMP) (bf env DB_SSL_CLIENT_KEY_BITS | into int) (bf env DB_SSL_CLIENT_REQ)
     process_key (bf env DB_SSL_CLIENT_KEY_TMP) (bf env DB_SSL_CLIENT_KEY)
-    sign_cert (bf env DB_SSL_CLIENT_REQ) (bf env DB_SSL_CLIENT_CERT)
+    sign_cert (bf env DB_SSL_CLIENT_REQ) (bf env DB_SSL_CLIENT_CERT) "02"
 
     # verify client and server certificates
     bf write "Verifying certificates."
@@ -45,12 +51,9 @@ export def generate_certs []: nothing -> nothing {
         (bf env DB_SSL_CLIENT_CERT)
     ]
     let result = { ^openssl verify ...$verify_args } | bf handle -d "Certificate verification" -f {||
-        bf write notok "Certificate verification failed, removing all generated files."
-        $"(bf env SSL)/*" | into glob | rm --force --recursive $in (bf env SSL_TMP)
+        $"(bf env DB_SSL)/*" | into glob | rm --force --recursive $in
+        bf write error "Certificate verification failed - generated files have been removed." ssl/create_certs
     }
-
-    # set permissions
-    bf-s6 ch apply_file "12-ssl"
 }
 
 # Debug openssl commands
@@ -100,19 +103,20 @@ def process_key [
     rm --force $input
 }
 
-# Use openssl to sign a certificate
+# Use openssl to sign a certificate - each certificate signed by the CA must have a unique serial number
 def sign_cert [
     input: string   # Path to certificate request
     output: string  # Path to certificate
+    serial: string  # Serial number
 ]: nothing -> nothing {
     # use openssl to sign the certificate
     let args = [
         -req
-        -days (bf env DB_SSL_EXPIRY | into duration | $in / 1day)
+        -days (bf env DB_SSL_EXPIRY | into duration | $in / 1day | into int)
         -in $input
         -CA (bf env DB_SSL_CA_CERT)
         -CAkey (bf env DB_SSL_CA_KEY)
-        -set_serial "01"
+        -set_serial $serial
         -out $output
     ]
     dbg_openssl "Signing certificate" x509 $args ssl/sign_cert
