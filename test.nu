@@ -8,10 +8,6 @@ const mariadb_branches = [
     "11.8"
     "12.3"
     "13.0"
-    "alpine3.17"
-    "alpine3.20"
-    "alpine3.23"
-    "alpine3.24"
 ]
 
 # Run test suite for image

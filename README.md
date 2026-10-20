@@ -8,12 +8,7 @@
 
 [MariaDB](https://mariadb.org) server with the jobs around it built in: the database and user are created on first start, every database is backed up every eight hours, the data is upgraded automatically when you move to a newer MariaDB version, and SSL certificates can be generated for you.
 
-There are two variants:
-
-* **Debian** (the default) - built on [Debian + S6](https://github.com/bfren/docker-debian-s6) with MariaDB's own packages, so you can choose any supported MariaDB version.
-* **Alpine** - built on [Alpine + S6](https://github.com/bfren/docker-alpine-s6) with Alpine's packages, so each Alpine release gives you one MariaDB version. Smaller, and also built for `linux/arm/v7`.
-
-Upgrading from 6.x? Read [the upgrade guide](UPGRADE_FROM_6x_TO_7x.md) first - environment variables and volumes changed.
+It is built on [Debian + S6](https://github.com/bfren/docker-debian-s6) with MariaDB's own packages, so you can choose any supported MariaDB version. Versions before 9.0.0 also had Alpine variants - see [the FAQs](#i-was-using-an-alpine-variant---how-do-i-move) if you used one.
 
 ## Quickstart
 
@@ -22,7 +17,7 @@ Upgrading from 6.x? Read [the upgrade guide](UPGRADE_FROM_6x_TO_7x.md) first - e
 ```yaml
 services:
   db:
-    image: quay.io/bfren/mariadb:mariadb11.8-8.1
+    image: quay.io/bfren/mariadb:mariadb11.8-9.0
     restart: unless-stopped
     environment:
       - BF_DB_ROOT_PASSWORD=${DB_ROOT_PASSWORD}
@@ -51,7 +46,7 @@ See [compose](compose) for examples that allow access from the host or other mac
 
 ## Features
 
-* 🐬 MariaDB 10.11 to 13.0 (Debian) or 10.6 to 11.8 (Alpine) - choose with the image tag
+* 🐬 MariaDB 10.11 to 13.0 - choose with the image tag
 * 🚀 Root password, application database(s) and user created on first start
 * 💾 Every database backed up every eight hours, optionally compressed, with old backups deleted automatically
 * ♻️ Restore, export and import with one command
@@ -65,27 +60,22 @@ See [compose](compose) for examples that allow access from the host or other mac
 
 Images are published to Docker Hub (`bfren/mariadb`) and Quay.io (`quay.io/bfren/mariadb`). There is no `latest` tag - choose a MariaDB version.
 
-| Tag                          | Example                | Use when                                        |
-| ---------------------------- | ---------------------- | ----------------------------------------------- |
-| `mariadbX.Y`                 | `mariadb11.8`          | You want the latest image for a MariaDB version |
-| `mariadbX.Y-MAJOR`           | `mariadb11.8-8`        | You want updates, but not breaking changes      |
-| `mariadbX.Y-MINOR`           | `mariadb11.8-8.1`      | You want fixes only - **recommended**           |
-| `mariadbX.Y-VERSION`         | `mariadb11.8-8.1.22`   | You want to pin this image exactly              |
-| `mariadbX.Y.Z`               | `mariadb11.8.9`        | You want an exact MariaDB release               |
-| `mariadbX.Y.Z-VERSION`       | `mariadb11.8.9-8.1.22` | You want to pin both                            |
-| any of the above + `-alpine` | `mariadb11.8-8-alpine` | You want the Alpine variant                     |
+| Tag                    | Example               | Use when                                        |
+| ---------------------- | --------------------- | ----------------------------------------------- |
+| `mariadbX.Y`           | `mariadb11.8`         | You want the latest image for a MariaDB version |
+| `mariadbX.Y-MAJOR`     | `mariadb11.8-9`       | You want updates, but not breaking changes      |
+| `mariadbX.Y-MINOR`     | `mariadb11.8-9.0`     | You want fixes only - **recommended**           |
+| `mariadbX.Y-VERSION`   | `mariadb11.8-9.0.0`   | You want to pin this image exactly              |
+| `mariadbX.Y.Z`         | `mariadb11.8.9`       | You want an exact MariaDB release               |
+| `mariadbX.Y.Z-VERSION` | `mariadb11.8.9-9.0.0` | You want to pin both                            |
 
-| Variant | MariaDB | Release  | Base                 | Platforms                                    | LTS   |
-| ------- | ------- | -------- | -------------------- | -------------------------------------------- | ----- |
-| Debian  | 13.0    | 13.0.2   | Debian 13 (trixie)   | `linux/amd64`, `linux/arm64`                 | No    |
-| Debian  | 12.3    | 12.3.3   | Debian 13 (trixie)   | `linux/amd64`, `linux/arm64`                 | Yes   |
-| Debian  | 11.8    | 11.8.9   | Debian 13 (trixie)   | `linux/amd64`, `linux/arm64`                 | Yes   |
-| Debian  | 11.4    | 11.4.13  | Debian 12 (bookworm) | `linux/amd64`, `linux/arm64`                 | Yes   |
-| Debian  | 10.11   | 10.11.19 | Debian 12 (bookworm) | `linux/amd64`, `linux/arm64`                 | Yes   |
-| Alpine  | 11.8    | 11.8.8   | Alpine 3.24          | `linux/amd64`, `linux/arm/v7`, `linux/arm64` | Yes   |
-| Alpine  | 11.4    | 11.4.12  | Alpine 3.23          | `linux/amd64`, `linux/arm/v7`, `linux/arm64` | Yes   |
-| Alpine  | 10.11   | 10.11.18 | Alpine 3.20          | `linux/amd64`, `linux/arm/v7`, `linux/arm64` | Yes   |
-| Alpine  | 10.6    | 10.6.16  | Alpine 3.17          | `linux/amd64`, `linux/arm/v7`, `linux/arm64` | Ended |
+| MariaDB | Release  | Base                 | Platforms                    | LTS |
+| ------- | -------- | -------------------- | ---------------------------- | --- |
+| 13.0    | 13.0.2   | Debian 13 (trixie)   | `linux/amd64`, `linux/arm64` | No  |
+| 12.3    | 12.3.3   | Debian 13 (trixie)   | `linux/amd64`, `linux/arm64` | Yes |
+| 11.8    | 11.8.9   | Debian 13 (trixie)   | `linux/amd64`, `linux/arm64` | Yes |
+| 11.4    | 11.4.13  | Debian 12 (bookworm) | `linux/amd64`, `linux/arm64` | Yes |
+| 10.11   | 10.11.19 | Debian 12 (bookworm) | `linux/amd64`, `linux/arm64` | Yes |
 
 13.0 is a short-term release - use an LTS version for anything long-lived. See MariaDB's [release dates](https://mariadb.com/kb/en/mariadb-server-release-dates/) for support periods.
 
@@ -152,7 +142,7 @@ Set `BF_DB_APPLICATION`, or all three of `BF_DB_DATABASE`, `BF_DB_USERNAME` and 
 | `BF_DB_SSL_SERVER_KEY_BITS` | integer                                                                 | Size of the server private key.         | `4096`     |
 | `BF_DB_SSL_CLIENT_KEY_BITS` | integer                                                                 | Size of the client private key.         | `4096`     |
 
-See [Debian + S6](https://github.com/bfren/docker-debian-s6#environment-variables) or [Alpine + S6](https://github.com/bfren/docker-alpine-s6#environment-variables) for `BF_DEBUG`, `BF_TZ` and the other base image variables. `BF_TZ` sets the time backups run.
+See [Debian + S6](https://github.com/bfren/docker-debian-s6#environment-variables) for `BF_DEBUG`, `BF_TZ` and the other base image variables. `BF_TZ` sets the time backups run.
 
 ## How It Works
 
@@ -223,15 +213,14 @@ The health check (inherited from the base image: every 30 seconds) connects as t
 ## Testing
 
 ```sh
-./test.nu              # builds MariaDB 13.0 (Debian) and runs /test
-./test.nu alpine3.24   # or any version directory
+./test.nu              # builds MariaDB 13.0 and runs /test
+./test.nu 11.4         # or any version directory
 ./test.nu --all        # every version, in parallel
 ./run.sh 11.8          # builds and opens a shell, with /data, /backup and /ssl in this directory
-./test-upgrade.sh      # starts Alpine 3.17 (10.6), then Alpine 3.20 (10.11) on the same data
-./generate.sh          # regenerates the Dockerfiles from Dockerfile-debian.esh and Dockerfile-alpine.esh
+./generate.sh          # regenerates the Dockerfiles from Dockerfile.esh
 ```
 
-`/test` runs this image's tests alongside the base images' tests: the initialisation script, `my.cnf`, SSL certificate generation, version detection, and backup, restore, export and import (using stub `mariadb` executables, so no server is needed). Run it on both variants, e.g. `./test.nu 11.8` and `./test.nu alpine3.24`.
+`/test` runs this image's tests alongside the base images' tests: the initialisation script, `my.cnf`, SSL certificate generation, version detection, and backup, restore, export and import (using stub `mariadb` executables, so no server is needed).
 
 ## Troubleshooting
 
@@ -257,9 +246,11 @@ Moving to an older MariaDB version is not supported. Go back to the previous tag
 
 ## FAQs
 
-### Should I use Debian or Alpine?
+### I was using an Alpine variant - how do I move?
 
-Debian, unless you need `linux/arm/v7` or the smallest image. It has every supported MariaDB version, from MariaDB's own packages. Alpine's version is fixed by the Alpine release, so newer MariaDB versions arrive later.
+From 9.0.0 there are no Alpine variants: Alpine's MariaDB version is fixed by the Alpine release, and its packages arrive later on some platforms. The `-alpine` tags still work but are no longer updated.
+
+Change your tag to the same MariaDB version without `-alpine`, e.g. `mariadb11.8-9.0` - your `/data`, `/backup` and `/ssl` volumes work as they are, because MariaDB runs as `dbadm` (UID 1000) in both. If you used MariaDB 10.6 (Alpine 3.17), move to 10.11 or newer: the data is upgraded automatically on first start, but take a backup first. There is no `linux/arm/v7` image - stay on your current `-alpine` tag if you need it.
 
 ### How do I add another database later?
 
