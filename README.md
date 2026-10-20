@@ -223,14 +223,15 @@ The health check (inherited from the base image: every 30 seconds) connects as t
 ## Testing
 
 ```sh
-./test.sh              # builds MariaDB 13.0 (Debian) and runs /test
-./test.sh alpine3.24   # or any version directory
+./test.nu              # builds MariaDB 13.0 (Debian) and runs /test
+./test.nu alpine3.24   # or any version directory
+./test.nu --all        # every version, in parallel
 ./run.sh 11.8          # builds and opens a shell, with /data, /backup and /ssl in this directory
 ./test-upgrade.sh      # starts Alpine 3.17 (10.6), then Alpine 3.20 (10.11) on the same data
 ./generate.sh          # regenerates the Dockerfiles from Dockerfile-debian.esh and Dockerfile-alpine.esh
 ```
 
-`/test` runs this image's tests alongside the base images' tests: the initialisation script, `my.cnf`, SSL certificate generation, version detection, and backup, restore, export and import (using stub `mariadb` executables, so no server is needed). Run it on both variants, e.g. `./test.sh 11.8` and `./test.sh alpine3.24`.
+`/test` runs this image's tests alongside the base images' tests: the initialisation script, `my.cnf`, SSL certificate generation, version detection, and backup, restore, export and import (using stub `mariadb` executables, so no server is needed). Run it on both variants, e.g. `./test.nu 11.8` and `./test.nu alpine3.24`.
 
 ## Troubleshooting
 
