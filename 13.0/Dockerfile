@@ -1,4 +1,4 @@
-FROM quay.io/bfren/debian-s6:trixie-4.5.1
+FROM quay.io/bfren/debian-s6:trixie-4.5.2
 
 ARG BF_IMAGE
 ARG BF_PUBLISHING
