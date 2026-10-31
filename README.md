@@ -17,7 +17,7 @@ It is built on [Debian + S6](https://github.com/bfren/docker-debian-s6) with Mar
 ```yaml
 services:
   db:
-    image: quay.io/bfren/mariadb:mariadb11.8-9.0
+    image: quay.io/bfren/mariadb:mariadb11.8-10.0
     restart: unless-stopped
     environment:
       - BF_DB_ROOT_PASSWORD=${DB_ROOT_PASSWORD}
@@ -60,14 +60,14 @@ See [compose](compose) for examples that allow access from the host or other mac
 
 Images are published to Docker Hub (`bfren/mariadb`) and Quay.io (`quay.io/bfren/mariadb`). There is no `latest` tag - choose a MariaDB version.
 
-| Tag                    | Example               | Use when                                        |
-| ---------------------- | --------------------- | ----------------------------------------------- |
-| `mariadbX.Y`           | `mariadb11.8`         | You want the latest image for a MariaDB version |
-| `mariadbX.Y-MAJOR`     | `mariadb11.8-9`       | You want updates, but not breaking changes      |
-| `mariadbX.Y-MINOR`     | `mariadb11.8-9.0`     | You want fixes only - **recommended**           |
-| `mariadbX.Y-VERSION`   | `mariadb11.8-9.0.0`   | You want to pin this image exactly              |
-| `mariadbX.Y.Z`         | `mariadb11.8.9`       | You want an exact MariaDB release               |
-| `mariadbX.Y.Z-VERSION` | `mariadb11.8.9-9.0.0` | You want to pin both                            |
+| Tag                    | Example                | Use when                                        |
+| ---------------------- | ---------------------- | ----------------------------------------------- |
+| `mariadbX.Y`           | `mariadb11.8`          | You want the latest image for a MariaDB version |
+| `mariadbX.Y-MAJOR`     | `mariadb11.8-10`       | You want updates, but not breaking changes      |
+| `mariadbX.Y-MINOR`     | `mariadb11.8-10.0`     | You want fixes only - **recommended**           |
+| `mariadbX.Y-VERSION`   | `mariadb11.8-10.0.0`   | You want to pin this image exactly              |
+| `mariadbX.Y.Z`         | `mariadb11.8.9`        | You want an exact MariaDB release               |
+| `mariadbX.Y.Z-VERSION` | `mariadb11.8.9-10.0.0` | You want to pin both                            |
 
 | MariaDB | Release  | Base                 | Platforms                    | LTS |
 | ------- | -------- | -------------------- | ---------------------------- | --- |
