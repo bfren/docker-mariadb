@@ -15,4 +15,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Images are built and published by the shared `bfren/docker` build workflow (`build.yml`), replacing the separate
   `dev.yml` and `publish.yml` workflows.
 
+### Fixed
+
+- Backups are written straight to the file instead of being held in memory first, so large databases no longer need
+  that much memory to back up.
+- `db-export dump` is refused - `/backup/dump.sql` would be restored on the next start.
+
 [10.0.0]: https://github.com/bfren/docker-mariadb/compare/v9.0.3...v10.0.0

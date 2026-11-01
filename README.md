@@ -173,7 +173,7 @@ At a random minute every eight hours (00:xx, 08:xx and 16:xx in `BF_TZ`), `db-ba
 ### Restore, export and import
 
 * `db-restore <folder>` restores every database from a backup folder's `dump.sql` (or `dump.sql.bz2`), e.g. `db-restore 202610171608`. Each database in the dump is dropped and recreated - databases that are not in the dump are left alone.
-* `db-export <database>` saves `/backup/<database>.sql`.
+* `db-export <database>` saves `/backup/<database>.sql` - except for a database called `dump`, because `/backup/dump.sql` is restored on the next start.
 * `db-import <database>` runs `/backup/<database>.sql`. Files from `db-export` and the per-database backup files recreate the database themselves.
 
 To move a database between containers, `db-export` in one, copy the file to the other's `/backup`, then `db-import`.
