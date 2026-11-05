@@ -1,6 +1,6 @@
 # MariaDB
 
-![GitHub release (latest by date)](https://img.shields.io/github/v/release/bfren/docker-mariadb) ![Docker Pulls](https://img.shields.io/endpoint?url=https%3A%2F%2Fbfren.dev%2Fdocker%2Fpulls%2Fmariadb) ![Docker Image Size](https://img.shields.io/endpoint?url=https%3A%2F%2Fbfren.dev%2Fdocker%2Fsize%2Fmariadb) ![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/bfren/docker-mariadb/dev.yml?branch=main)
+![GitHub release (latest by date)](https://img.shields.io/github/v/release/bfren/docker-mariadb) ![Docker Pulls](https://img.shields.io/endpoint?url=https%3A%2F%2Fbfren.dev%2Fdocker%2Fpulls%2Fmariadb) ![Docker Image Size](https://img.shields.io/endpoint?url=https%3A%2F%2Fbfren.dev%2Fdocker%2Fsize%2Fmariadb) ![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/bfren/docker-mariadb/build.yml?branch=main)
 
 [Docker Hub](https://hub.docker.com/r/bfren/mariadb) - [Quay.io](https://quay.io/repository/bfren/mariadb) - [bfren ecosystem](https://github.com/bfren/docker)
 
@@ -17,7 +17,7 @@ It is built on [Debian + S6](https://github.com/bfren/docker-debian-s6) with Mar
 ```yaml
 services:
   db:
-    image: quay.io/bfren/mariadb:mariadb11.8-9.0
+    image: quay.io/bfren/mariadb:mariadb11.8-10.0
     restart: unless-stopped
     environment:
       - BF_DB_ROOT_PASSWORD=${DB_ROOT_PASSWORD}
@@ -60,14 +60,14 @@ See [compose](compose) for examples that allow access from the host or other mac
 
 Images are published to Docker Hub (`bfren/mariadb`) and Quay.io (`quay.io/bfren/mariadb`). There is no `latest` tag - choose a MariaDB version.
 
-| Tag                    | Example               | Use when                                        |
-| ---------------------- | --------------------- | ----------------------------------------------- |
-| `mariadbX.Y`           | `mariadb11.8`         | You want the latest image for a MariaDB version |
-| `mariadbX.Y-MAJOR`     | `mariadb11.8-9`       | You want updates, but not breaking changes      |
-| `mariadbX.Y-MINOR`     | `mariadb11.8-9.0`     | You want fixes only - **recommended**           |
-| `mariadbX.Y-VERSION`   | `mariadb11.8-9.0.0`   | You want to pin this image exactly              |
-| `mariadbX.Y.Z`         | `mariadb11.8.9`       | You want an exact MariaDB release               |
-| `mariadbX.Y.Z-VERSION` | `mariadb11.8.9-9.0.0` | You want to pin both                            |
+| Tag                    | Example                | Use when                                        |
+| ---------------------- | ---------------------- | ----------------------------------------------- |
+| `mariadbX.Y`           | `mariadb11.8`          | You want the latest image for a MariaDB version |
+| `mariadbX.Y-MAJOR`     | `mariadb11.8-10`       | You want updates, but not breaking changes      |
+| `mariadbX.Y-MINOR`     | `mariadb11.8-10.0`     | You want fixes only - **recommended**           |
+| `mariadbX.Y-VERSION`   | `mariadb11.8-10.0.0`   | You want to pin this image exactly              |
+| `mariadbX.Y.Z`         | `mariadb11.8.9`        | You want an exact MariaDB release               |
+| `mariadbX.Y.Z-VERSION` | `mariadb11.8.9-10.0.0` | You want to pin both                            |
 
 | MariaDB | Release  | Base                 | Platforms                    | LTS |
 | ------- | -------- | -------------------- | ---------------------------- | --- |
@@ -173,7 +173,7 @@ At a random minute every eight hours (00:xx, 08:xx and 16:xx in `BF_TZ`), `db-ba
 ### Restore, export and import
 
 * `db-restore <folder>` restores every database from a backup folder's `dump.sql` (or `dump.sql.bz2`), e.g. `db-restore 202610171608`. Each database in the dump is dropped and recreated - databases that are not in the dump are left alone.
-* `db-export <database>` saves `/backup/<database>.sql`.
+* `db-export <database>` saves `/backup/<database>.sql` - except for a database called `dump`, because `/backup/dump.sql` is restored on the next start.
 * `db-import <database>` runs `/backup/<database>.sql`. Files from `db-export` and the per-database backup files recreate the database themselves.
 
 To move a database between containers, `db-export` in one, copy the file to the other's `/backup`, then `db-import`.

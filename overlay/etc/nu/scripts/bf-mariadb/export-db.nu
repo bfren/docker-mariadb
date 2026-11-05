@@ -6,6 +6,9 @@ export def main []: string -> nothing {
     # capture database name
     let name = $in
 
+    # the dump file in the backup root is restored on the next start
+    if $name == (bf env DB_DUMP_BASENAME) { bf write error $"A database called ($name) cannot be exported." export }
+
     # create path to export file
     let export_file = $"(bf env DB_BACKUP)/($name).sql"
 

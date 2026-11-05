@@ -1,0 +1,41 @@
+name: build
+
+on:
+  push:
+    branches: ['**']
+    tags-ignore: ['**']
+  release:
+    types: [published]
+  workflow_dispatch:
+
+# one run per branch at a time - a newer push cancels the older run, so it cannot finish last and overwrite the
+# newer images
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    uses: bfren/docker/.github/workflows/build.yml@main
+    with:
+      image: mariadb
+      folders: |
+        10.11
+        11.4
+        11.8
+        12.3
+        13.0
+      platforms: |
+        linux/amd64
+        linux/arm64
+      tags: |
+        mariadb${FOLDER}
+        mariadb${FOLDER}-${VERSION_MAJOR}
+        mariadb${FOLDER}-${VERSION_MINOR}
+        mariadb${FOLDER}-${VERSION}
+        mariadb${MARIADB_BUILD}
+        mariadb${MARIADB_BUILD}-${VERSION}
+    secrets:
+      DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+      DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
+      QUAY_TOKEN: ${{ secrets.QUAY_TOKEN }}

@@ -17,8 +17,9 @@ export def dump [
     # ensure the database exists
     if not ($name | exists) { bf write error $"Database ($name) does not exist." db/dump }
 
-    # dump database and save to specified file
-    { ^mariadb-dump ...(root) --add-drop-database --databases $name } | bf handle -s {|x| $x | save --force $file } db/dump
+    # dump database and save to specified file - streamed rather than through bf handle, which would hold the whole
+    # dump in memory (a failure still stops the script)
+    ^mariadb-dump ...(root) --add-drop-database --databases $name o> $file
 }
 
 # System databases - these are not backed up individually

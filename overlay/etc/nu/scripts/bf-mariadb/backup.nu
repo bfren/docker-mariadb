@@ -12,7 +12,8 @@ export def main []: nothing -> nothing {
     bf write $"Dumping all databases." dump
     let dump_file = $"($temp_dir)/(bf env DB_DUMP_BASENAME).sql"
     bf write $" .. to ($dump_file)" dump
-    { ^mariadb-dump ...(db root) --add-drop-database --all-databases } | bf handle -s {|x| $x | save --force $dump_file } dump
+    # streamed, not through bf handle which would hold the whole dump in memory - a failure still stops the script
+    ^mariadb-dump ...(db root) --add-drop-database --all-databases o> $dump_file
 
     # compress dump file
     if (bf env check DB_BACKUP_COMPRESS_FILES) {

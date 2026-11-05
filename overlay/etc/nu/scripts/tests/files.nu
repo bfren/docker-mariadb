@@ -75,6 +75,15 @@ export def export__fails_when_database_does_not_exist [] {
     assert error { helpers with_stubs $stubs { with-env (helpers db_env) { "missing" | bf-mariadb export-db } } }
 }
 
+export def export__refuses_the_dump_file_name [] {
+    # /backup/dump.sql would be restored on the next start
+    let stubs = helpers stubs
+    let env_vars = helpers db_env
+
+    assert error { helpers with_stubs $stubs { with-env $env_vars { "dump" | bf-mariadb export-db } } }
+    assert not ($"($env_vars.BF_DB_BACKUP)/dump.sql" | path exists)
+}
+
 export def import__runs_file_as_root [] {
     let stubs = helpers stubs
     let env_vars = helpers db_env
