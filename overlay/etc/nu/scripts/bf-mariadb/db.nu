@@ -33,6 +33,11 @@ export def get_all []: nothing -> list<string> {
         | without_system
 }
 
+# Split a list of database names (e.g. BF_DB_DATABASE) separated by commas and / or spaces, removing empty names
+export def names []: string -> list<string> {
+    split row --regex '[\s,]+' | where {|x| $x != "" }
+}
+
 # Remove system databases and empty values from a list of database names
 export def without_system []: list<string> -> list<string> {
     where {|x| $x != "" and $x not-in $system_databases }

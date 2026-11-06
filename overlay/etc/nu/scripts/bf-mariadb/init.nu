@@ -1,4 +1,5 @@
 use bf
+use db.nu
 
 # Run default mariadb installation executable
 export def install []: nothing -> nothing {
@@ -36,7 +37,7 @@ export def generate []: nothing -> nothing {
     sql_drop_test_database | append_to_init
 
     # create the application database(s) and user
-    bf env DB_DATABASE | split row " " | each {|db|
+    bf env DB_DATABASE | db names | each {|db|
         bf write debug $" .. adding database ($db)"
         $db | sql_create_db | append_to_init
         $db | sql_grant_user | append_to_init

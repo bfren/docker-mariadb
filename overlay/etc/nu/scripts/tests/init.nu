@@ -28,7 +28,7 @@ export def generate__sets_root_password_for_localhost_only [] {
 }
 
 export def generate__creates_each_database_and_grants_user_access [] {
-    let sql = generate_with {BF_DB_DATABASE: "one two"}
+    let sql = generate_with {BF_DB_DATABASE: "one, two"}
 
     for db in [one two] {
         assert ($"CREATE DATABASE IF NOT EXISTS `($db)`;" in $sql) $"($db) should be created"
