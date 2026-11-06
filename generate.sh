@@ -43,5 +43,4 @@ for V in ${MARIADB_VERSIONS} ; do
 
 done
 
-docker system prune -f
 echo "Done."
