@@ -13,9 +13,10 @@ export def main []: nothing -> nothing {
 
 # Drop user from localhost and %
 def drop_user []: nothing -> list<string> {
+    let user = bf env DB_USERNAME | init quote
     [
-        $"DROP USER IF EXISTS '(bf env DB_USERNAME)'@'localhost';"
-        $"DROP USER IF EXISTS '(bf env DB_USERNAME)'@'%';"
+        $"DROP USER IF EXISTS ($user)@'localhost';"
+        $"DROP USER IF EXISTS ($user)@'%';"
     ]
 }
 
