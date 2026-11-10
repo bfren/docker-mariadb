@@ -65,9 +65,9 @@ Images are published to Docker Hub (`bfren/mariadb`) and Quay.io (`quay.io/bfren
 | `mariadbX.Y`           | `mariadb11.8`          | You want the latest image for a MariaDB version |
 | `mariadbX.Y-MAJOR`     | `mariadb11.8-10`       | You want updates, but not breaking changes      |
 | `mariadbX.Y-MINOR`     | `mariadb11.8-10.0`     | You want fixes only - **recommended**           |
-| `mariadbX.Y-VERSION`   | `mariadb11.8-10.0.1`   | You want to pin this image exactly              |
+| `mariadbX.Y-VERSION`   | `mariadb11.8-10.0.2`   | You want to pin this image exactly              |
 | `mariadbX.Y.Z`         | `mariadb11.8.9`        | You want an exact MariaDB release               |
-| `mariadbX.Y.Z-VERSION` | `mariadb11.8.9-10.0.1` | You want to pin both                            |
+| `mariadbX.Y.Z-VERSION` | `mariadb11.8.9-10.0.2` | You want to pin both                            |
 
 | MariaDB | Release  | Base                 | Platforms                    | LTS |
 | ------- | -------- | -------------------- | ---------------------------- | --- |
@@ -107,7 +107,7 @@ Everything in the volumes is owned by `dbadm` (UID / GID 1000), and only readabl
 | --------------------- | -------- | ----------------------------------------------------------------------------------------------- | ------- |
 | `BF_DB_ROOT_PASSWORD` | string   | **Required.** Password for `root` (also used by backups, so keep it set).                       |         |
 | `BF_DB_APPLICATION`   | string   | Default for `BF_DB_DATABASE`, `BF_DB_USERNAME` and `BF_DB_PASSWORD`.                            |         |
-| `BF_DB_DATABASE`      | names    | Database(s) to create - separate several with spaces.                                           |         |
+| `BF_DB_DATABASE`      | names    | Database(s) to create - separate several with commas or spaces.                                 |         |
 | `BF_DB_USERNAME`      | string   | Application user, given full access to those databases.                                         |         |
 | `BF_DB_PASSWORD`      | string   | Application user's password (also used by the health check, so keep it set).                    |         |
 | `BF_DB_SUPER_USER`    | `0`, `1` | Give the application user access to all databases and user management - **not** for production. | `0`     |

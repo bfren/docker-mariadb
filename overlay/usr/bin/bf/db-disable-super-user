@@ -13,11 +13,12 @@ export def main []: nothing -> nothing {
 
 # Drop user from localhost and %
 def drop_user []: nothing -> list<string> {
+    let user = bf env DB_USERNAME | init quote
     [
-        $"DROP USER IF EXISTS '(bf env DB_USERNAME)'@'localhost';"
-        $"DROP USER IF EXISTS '(bf env DB_USERNAME)'@'%';"
+        $"DROP USER IF EXISTS ($user)@'localhost';"
+        $"DROP USER IF EXISTS ($user)@'%';"
     ]
 }
 
 # Grant user permissions to application databases
-def grant_user []: nothing -> list<string> { bf env DB_DATABASE | split row " " | each {|db| $db | init sql_grant_user } | flatten }
+def grant_user []: nothing -> list<string> { bf env DB_DATABASE | db names | each {|db| $db | init sql_grant_user } | flatten }

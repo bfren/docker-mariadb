@@ -1,4 +1,5 @@
 use bf
+use db.nu
 
 # Run default mariadb installation executable
 export def install []: nothing -> nothing {
@@ -14,6 +15,10 @@ export def install []: nothing -> nothing {
     bf write debug "Setting server config permissions."
     ["/etc/my.cnf*" "dbadm:dbadm" "0440" "0750"] | bf ch apply
 }
+
+# Remove the initialisation script - it contains passwords, and MariaDB runs it on every start while it exists, which
+# would undo later changes (e.g. db-disable-super-user, or a password changed using SQL)
+export def remove_file []: nothing -> nothing { rm --force (bf env DB_INIT_FILE) }
 
 # Generate the database initialisation script
 export def generate []: nothing -> nothing {
@@ -32,7 +37,7 @@ export def generate []: nothing -> nothing {
     sql_drop_test_database | append_to_init
 
     # create the application database(s) and user
-    bf env DB_DATABASE | split row " " | each {|db|
+    bf env DB_DATABASE | db names | each {|db|
         bf write debug $" .. adding database ($db)"
         $db | sql_create_db | append_to_init
         $db | sql_grant_user | append_to_init
@@ -55,7 +60,7 @@ def append_to_init []: [string -> nothing, list<string> -> nothing] {
 # Ensure root password is correct and only local access is permitted
 def sql_alter_root_privileges []: nothing -> list<string> {
     [
-        $"ALTER USER 'root'@'localhost' IDENTIFIED BY '(bf env DB_ROOT_PASSWORD)';"
+        $"ALTER USER 'root'@'localhost' IDENTIFIED BY (bf env DB_ROOT_PASSWORD | quote);"
         "GRANT ALL ON *.* TO 'root'@'localhost' WITH GRANT OPTION;"
     ]
 }
@@ -67,16 +72,16 @@ def sql_drop_dbadm_user []: nothing -> string { "DROP USER IF EXISTS 'dbadm'@'lo
 def sql_drop_test_database []: nothing -> string { "DROP DATABASE IF EXISTS `test`;" }
 
 # Create application database
-def sql_create_db []: string -> string { $"CREATE DATABASE IF NOT EXISTS `($in)`;" }
+def sql_create_db []: string -> string { $"CREATE DATABASE IF NOT EXISTS ($in | quote_name);" }
 
 # Grant application user all permissions for database, from any host
 export def sql_grant_user []: string -> list<string> {
-    let db = $in
-    let user = bf env DB_USERNAME
-    let pass = bf env DB_PASSWORD
+    let db = $in | quote_name
+    let user = bf env DB_USERNAME | quote
+    let pass = bf env DB_PASSWORD | quote
     [
-        $"GRANT ALL PRIVILEGES ON `($in)`.* TO '($user)'@'localhost' IDENTIFIED BY '($pass)';"
-        $"GRANT ALL PRIVILEGES ON `($in)`.* TO '($user)'@'%' IDENTIFIED BY '($pass)';"
+        $"GRANT ALL PRIVILEGES ON ($db).* TO ($user)@'localhost' IDENTIFIED BY ($pass);"
+        $"GRANT ALL PRIVILEGES ON ($db).* TO ($user)@'%' IDENTIFIED BY ($pass);"
     ]
 }
 
@@ -85,12 +90,19 @@ export def sql_grant_user []: string -> list<string> {
 #   manage users (WITH GRANT OPTION)
 #   from any host (TO 'user'@'%')
 export def sql_enable_super_user []: nothing -> list<string> {
-    let user = bf env DB_USERNAME
+    let user = bf env DB_USERNAME | quote
     [
-        $"GRANT ALL PRIVILEGES ON *.* TO '(bf env DB_USERNAME)'@'localhost' WITH GRANT OPTION;"
-        $"GRANT ALL PRIVILEGES ON *.* TO '(bf env DB_USERNAME)'@'%' WITH GRANT OPTION;"
+        $"GRANT ALL PRIVILEGES ON *.* TO ($user)@'localhost' WITH GRANT OPTION;"
+        $"GRANT ALL PRIVILEGES ON *.* TO ($user)@'%' WITH GRANT OPTION;"
     ]
 }
 
 # Always flush privileges after making changes to user / database permissions
 export def sql_flush_privileges []: nothing -> string { "FLUSH PRIVILEGES;" }
+
+# Quote a string for SQL, so passwords and user names can contain quotes and backslashes (by default MariaDB treats a
+# backslash as an escape character)
+export def quote []: string -> string { $"'($in | str replace --all '\' '\\' | str replace --all "'" "''")'" }
+
+# Quote a database name for SQL - a backtick in the name is doubled
+export def quote_name []: string -> string { $"`($in | str replace --all '`' '``')`" }

@@ -28,7 +28,7 @@ export def generate__sets_root_password_for_localhost_only [] {
 }
 
 export def generate__creates_each_database_and_grants_user_access [] {
-    let sql = generate_with {BF_DB_DATABASE: "one two"}
+    let sql = generate_with {BF_DB_DATABASE: "one, two"}
 
     for db in [one two] {
         assert ($"CREATE DATABASE IF NOT EXISTS `($db)`;" in $sql) $"($db) should be created"
@@ -54,8 +54,41 @@ export def generate__grants_super_user_only_when_enabled [] {
     assert ($super in (generate_with {BF_DB_SUPER_USER: "1"}))
 }
 
+export def generate__escapes_quotes_and_backslashes_in_passwords [] {
+    let sql = generate_with {BF_DB_ROOT_PASSWORD: "it's\\root", BF_DB_PASSWORD: "o'k"}
+
+    assert ("ALTER USER 'root'@'localhost' IDENTIFIED BY 'it''s\\\\root';" in $sql)
+    assert ("GRANT ALL PRIVILEGES ON `app`.* TO 'app'@'%' IDENTIFIED BY 'o''k';" in $sql)
+}
+
 export def generate__ends_by_flushing_privileges [] {
     assert equal "FLUSH PRIVILEGES;" (generate_with | last)
+}
+
+
+#======================================================================================================================
+# remove_file
+#======================================================================================================================
+
+export def remove_file__deletes_the_initialisation_script [] {
+    let file = $"(mktemp --directory)/init.sql"
+    "SELECT 1;" | save $file
+    with-env {BF_DB_INIT_FILE: $file} { init remove_file }
+
+    assert not ($file | path exists)
+}
+
+
+#======================================================================================================================
+# quote
+#======================================================================================================================
+
+export def quote__doubles_single_quotes_and_backslashes [] {
+    assert equal "'a''b\\\\c'" ("a'b\\c" | init quote)
+}
+
+export def quote_name__doubles_backticks [] {
+    assert equal "`a``b`" ("a`b" | init quote_name)
 }
 
 

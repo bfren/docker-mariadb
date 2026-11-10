@@ -12,6 +12,10 @@ def main [
     # set executable name - used to make log output more useful
     bf env x_set --override run $name
 
+    # once the server is online it has run the initialisation script, so remove it - otherwise it runs again on every
+    # restart (this comes before the checks below, which may exit early)
+    if (bf-mariadb checks server_is_online) { bf-mariadb init remove_file }
+
     # run checks before executing service
     let sleep_for = 2sec    # if a check fails, wait before exiting - S6 will automatically restart the service
     if (bf-mariadb checks server_is_not_initialised) {

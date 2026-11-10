@@ -20,6 +20,15 @@ export def user__uses_application_user [] {
 # databases
 #======================================================================================================================
 
+export def names__splits_on_commas_and_spaces [] {
+    assert equal ["one" "two" "three" "four"] ("one, two three,four" | db names)
+}
+
+export def names__ignores_empty_names [] {
+    assert equal ["one"] ("one,, , " | db names)
+    assert equal [] ("" | db names)
+}
+
 export def without_system__removes_system_databases_and_empty_names [] {
     let input = ["information_schema" "app" "mysql" "" "other" "performance_schema" "sys" "test"]
 
