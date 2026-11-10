@@ -65,9 +65,9 @@ Images are published to Docker Hub (`bfren/mariadb`) and Quay.io (`quay.io/bfren
 | `mariadbX.Y`           | `mariadb11.8`          | You want the latest image for a MariaDB version |
 | `mariadbX.Y-MAJOR`     | `mariadb11.8-10`       | You want updates, but not breaking changes      |
 | `mariadbX.Y-MINOR`     | `mariadb11.8-10.0`     | You want fixes only - **recommended**           |
-| `mariadbX.Y-VERSION`   | `mariadb11.8-10.0.1`   | You want to pin this image exactly              |
+| `mariadbX.Y-VERSION`   | `mariadb11.8-10.0.2`   | You want to pin this image exactly              |
 | `mariadbX.Y.Z`         | `mariadb11.8.9`        | You want an exact MariaDB release               |
-| `mariadbX.Y.Z-VERSION` | `mariadb11.8.9-10.0.1` | You want to pin both                            |
+| `mariadbX.Y.Z-VERSION` | `mariadb11.8.9-10.0.2` | You want to pin both                            |
 
 | MariaDB | Release  | Base                 | Platforms                    | LTS |
 | ------- | -------- | -------------------- | ---------------------------- | --- |
