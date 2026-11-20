@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [10.0.3] - 2026-11-20
+
+### Changed
+
+- MariaDB updated to 10.11.20, 11.4.14, 11.8.10 and 12.3.4.
+
 ## [10.0.2] - 2026-11-10
 
 ### Changed
@@ -49,6 +55,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   that much memory to back up.
 - `db-export dump` is refused - `/backup/dump.sql` would be restored on the next start.
 
+[10.0.3]: https://github.com/bfren/docker-mariadb/compare/v10.0.2...v10.0.3
 [10.0.2]: https://github.com/bfren/docker-mariadb/compare/v10.0.1...v10.0.2
 [10.0.1]: https://github.com/bfren/docker-mariadb/compare/v10.0.0...v10.0.1
 [10.0.0]: https://github.com/bfren/docker-mariadb/compare/v9.0.3...v10.0.0

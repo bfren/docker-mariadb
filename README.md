@@ -60,22 +60,22 @@ See [compose](compose) for examples that allow access from the host or other mac
 
 Images are published to Docker Hub (`bfren/mariadb`) and Quay.io (`quay.io/bfren/mariadb`). There is no `latest` tag - choose a MariaDB version.
 
-| Tag                    | Example                | Use when                                        |
-| ---------------------- | ---------------------- | ----------------------------------------------- |
-| `mariadbX.Y`           | `mariadb11.8`          | You want the latest image for a MariaDB version |
-| `mariadbX.Y-MAJOR`     | `mariadb11.8-10`       | You want updates, but not breaking changes      |
-| `mariadbX.Y-MINOR`     | `mariadb11.8-10.0`     | You want fixes only - **recommended**           |
-| `mariadbX.Y-VERSION`   | `mariadb11.8-10.0.2`   | You want to pin this image exactly              |
-| `mariadbX.Y.Z`         | `mariadb11.8.9`        | You want an exact MariaDB release               |
-| `mariadbX.Y.Z-VERSION` | `mariadb11.8.9-10.0.2` | You want to pin both                            |
+| Tag                    | Example                 | Use when                                        |
+| ---------------------- | ----------------------- | ----------------------------------------------- |
+| `mariadbX.Y`           | `mariadb11.8`           | You want the latest image for a MariaDB version |
+| `mariadbX.Y-MAJOR`     | `mariadb11.8-10`        | You want updates, but not breaking changes      |
+| `mariadbX.Y-MINOR`     | `mariadb11.8-10.0`      | You want fixes only - **recommended**           |
+| `mariadbX.Y-VERSION`   | `mariadb11.8-10.0.3`    | You want to pin this image exactly              |
+| `mariadbX.Y.Z`         | `mariadb11.8.10`        | You want an exact MariaDB release               |
+| `mariadbX.Y.Z-VERSION` | `mariadb11.8.10-10.0.3` | You want to pin both                            |
 
 | MariaDB | Release  | Base                 | Platforms                    | LTS |
 | ------- | -------- | -------------------- | ---------------------------- | --- |
 | 13.0    | 13.0.2   | Debian 13 (trixie)   | `linux/amd64`, `linux/arm64` | No  |
-| 12.3    | 12.3.3   | Debian 13 (trixie)   | `linux/amd64`, `linux/arm64` | Yes |
-| 11.8    | 11.8.9   | Debian 13 (trixie)   | `linux/amd64`, `linux/arm64` | Yes |
-| 11.4    | 11.4.13  | Debian 12 (bookworm) | `linux/amd64`, `linux/arm64` | Yes |
-| 10.11   | 10.11.19 | Debian 12 (bookworm) | `linux/amd64`, `linux/arm64` | Yes |
+| 12.3    | 12.3.4   | Debian 13 (trixie)   | `linux/amd64`, `linux/arm64` | Yes |
+| 11.8    | 11.8.10  | Debian 13 (trixie)   | `linux/amd64`, `linux/arm64` | Yes |
+| 11.4    | 11.4.14  | Debian 12 (bookworm) | `linux/amd64`, `linux/arm64` | Yes |
+| 10.11   | 10.11.20 | Debian 12 (bookworm) | `linux/amd64`, `linux/arm64` | Yes |
 
 13.0 is a short-term release - use an LTS version for anything long-lived. See MariaDB's [release dates](https://mariadb.com/kb/en/mariadb-server-release-dates/) for support periods.
 
