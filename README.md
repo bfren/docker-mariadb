@@ -69,6 +69,8 @@ Images are published to Docker Hub (`bfren/mariadb`) and Quay.io (`quay.io/bfren
 | `mariadbX.Y.Z`         | `mariadb11.8.10`        | You want an exact MariaDB release               |
 | `mariadbX.Y.Z-VERSION` | `mariadb11.8.10-10.0.4` | You want to pin both                            |
 
+A new `MAJOR` version means a breaking change. Before moving to one, read the [changelog](CHANGELOG.md), where each breaking change is marked **Breaking**.
+
 | MariaDB | Release  | Base                 | Platforms                    | LTS |
 | ------- | -------- | -------------------- | ---------------------------- | --- |
 | 13.0    | 13.0.2   | Debian 13 (trixie)   | `linux/amd64`, `linux/arm64` | No  |
