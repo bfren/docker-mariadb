@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   `BF_DB_ROOT_PASSWORD` and that the application user has two accounts to change.
 - README: step-by-step instructions for moving a database between containers and adding a database.
 - README: the helper commands table shows how to run each command.
+- The `compose` examples now use the Quay.io image, like the rest of the examples.
 
 ## [10.0.3] - 2026-11-20
 

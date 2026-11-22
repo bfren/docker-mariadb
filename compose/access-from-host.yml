@@ -1,6 +1,6 @@
 services:
   db:
-    image: bfren/mariadb:mariadb${VERSION}
+    image: quay.io/bfren/mariadb:mariadb${VERSION}
     container_name: db
     restart: unless-stopped
     ports:
