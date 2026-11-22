@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [10.0.4] - Unreleased
+
+### Fixed
+
+- README: changing a password is now a list of steps. It says that `db-root` logs in with the current
+  `BF_DB_ROOT_PASSWORD` and that the application user has two accounts to change.
+- README: step-by-step instructions for moving a database between containers and adding a database.
+- README: the helper commands table shows how to run each command.
+
 ## [10.0.3] - 2026-11-20
 
 ### Changed
@@ -55,6 +64,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   that much memory to back up.
 - `db-export dump` is refused - `/backup/dump.sql` would be restored on the next start.
 
+[10.0.4]: https://github.com/bfren/docker-mariadb/compare/v10.0.3...v10.0.4
 [10.0.3]: https://github.com/bfren/docker-mariadb/compare/v10.0.2...v10.0.3
 [10.0.2]: https://github.com/bfren/docker-mariadb/compare/v10.0.1...v10.0.2
 [10.0.1]: https://github.com/bfren/docker-mariadb/compare/v10.0.0...v10.0.1
