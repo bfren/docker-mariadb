@@ -17,7 +17,7 @@ It is built on [Debian + S6](https://github.com/bfren/docker-debian-s6) with Mar
 ```yaml
 services:
   db:
-    image: quay.io/bfren/mariadb:mariadb11.8-10.0
+    image: quay.io/bfren/mariadb:mariadb11.8-10.1
     restart: unless-stopped
     environment:
       - BF_DB_ROOT_PASSWORD=${DB_ROOT_PASSWORD}
@@ -46,7 +46,7 @@ See [compose](compose) for examples that allow access from the host or other mac
 
 ## Features
 
-* 🐬 MariaDB 10.11 to 13.0 - choose with the image tag
+* 🐬 MariaDB 10.11 to 13.2 - choose with the image tag
 * 🚀 Root password, application database(s) and user created on first start
 * 💾 Every database backed up every eight hours, optionally compressed, with old backups deleted automatically
 * ♻️ Restore, export and import with one command
@@ -64,20 +64,24 @@ Images are published to Docker Hub (`bfren/mariadb`) and Quay.io (`quay.io/bfren
 | ---------------------- | ----------------------- | ----------------------------------------------- |
 | `mariadbX.Y`           | `mariadb11.8`           | You want the latest image for a MariaDB version |
 | `mariadbX.Y-MAJOR`     | `mariadb11.8-10`        | You want updates, but not breaking changes      |
-| `mariadbX.Y-MINOR`     | `mariadb11.8-10.0`      | You want fixes only - **recommended**           |
-| `mariadbX.Y-VERSION`   | `mariadb11.8-10.0.3`    | You want to pin this image exactly              |
+| `mariadbX.Y-MINOR`     | `mariadb11.8-10.1`      | You want fixes only - **recommended**           |
+| `mariadbX.Y-VERSION`   | `mariadb11.8-10.1.0`    | You want to pin this image exactly              |
 | `mariadbX.Y.Z`         | `mariadb11.8.10`        | You want an exact MariaDB release               |
-| `mariadbX.Y.Z-VERSION` | `mariadb11.8.10-10.0.3` | You want to pin both                            |
+| `mariadbX.Y.Z-VERSION` | `mariadb11.8.10-10.1.0` | You want to pin both                            |
+
+A new `MAJOR` version means a breaking change. Before moving to one, read the [changelog](CHANGELOG.md), where each breaking change is marked **Breaking**.
 
 | MariaDB | Release  | Base                 | Platforms                    | LTS |
 | ------- | -------- | -------------------- | ---------------------------- | --- |
+| 13.2    | 13.2.1   | Debian 13 (trixie)   | `linux/amd64`, `linux/arm64` | No  |
+| 13.1    | 13.1.2   | Debian 13 (trixie)   | `linux/amd64`, `linux/arm64` | No  |
 | 13.0    | 13.0.2   | Debian 13 (trixie)   | `linux/amd64`, `linux/arm64` | No  |
 | 12.3    | 12.3.4   | Debian 13 (trixie)   | `linux/amd64`, `linux/arm64` | Yes |
 | 11.8    | 11.8.10  | Debian 13 (trixie)   | `linux/amd64`, `linux/arm64` | Yes |
 | 11.4    | 11.4.14  | Debian 12 (bookworm) | `linux/amd64`, `linux/arm64` | Yes |
 | 10.11   | 10.11.20 | Debian 12 (bookworm) | `linux/amd64`, `linux/arm64` | Yes |
 
-13.0 is a short-term release - use an LTS version for anything long-lived. See MariaDB's [release dates](https://mariadb.com/kb/en/mariadb-server-release-dates/) for support periods.
+13.0, 13.1 and 13.2 are short-term releases - use an LTS version for anything long-lived. See MariaDB's [release dates](https://mariadb.com/kb/en/mariadb-server-release-dates/) for support periods.
 
 ## Configuration
 
@@ -176,7 +180,11 @@ At a random minute every eight hours (00:xx, 08:xx and 16:xx in `BF_TZ`), `db-ba
 * `db-export <database>` saves `/backup/<database>.sql` - except for a database called `dump`, because `/backup/dump.sql` is restored on the next start.
 * `db-import <database>` runs `/backup/<database>.sql`. Files from `db-export` and the per-database backup files recreate the database themselves.
 
-To move a database between containers, `db-export` in one, copy the file to the other's `/backup`, then `db-import`.
+To move a database between containers:
+
+1. In the old container, run `db-export <database>`.
+2. Copy `/backup/<database>.sql` into the new container's `/backup` volume.
+3. In the new container, run `db-import <database>`.
 
 ### SSL
 
@@ -192,19 +200,19 @@ After MariaDB starts, the version that created `/data` is compared with the serv
 
 ### Helper commands
 
-Run these with `docker exec <container> <command>`.
+Run these with `docker exec <container> <command>`, e.g. `docker exec db db-backup`. The shells need `-it`: `docker exec -it db db-root`.
 
-| Command                 | Arguments | Description                                                            |
-| ----------------------- | --------- | ---------------------------------------------------------------------- |
-| `db-root`               |           | Open a MariaDB shell as `root` (add `-it` to `docker exec`).           |
-| `db-user`               |           | Open a MariaDB shell as the application user (add `-it`).              |
-| `db-backup`             |           | Back up now.                                                           |
-| `db-restore`            | folder    | Restore every database from a backup folder.                           |
-| `db-export`             | database  | Save a database to `/backup/<database>.sql`.                           |
-| `db-import`             | database  | Run `/backup/<database>.sql`.                                          |
-| `db-upgrade`            |           | Run `mariadb-upgrade` - normally not needed.                           |
-| `db-enable-super-user`  |           | Give the application user access to all databases and user management. |
-| `db-disable-super-user` |           | Recreate the application user with access only to `BF_DB_DATABASE`.    |
+| Command                 | Description                                                            |
+| ----------------------- | ---------------------------------------------------------------------- |
+| `db-root`               | Open a MariaDB shell as `root`.                                        |
+| `db-user`               | Open a MariaDB shell as the application user.                          |
+| `db-backup`             | Back up now.                                                           |
+| `db-restore <folder>`   | Restore every database from a backup folder, e.g. `202610171608`.      |
+| `db-export <database>`  | Save a database to `/backup/<database>.sql`.                           |
+| `db-import <database>`  | Run `/backup/<database>.sql`.                                          |
+| `db-upgrade`            | Run `mariadb-upgrade` - normally not needed.                           |
+| `db-enable-super-user`  | Give the application user access to all databases and user management. |
+| `db-disable-super-user` | Recreate the application user with access only to `BF_DB_DATABASE`.    |
 
 ### Health check
 
@@ -230,7 +238,19 @@ Check `docker logs <container>`. `BF_DB_ROOT_PASSWORD` must be set, and either `
 
 ### I changed a password but can't log in
 
-Passwords are only set on [first start](#first-start). Change them in SQL (`docker exec -it <container> db-root`, then `ALTER USER ... IDENTIFIED BY ...`), then update the environment variable to match - backups use `BF_DB_ROOT_PASSWORD` and the health check uses `BF_DB_PASSWORD`.
+Passwords are only set on [first start](#first-start), so changing the variable alone does nothing. To change one:
+
+1. Open a root shell with `docker exec -it <container> db-root`. It logs in with the container's current `BF_DB_ROOT_PASSWORD`, so do this before you change the variable.
+2. Change the password in SQL. The application user has two accounts, so change both:
+
+```sql
+ALTER USER 'myapp'@'%' IDENTIFIED BY 'new-password';
+ALTER USER 'myapp'@'localhost' IDENTIFIED BY 'new-password';
+```
+
+   For `root`, use `ALTER USER 'root'@'localhost' IDENTIFIED BY 'new-password';`.
+
+3. Update the environment variable to match, and recreate the container - backups use `BF_DB_ROOT_PASSWORD` and the health check uses `BF_DB_PASSWORD`.
 
 ### I can't connect as root from outside the container
 
@@ -254,7 +274,16 @@ Change your tag to the same MariaDB version without `-alpine`, e.g. `mariadb11.8
 
 ### How do I add another database later?
 
-As root (`db-root`): `CREATE DATABASE newdb;` then `GRANT ALL PRIVILEGES ON newdb.* TO 'myapp'@'%';`. Add it to `BF_DB_DATABASE` too, so `db-disable-super-user` keeps it.
+1. Open a root shell with `docker exec -it <container> db-root`.
+2. Create the database and give the application user access:
+
+```sql
+CREATE DATABASE newdb;
+GRANT ALL PRIVILEGES ON newdb.* TO 'myapp'@'%';
+GRANT ALL PRIVILEGES ON newdb.* TO 'myapp'@'localhost';
+```
+
+3. Add it to `BF_DB_DATABASE` too, so `db-disable-super-user` keeps it.
 
 ### Can I use the official MariaDB image's variables, such as `MARIADB_ROOT_PASSWORD`?
 
