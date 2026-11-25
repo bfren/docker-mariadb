@@ -7,7 +7,7 @@ docker pull bfren/alpine
 DEBIAN_BASE_REVISION="5.0.4"
 
 echo "Debian Base: ${DEBIAN_BASE_REVISION}"
-MARIADB_VERSIONS="10.11 11.4 11.8 12.3 13.0"
+MARIADB_VERSIONS="10.11 11.4 11.8 12.3 13.0 13.1 13.2"
 for V in ${MARIADB_VERSIONS} ; do
 
     echo "MariaDB ${V}"
